@@ -1,0 +1,22 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+*.g.dart
+
+# Firebase (NE JAMAIS committer ces fichiers)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Variables d'environnement (clés API)
+.env
+
+# IDE
+.idea/
+*.iml
+.vscode/settings.json
+
+# Logs
+*.log
+pubspec.lock
