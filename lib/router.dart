@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/home/presentation/pages/home_page.dart';
 
-/// All declared route paths for the application.
-/// Used by HomePage to check which modules are available.
 class AppRoutes {
   static const String home = '/';
   static const String lessons = '/lessons';
@@ -13,16 +11,9 @@ class AppRoutes {
   static const String ar = '/ar';
   static const String aiQuiz = '/ai-quiz';
 
-  /// Routes that have a real destination page implemented.
   static const List<String> availableRoutes = [
     home,
-    // Add routes here as feature pages are implemented:
-    // lessons,
-    // quiz,
-    // duel,
-    // pronunciation,
-    // ar,
-    // aiQuiz,
+    // Add real paths here as implemented:
   ];
 }
 
@@ -32,9 +23,16 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.home,
       name: 'home',
-      builder: (context, state) => const HomePage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const HomePage(),
+        transitionsBuilder: (context, animation, _, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+        transitionDuration: const Duration(milliseconds: 350),
+      ),
     ),
-    // ── Placeholder routes (replace Scaffold with real pages when ready) ──
+    // Placeholder routes
     GoRoute(
       path: AppRoutes.lessons,
       name: 'lessons',
@@ -53,8 +51,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.pronunciation,
       name: 'pronunciation',
-      builder: (context, state) =>
-          const _PlaceholderPage(title: 'Prononciation'),
+      builder: (context, state) => const _PlaceholderPage(title: 'Prononciation'),
     ),
     GoRoute(
       path: AppRoutes.ar,
@@ -69,7 +66,6 @@ final GoRouter appRouter = GoRouter(
   ],
 );
 
-/// Temporary placeholder page for modules not yet implemented.
 class _PlaceholderPage extends StatelessWidget {
   final String title;
   const _PlaceholderPage({required this.title});
