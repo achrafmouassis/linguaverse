@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:linguaverse/shared/theme/app_colors.dart';
 import 'package:linguaverse/shared/utils/constants.dart';
 import 'package:linguaverse/shared/utils/dev_theme_provider.dart';
+import 'package:linguaverse/features/gamification/gamification_exports.dart';
 
 // ════════════════════════════════════════════════════════════════════
 // 1. MODÈLES DE DONNÉES
@@ -213,7 +214,7 @@ final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
 
 // Helpers Thèmes Constants pour le mode clair et sombre
 Color _surfaceColor(BuildContext context) {
-  return Theme.of(context).brightness == Brightness.dark ? const Color(0xFF13132A) : Colors.white;
+  return Theme.of(context).brightness == Brightness.dark ? AppColors.bgLevel2 : Colors.white;
 }
 
 Color _textColor(BuildContext context, {double opacity = 1.0}) {
@@ -223,7 +224,7 @@ Color _textColor(BuildContext context, {double opacity = 1.0}) {
 
 Color _scaffoldBgColor(BuildContext context) {
   return Theme.of(context).brightness == Brightness.dark
-      ? const Color(0xFF080812)
+      ? AppColors.bgScaffold
       : AppColors.background;
 }
 
@@ -308,7 +309,8 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
     _cardsController.forward();
 
     if (!mounted) return;
-    final streak = ref.read(homeProvider).streakDays;
+    final progressionState = ref.read(userProgressionProvider);
+    final streak = progressionState.valueOrNull?.streakDays ?? 0;
     if (streak > 7) {
       await Future.delayed(const Duration(milliseconds: 800));
       if (mounted) _streakController.repeat(reverse: true);
@@ -367,7 +369,40 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
 
     return Scaffold(
       backgroundColor: _scaffoldBgColor(context),
-      floatingActionButton: kDebugMode ? const _DevThemeToggle() : null,
+      floatingActionButton: kDebugMode
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FloatingActionButton.small(
+                  heroTag: 'devM7',
+                  backgroundColor: AppColors.bgLevel3,
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    context.push('/dev/m7-test');
+                  },
+                  tooltip: 'Panel de test M7 (DEV)',
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      const Icon(Icons.science_rounded, size: 18, color: Colors.white70),
+                      Positioned(
+                        top: 2,
+                        right: 2,
+                        child: Container(
+                          width: 6,
+                          height: 6,
+                          decoration: const BoxDecoration(
+                              color: Colors.orangeAccent, shape: BoxShape.circle),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const _DevThemeToggle(),
+              ],
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         bottom: false,
@@ -548,7 +583,7 @@ class _HeroBackground extends StatelessWidget {
         Positioned.fill(
           child: Container(
             color: Theme.of(context).brightness == Brightness.dark
-                ? const Color(0xFF0D0D1A) // Level 1
+                ? AppColors.bgLevel1 // Level 1
                 : AppColors.primaryLight,
           ),
         ),
@@ -685,15 +720,19 @@ class _CompactHeroContent extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            _StreakPill(state: state, streakController: streakController),
+            _StreakPill(streakController: streakController),
             const SizedBox(width: AppSpacing.md),
-            Text(
-              '${(state.xpProgress * 100).toInt()}% XP',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: _textColor(context, opacity: 0.7)),
-            ),
+            Consumer(builder: (context, ref, _) {
+              final prog = ref.watch(userProgressionProvider).valueOrNull;
+              final progress = prog?.xpProgress ?? 0.0;
+              return Text(
+                '${(progress * 100).toInt()}% XP',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: _textColor(context, opacity: 0.7)),
+              );
+            }),
           ],
         ),
       ),
@@ -749,14 +788,17 @@ class _UserAvatar extends StatelessWidget {
               color: AppColors.xpGold,
               borderRadius: BorderRadius.circular(4),
             ),
-            child: Text(
-              'LVL ${state.userLevel}',
-              style: TextStyle(
-                fontSize: lvlSize,
-                fontWeight: FontWeight.w900,
-                color: const Color(0xFF080812), // Always dark text on gold badge
-              ),
-            ),
+            child: Consumer(builder: (context, ref, _) {
+              final val = ref.watch(userProgressionProvider).valueOrNull?.currentLevel ?? 1;
+              return Text(
+                'LVL $val',
+                style: TextStyle(
+                  fontSize: lvlSize,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.bgScaffold, // Always dark text on gold badge
+                ),
+              );
+            }),
           ),
         ),
       ],
@@ -824,26 +866,36 @@ class _XPBarSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Niveau ${state.userLevel}  ·  ${state.currentXP} / ${state.nextLevelXP} XP',
-              style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: _textColor(context, opacity: 0.6)),
-            ),
-            AnimatedBuilder(
-              animation: xpController,
-              builder: (context, _) {
-                final val = (xpController.value * state.xpProgress * 100).toInt();
-                return Text(
-                  '$val%',
-                  style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: _textColor(context, opacity: 0.7)),
-                );
-              },
-            ),
+            Consumer(builder: (context, ref, _) {
+              final prog = ref.watch(userProgressionProvider).valueOrNull;
+              final level = prog?.currentLevel ?? 1;
+              final currentXP = prog?.currentXP ?? 0;
+              final nextXP = prog?.xpForNextLevel ?? 500;
+              return Text(
+                'Niveau $level  ·  $currentXP / $nextXP XP',
+                style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: _textColor(context, opacity: 0.6)),
+              );
+            }),
+            Consumer(builder: (context, ref, _) {
+              final prog = ref.watch(userProgressionProvider).valueOrNull;
+              final progress = prog?.xpProgress ?? 0.0;
+              return AnimatedBuilder(
+                animation: xpController,
+                builder: (context, _) {
+                  final val = (xpController.value * progress * 100).toInt();
+                  return Text(
+                    '$val%',
+                    style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: _textColor(context, opacity: 0.7)),
+                  );
+                },
+              );
+            }),
           ],
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -858,24 +910,27 @@ class _XPBarSection extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  AnimatedBuilder(
-                    animation: xpController,
-                    builder: (context, _) {
-                      return FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor:
-                            Curves.easeOutExpo.transform(xpController.value) * state.xpProgress,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            gradient: const LinearGradient(
-                              colors: [AppColors.primary, AppColors.secondary],
+                  Consumer(builder: (context, ref, _) {
+                    final prog = ref.watch(userProgressionProvider).valueOrNull;
+                    final progress = prog?.xpProgress ?? 0.0;
+                    return AnimatedBuilder(
+                      animation: xpController,
+                      builder: (context, _) {
+                        return FractionallySizedBox(
+                          alignment: Alignment.centerLeft,
+                          widthFactor: Curves.easeOutExpo.transform(xpController.value) * progress,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              gradient: const LinearGradient(
+                                colors: [AppColors.primary, AppColors.secondary],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    );
+                  }),
                   _ShimmerOverlay(
                     controller: shimmerController,
                     trackWidth: constraints.maxWidth,
@@ -906,7 +961,7 @@ class _StreakAndLangRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _StreakPill(state: state, streakController: streakController),
+        _StreakPill(streakController: streakController),
         const Spacer(),
         _LanguageSwitcher(state: state, ref: ref),
       ],
@@ -914,18 +969,18 @@ class _StreakAndLangRow extends StatelessWidget {
   }
 }
 
-class _StreakPill extends StatelessWidget {
-  final HomeState state;
+class _StreakPill extends ConsumerWidget {
   final AnimationController streakController;
 
   const _StreakPill({
-    required this.state,
     required this.streakController,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final bool hot = state.streakDays > 7;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final prog = ref.watch(userProgressionProvider).valueOrNull;
+    final streakDays = prog?.streakDays ?? 0;
+    final bool hot = streakDays > 7;
     Widget pill = Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
       decoration: BoxDecoration(
@@ -939,7 +994,7 @@ class _StreakPill extends StatelessWidget {
           const Text('🔥', style: TextStyle(fontSize: 14)),
           const SizedBox(width: AppSpacing.xs),
           _AnimatedCounter(
-            value: state.streakDays,
+            value: streakDays,
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
@@ -1109,7 +1164,7 @@ class _ContinueLearningCardState extends State<_ContinueLearningCard> {
             margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1A1A35) : AppColors.surface,
+              color: isDark ? AppColors.bgLevel3 : AppColors.surface,
               gradient: LinearGradient(
                 colors: [
                   AppColors.primary.withValues(alpha: 0.15),
@@ -1380,6 +1435,15 @@ class _ModuleMasonryGrid extends StatelessWidget {
       route: '/ai-quiz',
       icon: Icons.smart_toy_rounded,
     );
+    const gamificationModule = ModuleInfo(
+      id: 'gamification',
+      title: 'Jeux & Progrès',
+      subtitle: 'Mini-jeux & XP',
+      badgeText: 'Nouveau',
+      color: AppColors.xpGold,
+      route: '/gamification/games',
+      icon: Icons.emoji_events_rounded,
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
@@ -1442,23 +1506,27 @@ class _ModuleMasonryGrid extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                flex: 40,
                 child: _AnimatedGridItem(
                   index: 5,
                   controller: cardsController,
-                  child: _ModuleCard(module: aiQuizModule, height: 90, onTap: onModuleTap),
+                  child: _ModuleCard(module: gamificationModule, height: 110, onTap: onModuleTap),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
-                flex: 60,
                 child: _AnimatedGridItem(
                   index: 6,
                   controller: cardsController,
-                  child: const _ComingSoonCard(module: vocalModule, height: 90),
+                  child: _ModuleCard(module: aiQuizModule, height: 110, onTap: onModuleTap),
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          _AnimatedGridItem(
+            index: 7,
+            controller: cardsController,
+            child: const _ComingSoonCard(module: vocalModule, height: 100),
           ),
         ],
       ),
@@ -1544,7 +1612,7 @@ class _ModuleCardState extends State<_ModuleCard> {
             padding: EdgeInsets.all(
                 widget.isLarge ? AppSpacing.xl : AppSpacing.sm), // Reduced padding for small cards
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF13132A) : AppColors.surface,
+              color: isDark ? AppColors.bgLevel2 : AppColors.surface,
               borderRadius: BorderRadius.circular(AppRadius.lg),
               border: Border.all(color: widget.module.color.withValues(alpha: 0.3), width: 0.5),
               boxShadow: isDark
@@ -1568,47 +1636,45 @@ class _ModuleCardState extends State<_ModuleCard> {
                         color: widget.module.color), // Smaller bg icon
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(
-                          widget.isLarge ? AppSpacing.sm : 6), // Smaller icon padding
-                      decoration: BoxDecoration(
-                        color: widget.module.color.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(widget.isLarge ? AppRadius.md : 6),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(
+                            widget.isLarge ? AppSpacing.sm : 6), // Smaller icon padding
+                        decoration: BoxDecoration(
+                          color: widget.module.color.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(widget.isLarge ? AppRadius.md : 6),
+                        ),
+                        child: Icon(widget.module.icon,
+                            size: widget.isLarge ? 24 : 16, color: widget.module.color),
                       ),
-                      child: Icon(widget.module.icon,
-                          size: widget.isLarge ? 24 : 16, color: widget.module.color),
-                    ),
-                    const Spacer(),
-                    Text(
-                      widget.module.title,
-                      style: TextStyle(
-                          fontSize: widget.isLarge ? 18 : 13, // Slightly smaller title
-                          fontWeight: FontWeight.w700,
-                          color: _textColor(context),
-                          letterSpacing: -0.3),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    // Removed subtitle for small cards if it causes overflow, or wrapped it in LayoutBuilder.
-                    // Instead, use smaller font and zero height if needed:
-                    if (widget.isLarge || widget.height >= 90)
-                      const SizedBox(height: 2)
-                    else
-                      const SizedBox.shrink(),
-                    if (widget.isLarge || widget.height >= 90)
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.module.title,
+                        style: TextStyle(
+                            fontSize: widget.isLarge ? 18 : 14,
+                            fontWeight: FontWeight.w700,
+                            color: _textColor(context),
+                            letterSpacing: -0.3),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
                       Text(
                         widget.module.subtitle,
                         style: TextStyle(
                             fontSize: widget.isLarge ? 12 : 10,
                             color: _textColor(context, opacity: 0.5)),
                         maxLines: 1,
-                        overflow: TextOverflow.visible,
-                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                  ],
+                    ],
+                  ),
                 ),
                 if (widget.module.badgeText.isNotEmpty)
                   Positioned(
@@ -1706,166 +1772,176 @@ class _LeaderboardRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (state.isLoading) {
+    return Consumer(builder: (context, ref, _) {
+      final leaderState = ref.watch(leaderboardProvider);
+
+      if (leaderState.isLoading || (!leaderState.hasValue)) {
+        return SizedBox(
+          height: 80,
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+            scrollDirection: Axis.horizontal,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.only(right: AppSpacing.md),
+                child: _ShimmerCard(shimmerController: shimmerController, height: 80, width: 80),
+              );
+            },
+          ),
+        );
+      }
+
+      final topPlayers = leaderState.value!.topPlayers;
+
+      if (topPlayers.isEmpty) {
+        return Container(
+          height: 90,
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.leaderboard_outlined, size: 28, color: _textColor(context, opacity: 0.4)),
+              const SizedBox(height: 6),
+              Text(
+                'Pas encore de classement cette semaine',
+                style: TextStyle(fontSize: 11, color: _textColor(context, opacity: 0.5)),
+              ),
+            ],
+          ),
+        );
+      }
+
       return SizedBox(
-        height: 80,
+        height: 90,
         child: ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
           scrollDirection: Axis.horizontal,
-          itemCount: 5,
+          physics: const BouncingScrollPhysics(),
+          itemCount: topPlayers.length,
           itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.only(right: AppSpacing.md),
-              child: _ShimmerCard(shimmerController: shimmerController, height: 80, width: 80),
+            final player = topPlayers[index];
+            final currentUserId = ref.watch(currentUserIdProvider);
+            final isCurrentUser = player.userId == currentUserId;
+            final isTop3 = index < 3;
+
+            String rankIcon;
+            if (index == 0) {
+              rankIcon = '🥇';
+            } else if (index == 1) {
+              rankIcon = '🥈';
+            } else if (index == 2) {
+              rankIcon = '🥉';
+            } else {
+              rankIcon = '#${index + 1}';
+            }
+
+            return AnimatedBuilder(
+              animation: cardsController,
+              builder: (context, child) {
+                final start = (index * 0.1).clamp(0.0, 0.8);
+                final end = (start + 0.2).clamp(0.0, 1.0);
+                final curve = CurvedAnimation(
+                    parent: cardsController,
+                    curve: Interval(start, end, curve: Curves.easeOutBack));
+
+                return Transform.translate(
+                  offset: Offset(20 * (1 - curve.value), 0),
+                  child: Opacity(
+                    opacity: curve.value.clamp(0.0, 1.0),
+                    child: child,
+                  ),
+                );
+              },
+              child: Semantics(
+                button: true,
+                label: 'Joueur ${player.userName}, position ${index + 1}, ${player.xpEarned} XP',
+                child: InkWell(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                  },
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  splashColor: AppColors.primary.withValues(alpha: 0.08),
+                  child: Container(
+                    width: 80,
+                    margin: const EdgeInsets.only(right: AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: isCurrentUser
+                          ? AppColors.streakOrange.withValues(alpha: 0.1)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(AppRadius.lg),
+                      border: isCurrentUser
+                          ? Border.all(
+                              color: AppColors.streakOrange.withValues(alpha: 0.3), width: 1)
+                          : null,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: player.avatarGradient,
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                border: Border.all(color: _surfaceColor(context), width: 2),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                player.userInitials,
+                                style: const TextStyle(
+                                    color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                            Positioned(
+                              top: -6,
+                              right: -6,
+                              child: isTop3
+                                  ? Text(rankIcon, style: const TextStyle(fontSize: 16))
+                                  : Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: _surfaceColor(context),
+                                        shape: BoxShape.circle,
+                                        border:
+                                            Border.all(color: _textColor(context, opacity: 0.1)),
+                                      ),
+                                      child: Text(rankIcon,
+                                          style: TextStyle(
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.bold,
+                                              color: _textColor(context, opacity: 0.7))),
+                                    ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          player.userName,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: isCurrentUser ? FontWeight.w700 : FontWeight.w500,
+                              color: isCurrentUser ? AppColors.streakOrange : _textColor(context)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             );
           },
         ),
       );
-    }
-
-    if (state.topPlayers.isEmpty) {
-      return Container(
-        height: 90,
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.leaderboard_outlined, size: 28, color: _textColor(context, opacity: 0.4)),
-            const SizedBox(height: 6),
-            Text(
-              'Pas encore de classement cette semaine',
-              style: TextStyle(fontSize: 11, color: _textColor(context, opacity: 0.5)),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return SizedBox(
-      height: 90,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: state.topPlayers.length,
-        itemBuilder: (context, index) {
-          final player = state.topPlayers[index];
-          final isCurrentUser = player.name == 'Hiba'; // En situation réelle, on comparerait l'ID
-          final isTop3 = index < 3;
-
-          String rankIcon;
-          if (index == 0) {
-            rankIcon = '🥇';
-          } else if (index == 1) {
-            rankIcon = '🥈';
-          } else if (index == 2) {
-            rankIcon = '🥉';
-          } else {
-            rankIcon = '#${index + 1}';
-          }
-
-          return AnimatedBuilder(
-            animation: cardsController,
-            builder: (context, child) {
-              final start = (index * 0.1).clamp(0.0, 0.8);
-              final end = (start + 0.2).clamp(0.0, 1.0);
-              final curve = CurvedAnimation(
-                  parent: cardsController, curve: Interval(start, end, curve: Curves.easeOutBack));
-
-              return Transform.translate(
-                offset: Offset(20 * (1 - curve.value), 0),
-                child: Opacity(
-                  opacity: curve.value.clamp(0.0, 1.0),
-                  child: child,
-                ),
-              );
-            },
-            child: Semantics(
-              button: true,
-              label: 'Joueur ${player.name}, position ${index + 1}, ${player.xp} XP',
-              child: InkWell(
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                },
-                borderRadius: BorderRadius.circular(AppRadius.lg),
-                splashColor: AppColors.primary.withValues(alpha: 0.08),
-                child: Container(
-                  width: 80,
-                  margin: const EdgeInsets.only(right: AppSpacing.md),
-                  decoration: BoxDecoration(
-                    color: isCurrentUser
-                        ? AppColors.streakOrange.withValues(alpha: 0.1)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: isCurrentUser
-                        ? Border.all(color: AppColors.streakOrange.withValues(alpha: 0.3), width: 1)
-                        : null,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [player.baseColor, player.baseColor.withValues(alpha: 0.6)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              border: Border.all(color: _surfaceColor(context), width: 2),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              player.initials,
-                              style: const TextStyle(
-                                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          ),
-                          Positioned(
-                            top: -6,
-                            right: -6,
-                            child: isTop3
-                                ? Text(rankIcon, style: const TextStyle(fontSize: 16))
-                                : Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: _surfaceColor(context),
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: _textColor(context, opacity: 0.1)),
-                                    ),
-                                    child: Text(rankIcon,
-                                        style: TextStyle(
-                                            fontSize: 8,
-                                            fontWeight: FontWeight.bold,
-                                            color: _textColor(context, opacity: 0.7))),
-                                  ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        player.name,
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: isCurrentUser ? FontWeight.w700 : FontWeight.w500,
-                            color: isCurrentUser ? AppColors.streakOrange : _textColor(context)),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
+    });
   }
 }
 
@@ -2159,7 +2235,7 @@ class _DevThemeToggle extends ConsumerWidget {
           width: 52,
           height: 52,
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFFF0F0FF) : const Color(0xFF1A1A35),
+            color: isDark ? AppColors.glassBlue : AppColors.bgLevel3,
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: Border.all(
               color: isDark
@@ -2174,7 +2250,7 @@ class _DevThemeToggle extends ConsumerWidget {
               Icon(
                 isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
                 size: 22,
-                color: isDark ? const Color(0xFF1A1A35) : const Color(0xFFF0F0FF),
+                color: isDark ? AppColors.bgLevel3 : AppColors.glassBlue,
               ),
               Positioned(
                 top: 6,
