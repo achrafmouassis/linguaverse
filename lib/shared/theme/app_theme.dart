@@ -63,7 +63,7 @@ class AppTheme {
         useMaterial3: true,
         brightness: Brightness.dark,
         colorSchemeSeed: AppColors.primary,
-        scaffoldBackgroundColor: const Color(0xFF0F172A),
+        scaffoldBackgroundColor: AppColors.deepSpaceBlue,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -74,7 +74,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          color: const Color(0xFF1E293B),
+          color: AppColors.bgLevel4,
         ),
       );
 }

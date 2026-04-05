@@ -31,10 +31,24 @@ cd ios && pod install && cd ..
 ```
 
 ### 3. Configurer Firebase
+
+Pour que les services Firebase fonctionnent correctement (Auth, base de données), chaque développeur doit configurer les clés sur son environnement local :
+
+**Pour Android :**
+1. Télécharger ou récupérer le fichier `google-services.json` du projet.
+2. Le placer directement dans le dossier `android/app/` :
 ```bash
-cp ~/Downloads/google-services.json android/app/
-cp ~/Downloads/GoogleService-Info.plist ios/Runner/
+cp chemin/vers/google-services.json android/app/
 ```
+
+**Pour iOS :**
+1. Télécharger ou récupérer le fichier `GoogleService-Info.plist`.
+2. Le placer dans le dossier `ios/Runner/` :
+```bash
+cp chemin/vers/GoogleService-Info.plist ios/Runner/
+```
+
+> **⚠️ ATTENTION :** Ces fichiers contiennent les clés privées du projet. Ils ne doivent **absolument jamais** être inclus dans les commits (ils sont déjà stipulés dans le `.gitignore`).
 
 ### 4. Configurer les clés API
 ```bash

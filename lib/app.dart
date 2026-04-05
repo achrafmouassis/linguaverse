@@ -12,16 +12,14 @@ class LinguaVerseApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // En debug : le thème est contrôlé par devThemeProvider
     // En release : toujours ThemeMode.system
-    final themeMode = kDebugMode
-        ? ref.watch(devThemeProvider)
-        : ThemeMode.system;
+    final themeMode = kDebugMode ? ref.watch(devThemeProvider) : ThemeMode.system;
 
     return MaterialApp.router(
       title: 'LinguaVerse',
       debugShowCheckedModeBanner: kDebugMode, // badge debug visible uniquement en dev
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,               // ← branché sur le provider
+      themeMode: themeMode, // ← branché sur le provider
       routerConfig: appRouter,
     );
   }
