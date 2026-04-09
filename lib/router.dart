@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/home/presentation/pages/home_page.dart';
+import 'features/lessons/views/language_catalog_page.dart';
+import 'features/lessons/views/lesson_categories_page.dart';
+import 'features/lessons/views/category_levels_page.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -36,7 +39,31 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.lessons,
       name: 'lessons',
-      builder: (context, state) => const _PlaceholderPage(title: 'Leçons'),
+      builder: (context, state) => const LanguageCatalogPage(),
+      routes: [
+        GoRoute(
+          path: ':languageId',
+          name: 'lesson_categories',
+          builder: (context, state) {
+            final languageId = state.pathParameters['languageId']!;
+            return LessonCategoriesPage(languageId: languageId);
+          },
+          routes: [
+            GoRoute(
+              path: ':categoryId',
+              name: 'category_levels',
+              builder: (context, state) {
+                final languageId = state.pathParameters['languageId']!;
+                final categoryId = state.pathParameters['categoryId']!;
+                return CategoryLevelsPage(
+                  languageId: languageId,
+                  categoryId: categoryId,
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutes.quiz,
