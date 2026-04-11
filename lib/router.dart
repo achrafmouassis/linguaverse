@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/home/presentation/pages/home_page.dart';
+import 'features/quiz/views/quiz_entry_page.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -41,7 +42,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.quiz,
       name: 'quiz',
-      builder: (context, state) => const _PlaceholderPage(title: 'Quiz'),
+      builder: (context, state) => const QuizEntryPage(),
     ),
     GoRoute(
       path: AppRoutes.duel,
