@@ -13,10 +13,10 @@ class AppTheme {
           centerTitle: false,
           foregroundColor: AppColors.textPrimary,
         ),
-        cardTheme: CardThemeData(
+        cardTheme: const CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           color: AppColors.surface,
         ),
@@ -69,12 +69,12 @@ class AppTheme {
           elevation: 0,
           centerTitle: false,
         ),
-        cardTheme: CardThemeData(
+        cardTheme: const CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-          color: const Color(0xFF1E293B),
+          color: Color(0xFF1E293B),
         ),
       );
 }

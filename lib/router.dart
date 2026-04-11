@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/home/presentation/pages/home_page.dart';
 import 'features/quiz/views/quiz_entry_page.dart';
+import 'features/quiz/views/quiz_page.dart';
+import 'features/quiz/views/quiz_result_page.dart';
+import 'features/lessons/views/language_catalog_page.dart';
+import 'features/lessons/views/lesson_categories_page.dart';
+import 'features/lessons/views/category_levels_page.dart';
+import 'features/lessons/views/lesson_content_page.dart';
+import 'features/quiz/models/quiz_result_model.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -14,7 +21,8 @@ class AppRoutes {
 
   static const List<String> availableRoutes = [
     home,
-    // Add real paths here as implemented:
+    lessons,
+    quiz,
   ];
 }
 
@@ -33,16 +41,119 @@ final GoRouter appRouter = GoRouter(
         transitionDuration: const Duration(milliseconds: 350),
       ),
     ),
-    // Placeholder routes
     GoRoute(
       path: AppRoutes.lessons,
       name: 'lessons',
-      builder: (context, state) => const _PlaceholderPage(title: 'Leçons'),
+      builder: (context, state) => const LanguageCatalogPage(),
+      routes: [
+        GoRoute(
+          path: ':languageId',
+          name: 'lesson_categories',
+          builder: (context, state) {
+            final languageId = state.pathParameters['languageId']!;
+            return LessonCategoriesPage(languageId: languageId);
+          },
+          routes: [
+            GoRoute(
+              path: ':categoryId',
+              name: 'category_levels',
+              builder: (context, state) {
+                final languageId = state.pathParameters['languageId']!;
+                final categoryId = state.pathParameters['categoryId']!;
+                return CategoryLevelsPage(
+                  languageId: languageId,
+                  categoryId: categoryId,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: 'content/:levelIndex/:lessonIndex',
+                  name: 'lesson_content',
+                  builder: (context, state) {
+                    final languageId = state.pathParameters['languageId']!;
+                    final categoryId = state.pathParameters['categoryId']!;
+                    final levelIndex = int.parse(state.pathParameters['levelIndex']!);
+                    final lessonIndex = int.parse(state.pathParameters['lessonIndex']!);
+                    return LessonContentPage(
+                      languageId: languageId,
+                      categoryId: categoryId,
+                      levelIndex: levelIndex,
+                      lessonIndex: lessonIndex,
+                      color: Colors.blue, // Fallback color
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutes.quiz,
       name: 'quiz',
-      builder: (context, state) => const QuizEntryPage(),
+      builder: (context, state) {
+        final qp = state.uri.queryParameters;
+        final languageId  = qp['languageId'];
+        final categoryId  = qp['categoryId'];
+        final lessonId    = qp['lessonId'];
+        final levelIndex  = qp['levelIndex'] != null ? int.tryParse(qp['levelIndex']!) : null;
+        final lessonIndex = qp['lessonIndex'] != null ? int.tryParse(qp['lessonIndex']!) : null;
+        final isUnitFinal = qp['isUnitFinal'] == 'true';
+
+        return QuizEntryPage(
+          languageId:  languageId,
+          categoryId:  categoryId,
+          lessonId:    lessonId,
+          levelIndex:  levelIndex,
+          lessonIndex: lessonIndex,
+          isUnitFinal: isUnitFinal,
+        );
+      },
+      routes: [
+        GoRoute(
+          path: 'start',
+          name: 'quiz_page',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            return QuizPage(
+              lessonId:    extra['lessonId']    ?? 'quiz_fallback',
+              lessonTitle: extra['lessonTitle'] ?? 'Quiz',
+              languageId:  extra['languageId'],
+              categoryId:  extra['categoryId'],
+              levelIndex:  extra['levelIndex'],
+              lessonIndex: extra['lessonIndex'],
+              isUnitFinal: extra['isUnitFinal'] ?? false,
+            );
+          },
+        ),
+        GoRoute(
+          path: 'result',
+          name: 'quiz_result',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final languageId = extra['languageId'] as String?;
+            final categoryId = extra['categoryId'] as String?;
+
+            return QuizResultPage(
+              result: extra['result'] as QuizResult,
+              gamificationResult: extra['gamificationResult'],
+              lessonTitle: extra['lessonTitle'] ?? 'Quiz',
+              onRetry: extra['onRetry'] ?? () {},
+              onContinue: () {
+                if (languageId != null && categoryId != null) {
+                  context.goNamed('category_levels', pathParameters: {
+                    'languageId': languageId,
+                    'categoryId': categoryId,
+                  });
+                } else {
+                  context.goNamed('home');
+                }
+              },
+            );
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutes.duel,

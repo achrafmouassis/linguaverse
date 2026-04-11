@@ -48,6 +48,8 @@ class QuizState {
   final String languageId;
   final DateTime? startedAt;
   final DateTime? questionStartedAt;
+  final int? levelIndex;
+  final bool isUnitFinal;
 
   const QuizState({
     this.phase = QuizPhase.idle,
@@ -66,6 +68,8 @@ class QuizState {
     this.languageId = '',
     this.startedAt,
     this.questionStartedAt,
+    this.levelIndex,
+    this.isUnitFinal = false,
   });
 
   Question? get currentQuestion =>
@@ -96,6 +100,8 @@ class QuizState {
     DateTime? questionStartedAt,
     bool clearSelectedAnswer = false,
     bool clearMatchingOrder = false,
+    int? levelIndex,
+    bool? isUnitFinal,
   }) =>
       QuizState(
         phase: phase ?? this.phase,
@@ -116,5 +122,7 @@ class QuizState {
         languageId: languageId ?? this.languageId,
         startedAt: startedAt ?? this.startedAt,
         questionStartedAt: questionStartedAt ?? this.questionStartedAt,
+        levelIndex: levelIndex ?? this.levelIndex,
+        isUnitFinal: isUnitFinal ?? this.isUnitFinal,
       );
 }

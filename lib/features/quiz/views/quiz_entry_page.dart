@@ -7,18 +7,69 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/theme/app_colors.dart';
+import 'package:go_router/go_router.dart';
 import 'quiz_page.dart';
 
 class QuizEntryPage extends ConsumerStatefulWidget {
-  const QuizEntryPage({super.key});
+  final String? languageId;
+  final String? categoryId;
+  final String? lessonId;
+  final int? levelIndex;
+  final int? lessonIndex;
+  final bool isUnitFinal;
+
+  const QuizEntryPage({
+    super.key,
+    this.languageId,
+    this.categoryId,
+    this.lessonId,
+    this.levelIndex,
+    this.lessonIndex,
+    this.isUnitFinal = false,
+  });
 
   @override
   ConsumerState<QuizEntryPage> createState() => _QuizEntryPageState();
 }
 
 class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
-  String _selectedLanguage = 'ar';
-  String _selectedCategory = 'cat_salutations_ar';
+  late String _selectedLanguage;
+  late String _selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedLanguage = widget.languageId ?? 'ar';
+    _selectedCategory = widget.categoryId ??
+        (_categories[_selectedLanguage]?.first['id'] ?? '');
+
+    // Redirection directe vers quiz_page si :
+    //  • on vient d'une leçon précise (lessonId fourni), OU
+    //  • c'est le quiz final de l'unité (isUnitFinal = true)
+    final shouldAutoLaunch = widget.lessonId != null || widget.isUnitFinal;
+
+    if (shouldAutoLaunch) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        final effectiveLessonId = widget.isUnitFinal
+            ? 'quiz_final__${widget.languageId}__${widget.categoryId}'
+            : widget.lessonId!;
+        final lessonTitle = widget.isUnitFinal
+            ? '🎓 Quiz Final — ${widget.categoryId ?? ''}'
+            : 'Quiz — Leçon ${(widget.lessonIndex ?? 0) + 1}';
+
+        context.pushReplacementNamed('quiz_page', extra: {
+          'lessonId':    effectiveLessonId,
+          'categoryId':  widget.categoryId ?? '',
+          'languageId':  widget.languageId ?? 'ar',
+          'levelIndex':  widget.levelIndex,
+          'lessonIndex': widget.lessonIndex,
+          'isUnitFinal': widget.isUnitFinal,
+          'lessonTitle': lessonTitle,
+        });
+      });
+    }
+  }
 
   static const _languages = [
     {'id': 'ar', 'name': 'Arabe', 'flag': '🇸🇦'},
@@ -234,19 +285,20 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
               child: ElevatedButton.icon(
                 onPressed: _selectedCategory.isEmpty
                     ? null
-                    : () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => QuizPage(
-                              lessonId:
-                                  'lesson_${_selectedCategory}',
-                              categoryId: _selectedCategory,
-                              languageId: _selectedLanguage,
-                              lessonTitle: _currentCategories
-                                  .firstWhere((c) =>
-                                      c['id'] == _selectedCategory,
-                                      orElse: () => {'name': 'Quiz'})['name']!,
-                            ),
-                          ),
+                    : () => context.pushNamed(
+                          'quiz_page',
+                          extra: {
+                            'lessonId': 'quiz_$_selectedCategory',
+                            'categoryId': _selectedCategory,
+                            'languageId': _selectedLanguage,
+                            'levelIndex': widget.levelIndex,
+                            'lessonIndex': widget.lessonIndex,
+                            'isUnitFinal': widget.isUnitFinal,
+                            'lessonTitle': _currentCategories
+                                .firstWhere((c) =>
+                                    c['id'] == _selectedCategory,
+                                    orElse: () => {'name': 'Quiz'})['name']!,
+                          },
                         ),
                 icon: const Text('🎯',
                     style: TextStyle(fontSize: 20)),

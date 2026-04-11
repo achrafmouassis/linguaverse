@@ -1,5 +1,5 @@
-// lib/features/quiz/views/quiz_page.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../models/question_model.dart';
@@ -15,6 +15,9 @@ class QuizPage extends ConsumerStatefulWidget {
   final String categoryId;
   final String languageId;
   final String lessonTitle;
+  final int? levelIndex;
+  final int? lessonIndex;
+  final bool isUnitFinal;
 
   const QuizPage({
     super.key,
@@ -22,6 +25,9 @@ class QuizPage extends ConsumerStatefulWidget {
     required this.categoryId,
     required this.languageId,
     required this.lessonTitle,
+    this.levelIndex,
+    this.lessonIndex,
+    this.isUnitFinal = false,
   });
 
   @override
@@ -46,9 +52,12 @@ class _QuizPageState extends ConsumerState<QuizPage>
     // Démarrer le quiz au prochain frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(quizViewModelProvider.notifier).startQuiz(
-            lessonId: widget.lessonId,
-            categoryId: widget.categoryId,
-            languageId: widget.languageId,
+            lessonId:    widget.lessonId,
+            categoryId:  widget.categoryId,
+            languageId:  widget.languageId,
+            levelIndex:  widget.levelIndex,
+            lessonIndex: widget.lessonIndex,
+            isUnitFinal: widget.isUnitFinal,
       );
     });
   }
@@ -73,22 +82,29 @@ class _QuizPageState extends ConsumerState<QuizPage>
       if (prev?.phase != QuizPhase.completed &&
           next.phase == QuizPhase.completed &&
           next.result != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => QuizResultPage(
-              result: next.result!,
-              gamificationResult: next.gamificationResult,
-              lessonTitle: widget.lessonTitle,
-              onRetry: () {
-                Navigator.of(context).pop();
-                vm.startQuiz(
-                  lessonId: widget.lessonId,
-                  categoryId: widget.categoryId,
-                  languageId: widget.languageId,
-                );
-              },
-            ),
-          ),
+        context.pushReplacementNamed(
+          'quiz_result',
+          extra: {
+            'result': next.result!,
+            'gamificationResult': next.gamificationResult,
+            'lessonTitle': widget.lessonTitle,
+            'languageId': widget.languageId,
+            'categoryId': widget.categoryId,
+            'onRetry': () {
+              context.pushReplacementNamed(
+                'quiz_page',
+                extra: {
+                  'lessonId':    widget.lessonId,
+                  'categoryId':  widget.categoryId,
+                  'languageId':  widget.languageId,
+                  'levelIndex':  widget.levelIndex,
+                  'lessonIndex': widget.lessonIndex,
+                  'isUnitFinal': widget.isUnitFinal,
+                  'lessonTitle': widget.lessonTitle,
+                },
+              );
+            },
+          },
         );
       }
       

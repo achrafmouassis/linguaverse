@@ -14,6 +14,7 @@ import '../models/quiz_result_model.dart';
 import '../repositories/quiz_repository.dart';
 import 'question_generator.dart';
 import 'quiz_state.dart';
+import '../../lessons/viewmodels/user_progress_provider.dart';
 
 // ─────────────────────────────────────────────
 // Providers
@@ -23,7 +24,7 @@ final quizRepositoryProvider = Provider<QuizRepository>((_) => QuizRepository())
 
 final quizViewModelProvider =
     StateNotifierProvider<QuizViewModel, QuizState>(
-  (ref) => QuizViewModel(ref.read(quizRepositoryProvider)),
+  (ref) => QuizViewModel(ref),
 );
 
 // ─────────────────────────────────────────────
@@ -31,16 +32,17 @@ final quizViewModelProvider =
 // ─────────────────────────────────────────────
 
 class QuizViewModel extends StateNotifier<QuizState> {
-  final QuizRepository _repo;
+  final Ref _ref;
+  QuizRepository get _repo => _ref.read(quizRepositoryProvider);
 
   Timer? _timerTick;
   static const int _questionDurationSeconds = 30;
-  static const int _feedbackDurationMs = 1800;
+  static const int _feedbackDurationMs = 1500;
 
   // Suivi du temps par question
   DateTime? _questionStartedAt;
 
-  QuizViewModel(this._repo) : super(const QuizState());
+  QuizViewModel(this._ref) : super(const QuizState());
 
   // ── 1. Démarrer le quiz ──────────────────────────────────────────────────
 
@@ -48,18 +50,22 @@ class QuizViewModel extends StateNotifier<QuizState> {
     required String lessonId,
     required String categoryId,
     required String languageId,
-    int questionCount = 10,
+    int? levelIndex,
+    int? lessonIndex,   // index (0,1,2) de la leçon dans son niveau
+    bool isUnitFinal = false,
+    int questionCount = 8,
   }) async {
     state = state.copyWith(
       phase: QuizPhase.loading,
       lessonId: lessonId,
       categoryId: categoryId,
       languageId: languageId,
+      levelIndex: levelIndex,
+      isUnitFinal: isUnitFinal,
     );
 
     try {
-      final items =
-          LessonContentData.getItems(languageId, categoryId);
+      List<LessonItem> items = LessonContentData.getItems(languageId, categoryId);
 
       if (items.isEmpty) {
         state = state.copyWith(
@@ -69,12 +75,29 @@ class QuizViewModel extends StateNotifier<QuizState> {
         return;
       }
 
+      // Quiz lié à une leçon spécifique : on prend les items de CETTE leçon
+      // Chaque leçon correspond à ~2 items dans LessonContentData.
+      // Ex : level 0 / lesson 0 → items[0..2], level 0 / lesson 1 → items[2..4]
+      if (levelIndex != null && !isUnitFinal && lessonIndex != null) {
+        final globalIdx = levelIndex * 3 + lessonIndex; // position absolue de la leçon
+        final start = globalIdx * 2;                    // 2 items par leçon
+        final end = (start + 3).clamp(0, items.length);
+        if (start < items.length) {
+          items = items.sublist(start, end);
+        }
+      } else if (levelIndex != null && !isUnitFinal) {
+        // Fallback niveau entier
+        final start = levelIndex * 2;
+        final end = (start + 3).clamp(0, items.length);
+        if (start < items.length) items = items.sublist(start, end);
+      }
+
       final questions = QuestionGenerator.generate(
         lessonItems: items,
         languageId: languageId,
         categoryId: categoryId,
         lessonId: lessonId,
-        count: questionCount,
+        count: isUnitFinal ? 15 : questionCount, // Plus de questions pour le final
       );
 
       if (questions.isEmpty) {
@@ -291,6 +314,20 @@ class QuizViewModel extends StateNotifier<QuizState> {
       result: result,
       gamificationResult: gamResult,
     );
+
+    // DÉBLOCAGE : Si score ≥ 70%, le quiz de CETTE leçon est réussi → débloque la suivante
+    final successRate = result.correctCount / result.totalQuestions;
+    if (successRate >= 0.7 && state.lessonId.isNotEmpty) {
+      _ref.read(userProgressProvider.notifier).markLessonQuizPassed(state.lessonId);
+
+      // Si c'est un quiz final d'unité
+      if (state.isUnitFinal && state.languageId.isNotEmpty && state.categoryId.isNotEmpty) {
+        _ref.read(userProgressProvider.notifier).markUnitQuizPassed(
+          languageId: state.languageId,
+          categoryId: state.categoryId,
+        );
+      }
+    }
   }
 
   // ── Timer management ──────────────────────────────────────────────────────

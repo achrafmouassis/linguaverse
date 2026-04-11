@@ -28,7 +28,7 @@ class LessonContentData {
         LessonItem(term: 'ث', pronunciation: "Tha", translation: 'Lettre Th', example: 'ثعلب (tha\'lab) = renard', emoji: '🔤'),
         LessonItem(term: 'ج', pronunciation: 'Jeem', translation: 'Lettre J', example: 'جمل (jamal) = chameau', emoji: '🔤'),
         LessonItem(term: 'ح', pronunciation: 'Ha', translation: 'Lettre H (aspiré)', example: 'حصان (ḥiṣān) = cheval', emoji: '🔤'),
-        LessonItem(term: 'خ', pronunciation: 'Kha', translation: 'Lettre Kh', example: 'خبz (khubz) = pain', emoji: '🔤'),
+        LessonItem(term: 'خ', pronunciation: 'Kha', translation: 'Lettre Kh', example: 'خبز (khubz) = pain', emoji: '🔤'),
         LessonItem(term: 'د', pronunciation: 'Dal', translation: 'Lettre D', example: 'دار (dār) = maison', emoji: '🔤'),
         LessonItem(term: 'ذ', pronunciation: 'Dhal', translation: 'Lettre Dh', example: 'ذئب (dhi\'b) = loup', emoji: '🔤'),
         LessonItem(term: 'ر', pronunciation: 'Ra', translation: 'Lettre R (roulé)', example: 'رأس (ra\'s) = tête', emoji: '🔤'),
@@ -57,32 +57,133 @@ class LessonContentData {
         LessonItem(term: 'لَا', pronunciation: 'Lā', translation: 'Non', example: 'لَا، شكرًا = Non, merci', emoji: '❌'),
         LessonItem(term: 'مَا اسْمُكَ؟', pronunciation: 'Mā ismuk?', translation: 'Comment tu t\'appelles ?', example: 'مَا اسْمُكَ؟ اسمي أحمد = Je m\'appelle Ahmed', emoji: '👤'),
       ],
+      'cat_famille_ar': [
+        LessonItem(term: 'أَب', pronunciation: 'Ab', translation: 'Père', example: 'أَبِي طَبِيب = Mon père est médecin', emoji: '👨'),
+        LessonItem(term: 'أُم', pronunciation: 'Umm', translation: 'Mère', example: 'أُمِّي مُعَلِّمَة = Ma mère est enseignante', emoji: '👩'),
+        LessonItem(term: 'أَخ', pronunciation: 'Akh', translation: 'Frère', example: 'لِي أَخٌ كَبِير = J\'ai un grand frère', emoji: '👦'),
+        LessonItem(term: 'أُخْت', pronunciation: 'Ukht', translation: 'Sœur', example: 'أُخْتِي صَغِيرَة = Ma sœur est petite', emoji: '👧'),
+        LessonItem(term: 'جَد', pronunciation: 'Jadd', translation: 'Grand-père', example: 'جَدِّي كَبِير السِّنِّ = Mon grand-père est âgé', emoji: '👴'),
+        LessonItem(term: 'جَدَّة', pronunciation: 'Jadda', translation: 'Grand-mère', example: 'جَدَّتِي تَطْبُخ جَيِّدًا = Ma grand-mère cuisine bien', emoji: '👵'),
+        LessonItem(term: 'عَم', pronunciation: '\'Amm', translation: 'Oncle (paternel)', example: 'عَمِّي يَسْكُن بَعِيدًا = Mon oncle habite loin', emoji: '👨'),
+        LessonItem(term: 'عَمَّة', pronunciation: '\'Amma', translation: 'Tante (paternelle)', example: 'عَمَّتِي لَطِيفَة = Ma tante est gentille', emoji: '👩'),
+        LessonItem(term: 'وَلَد', pronunciation: 'Walad', translation: 'Garçon / Fils', example: 'هَذَا وَلَدِي = Voici mon fils', emoji: '👦'),
+        LessonItem(term: 'بِنْت', pronunciation: 'Bint', translation: 'Fille', example: 'هَذِهِ بِنْتِي = Voici ma fille', emoji: '👧'),
+      ],
+      'cat_couleurs_ar': [
+        LessonItem(term: 'أَحْمَر', pronunciation: 'Aḥmar', translation: 'Rouge', example: 'التُّفَّاحَة حَمْرَاء = La pomme est rouge', emoji: '🔴'),
+        LessonItem(term: 'أَزْرَق', pronunciation: 'Azraq', translation: 'Bleu', example: 'السَّمَاء زَرْقَاء = Le ciel est bleu', emoji: '🔵'),
+        LessonItem(term: 'أَخْضَر', pronunciation: 'Akhḍar', translation: 'Vert', example: 'الشَّجَرَة خَضْرَاء = L\'arbre est vert', emoji: '🟢'),
+        LessonItem(term: 'أَصْفَر', pronunciation: 'Aṣfar', translation: 'Jaune', example: 'الشَّمْس صَفْرَاء = Le soleil est jaune', emoji: '🟡'),
+        LessonItem(term: 'أَبْيَض', pronunciation: 'Abyaḍ', translation: 'Blanc', example: 'الثَّلج أَبْيَض = La neige est blanche', emoji: '⬜'),
+        LessonItem(term: 'أَسْوَد', pronunciation: 'Aswad', translation: 'Noir', example: 'اللَّيل أَسْوَد = La nuit est noire', emoji: '⬛'),
+        LessonItem(term: 'بُنِّي', pronunciation: 'Bunnī', translation: 'Marron', example: 'الخبz بُنِّي = Le pain est marron', emoji: '🟫'),
+        LessonItem(term: 'بُرْتُقَالِي', pronunciation: 'Burtuqālī', translation: 'Orange', example: 'البُرْتُقَالة بُرْتُقَالِيَّة = L\'orange est orange', emoji: '🟠'),
+        LessonItem(term: 'وَرْدِي', pronunciation: 'Wardī', translation: 'Rose', example: 'الوَرْدَة وَرْدِيَّة = La rose est rose', emoji: '🌸'),
+        LessonItem(term: 'رَمَادِي', pronunciation: 'Ramādī', translation: 'Gris', example: 'الغَيم رَمَادِي = Le nuage est gris', emoji: '🩶'),
+      ],
+    },
+    // ───────── ANGLAIS ─────────
+    'en': {
+      'cat_nombres_en': [
+        LessonItem(term: 'Zero', pronunciation: 'ZI-roh', translation: '0 — Zéro', example: 'Zero mistakes! = Aucune erreur !', emoji: '0️⃣'),
+        LessonItem(term: 'One', pronunciation: 'WUN', translation: '1 — Un', example: 'One apple a day = Une pomme par jour', emoji: '1️⃣'),
+        LessonItem(term: 'Two', pronunciation: 'TOO', translation: '2 — Deux', example: 'Two cats = Deux chats', emoji: '2️⃣'),
+        LessonItem(term: 'Three', pronunciation: 'THRII', translation: '3 — Trois', example: 'Three days = Trois jours', emoji: '3️⃣'),
+        LessonItem(term: 'Four', pronunciation: 'FOR', translation: '4 — Quatre', example: 'Four seasons = Quatre saisons', emoji: '4️⃣'),
+        LessonItem(term: 'Five', pronunciation: 'FAYV', translation: '5 — Cinq', example: 'High five! = Tape m\'en cinq !', emoji: '5️⃣'),
+        LessonItem(term: 'Six', pronunciation: 'SIKS', translation: '6 — Six', example: 'Six months = Six mois', emoji: '6️⃣'),
+        LessonItem(term: 'Seven', pronunciation: 'SEV-en', translation: '7 — Sept', example: 'Seven days a week = Sept jours par semaine', emoji: '7️⃣'),
+        LessonItem(term: 'Eight', pronunciation: 'AYT', translation: '8 — Huit', example: 'Eight hours of sleep = Huit heures de sommeil', emoji: '8️⃣'),
+        LessonItem(term: 'Nine', pronunciation: 'NAYN', translation: '9 — Neuf', example: 'Nine lives = Neuf vies', emoji: '9️⃣'),
+      ],
+      'cat_salutations_en': [
+        LessonItem(term: 'Hello', pronunciation: 'heh-LOH', translation: 'Bonjour', example: 'Hello, how are you? = Bonjour, comment allez-vous ?', emoji: '👋'),
+        LessonItem(term: 'Good morning', pronunciation: 'good MOR-ning', translation: 'Bonjour (matin)', example: 'Good morning, sir! = Bonjour, monsieur !', emoji: '🌅'),
+        LessonItem(term: 'Good evening', pronunciation: 'good EEV-ning', translation: 'Bonsoir', example: 'Good evening, everyone! = Bonsoir tout le monde !', emoji: '🌆'),
+        LessonItem(term: 'Goodbye', pronunciation: 'good-BY', translation: 'Au revoir', example: 'Goodbye, see you tomorrow! = Au revoir, à demain !', emoji: '👋'),
+        LessonItem(term: 'Please', pronunciation: 'PLEEZ', translation: 'S\'il vous plaît', example: 'Please help me = Aidez-moi s\'il vous plaît', emoji: '🙏'),
+        LessonItem(term: 'Thank you', pronunciation: 'THANGK yoo', translation: 'Merci', example: 'Thank you very much! = Merci beaucoup !', emoji: '🙏'),
+        LessonItem(term: 'Yes', pronunciation: 'YES', translation: 'Oui', example: 'Yes, I agree = Oui, je suis d\'accord', emoji: '✅'),
+        LessonItem(term: 'No', pronunciation: 'NOH', translation: 'Non', example: 'No, thank you = Non, merci', emoji: '❌'),
+        LessonItem(term: 'How are you?', pronunciation: 'how ar YOO', translation: 'Comment allez-vous ?', example: 'Hi! How are you? = Salut ! Comment vas-tu ?', emoji: '🤔'),
+        LessonItem(term: 'I\'m fine', pronunciation: 'aym FAYN', translation: 'Je vais bien', example: 'I\'m fine, thanks! = Je vais bien, merci !', emoji: '😊'),
+      ],
     },
     // ───────── ESPAGNOL ─────────
     'es': {
       'cat_nombres_es': [
-        LessonItem(term: 'Cero', pronunciation: 'TZE-ro', translation: '0 — Zéro', example: 'Cero errores = Zéro erreur', emoji: '0️⃣'),
-        LessonItem(term: 'Uno', pronunciation: 'OO-no', translation: '1 — Un', example: 'Uno, dos, tres = Un, deux, trois', emoji: '1️⃣'),
-        LessonItem(term: 'Dos', pronunciation: 'DOSS', translation: '2 — Deux', example: 'Dos gatos = Deux chats', emoji: '2️⃣'),
-        LessonItem(term: 'Tres', pronunciation: 'TRESS', translation: '3 — Trois', example: 'Tres días = Trois jours', emoji: '3️⃣'),
-        LessonItem(term: 'Cuatro', pronunciation: 'KWA-tro', translation: '4 — Quatre', example: 'Cuatro estaciones = Quatre saisons', emoji: '4️⃣'),
+        LessonItem(term: 'Cero', pronunciation: 'THE-ro', translation: '0 — Zéro', example: 'Cero errores = Zéro erreur', emoji: '0️⃣'),
+        LessonItem(term: 'Uno', pronunciation: 'OO-no', translation: '1 — Un', example: 'Uno, dos, tres... = Un, deux, trois...', emoji: '1️⃣'),
+        LessonItem(term: 'Dos', pronunciation: 'DOSS', translation: '2 — Deux', example: 'Dos personas = Deux personnes', emoji: '2️⃣'),
+        LessonItem(term: 'Tres', pronunciation: 'TRAYS', translation: '3 — Trois', example: 'Tres días = Trois jours', emoji: '3️⃣'),
+        LessonItem(term: 'Cuatro', pronunciation: 'KWAH-tro', translation: '4 — Quatre', example: 'Cuatro estaciones = Quatre saisons', emoji: '4️⃣'),
         LessonItem(term: 'Cinco', pronunciation: 'SEEN-ko', translation: '5 — Cinq', example: 'Cinco dedos = Cinq doigts', emoji: '5️⃣'),
-        LessonItem(term: 'Seis', pronunciation: 'SAYSS', translation: '6 — Six', example: 'Seis meses = Six mois', emoji: '6️⃣'),
-        LessonItem(term: 'Siete', pronunciation: 'SYEH-teh', translation: '7 — Sept', example: 'Siete días = Sept jours', emoji: '7️⃣'),
+        LessonItem(term: 'Seis', pronunciation: 'SAYS', translation: '6 — Six', example: 'Seis meses = Six mois', emoji: '6️⃣'),
+        LessonItem(term: 'Siete', pronunciation: 'SYAY-tay', translation: '7 — Sept', example: 'Siete días = Sept jours', emoji: '7️⃣'),
         LessonItem(term: 'Ocho', pronunciation: 'OH-cho', translation: '8 — Huit', example: 'Ocho horas = Huit heures', emoji: '8️⃣'),
-        LessonItem(term: 'Nueve', pronunciation: 'NWEH-beh', translation: '9 — Neuf', example: 'Nueve vidas = Neuf vies', emoji: '9️⃣'),
+        LessonItem(term: 'Nueve', pronunciation: 'NWAY-vay', translation: '9 — Neuf', example: 'Nueve vidas = Neuf vies', emoji: '9️⃣'),
       ],
       'cat_salutations_es': [
-        LessonItem(term: 'Hola', pronunciation: 'O-la', translation: 'Bonjour / Salut', example: 'Hola! ¿Cómo estás? = Salut ! Comment vas-tu ?', emoji: '👋'),
-        LessonItem(term: 'Buenos días', pronunciation: 'BWEH-nos DEE-as', translation: 'Bonjour (matin)', example: 'Buenos días, señor = Bonjour, monsieur', emoji: '🌅'),
-        LessonItem(term: 'Gracias', pronunciation: 'GRA-thyass', translation: 'Merci', example: 'Muchas gracias = Merci beaucoup', emoji: '🙏'),
-        LessonItem(term: 'Por favor', pronunciation: 'por fa-BOR', translation: 'S\'il vous plaît', example: 'Ayúdame, por favor = Aide-moi s\'il te plaît', emoji: '🙏'),
+        LessonItem(term: 'Hola', pronunciation: 'OH-la', translation: 'Bonjour / Salut', example: '¡Hola! ¿Cómo estás? = Salut ! Comment vas-tu ?', emoji: '👋'),
+        LessonItem(term: 'Buenos días', pronunciation: 'BWAY-nos DEE-as', translation: 'Bonjour (matin)', example: '¡Buenos días, señor! = Bonjour, monsieur !', emoji: '🌅'),
+        LessonItem(term: 'Adiós', pronunciation: 'ah-DYOSS', translation: 'Au revoir', example: '¡Adiós! ¡Hasta luego! = Au revoir ! À bientôt !', emoji: '👋'),
+        LessonItem(term: 'Gracias', pronunciation: 'GRAH-syass', translation: 'Merci', example: '¡Muchas gracias! = Merci beaucoup !', emoji: '🙏'),
+        LessonItem(term: 'Por favor', pronunciation: 'por fa-VOR', translation: 'S\'il vous plaît', example: 'Por favor, ayúdame = Aide-moi s\'il te plaît', emoji: '🙏'),
         LessonItem(term: 'Sí', pronunciation: 'SEE', translation: 'Oui', example: 'Sí, claro = Oui, bien sûr', emoji: '✅'),
         LessonItem(term: 'No', pronunciation: 'NOH', translation: 'Non', example: 'No, gracias = Non, merci', emoji: '❌'),
-        LessonItem(term: 'Adiós', pronunciation: 'a-DYOSS', translation: 'Au revoir', example: 'Adiós ! Hasta luego = Au revoir ! À bientôt', emoji: '👋'),
-        LessonItem(term: '¿Cómo estás?', pronunciation: 'KO-mo es-TASS', translation: 'Comment vas-tu ?', example: '¿Cómo estás hoy? = Comment vas-tu aujourd\'hui ?', emoji: '🤔'),
-        LessonItem(term: 'Estoy bien', pronunciation: 'es-TOY BYEN', translation: 'Je vais bien', example: 'Estoy bien, gracias = Je vais bien, merci', emoji: '😊'),
-        LessonItem(term: '¿Cómo te llamas?', pronunciation: 'ko-mo teh YA-mass', translation: 'Comment tu t\'appelles ?', example: 'Me llamo Ana = Je m\'appelle Ana', emoji: '👤'),
+        LessonItem(term: '¿Cómo te llamas?', pronunciation: 'KOH-mo tay YAH-mass', translation: 'Comment tu t\'appelles ?', example: '¿Cómo te llamas? Me llamo Ana. = Je m\'appelle Ana.', emoji: '👤'),
+        LessonItem(term: 'Mucho gusto', pronunciation: 'MOO-cho GOOS-to', translation: 'Enchanté(e)', example: 'Mucho gusto en conocerte = Enchanté de te rencontrer', emoji: '🤝'),
+        LessonItem(term: '¿Cómo estás?', pronunciation: 'KOH-mo es-TAHSS', translation: 'Comment vas-tu ?', example: '¿Cómo estás hoy? = Comment vas-tu aujourd\'hui ?', emoji: '🤔'),
+      ],
+    },
+    // ───────── FRANÇAIS ─────────
+    'fr': {
+      'cat_nombres_fr': [
+        LessonItem(term: 'Zéro', pronunciation: 'ze-ro', translation: '0 — Zero', example: 'Zéro faute !', emoji: '0️⃣'),
+        LessonItem(term: 'Un', pronunciation: 'un', translation: '1 — One', example: 'Un pour tous, tous pour un.', emoji: '1️⃣'),
+        LessonItem(term: 'Deux', pronunciation: 'deu', translation: '2 — Two', example: 'Deux têtes valent mieux qu\'une.', emoji: '2️⃣'),
+        LessonItem(term: 'Trois', pronunciation: 'trwa', translation: '3 — Three', example: 'Les trois mousquetaires.', emoji: '3️⃣'),
+        LessonItem(term: 'Quatre', pronunciation: 'ka-tr', translation: '4 — Four', example: 'Quatre saisons.', emoji: '4️⃣'),
+        LessonItem(term: 'Cinq', pronunciation: 'sank', translation: '5 — Five', example: 'Cinq doigts de la main.', emoji: '5️⃣'),
+        LessonItem(term: 'Six', pronunciation: 'seess', translation: '6 — Six', example: 'Six mois de vacances.', emoji: '6️⃣'),
+        LessonItem(term: 'Sept', pronunciation: 'set', translation: '7 — Seven', example: 'Sept jours dans la semaine.', emoji: '7️⃣'),
+        LessonItem(term: 'Huit', pronunciation: 'weet', translation: '8 — Eight', example: 'Huit heures de sommeil.', emoji: '8️⃣'),
+        LessonItem(term: 'Neuf', pronunciation: 'neuf', translation: '9 — Nine', example: 'Neuf vies de chat.', emoji: '9️⃣'),
+      ],
+      'cat_salutations_fr': [
+        LessonItem(term: 'Bonjour', pronunciation: 'bon-zhoor', translation: 'Bonjour / Good morning', example: 'Bonjour ! Comment ça va ?', emoji: '👋'),
+        LessonItem(term: 'Salut', pronunciation: 'sa-lu', translation: 'Salut / Hi', example: 'Salut tout le monde !', emoji: '👋'),
+        LessonItem(term: 'Merci', pronunciation: 'mer-see', translation: 'Merci / Thank you', example: 'Merci beaucoup !', emoji: '🙏'),
+        LessonItem(term: 'S\'il vous plaît', pronunciation: 'seel voo pleh', translation: 'S\'il vous plaît / Please', example: 'S\'il vous plaît, aidez-moi.', emoji: '🙏'),
+        LessonItem(term: 'Oui', pronunciation: 'wee', translation: 'Oui / Yes', example: 'Oui, je suis d\'accord.', emoji: '✅'),
+        LessonItem(term: 'Non', pronunciation: 'non', translation: 'Non / No', example: 'Non, merci.', emoji: '❌'),
+        LessonItem(term: 'Au revoir', pronunciation: 'oh re-vwar', translation: 'Au revoir / Goodbye', example: 'Au revoir, à demain !', emoji: '👋'),
+        LessonItem(term: 'Comment allez-vous ?', pronunciation: 'ko-man ta-leh voo', translation: 'How are you?', example: 'Comment allez-vous aujourd\'hui ?', emoji: '🤔'),
+        LessonItem(term: 'Je vais bien', pronunciation: 'zhe veh byen', translation: 'I am fine', example: 'Je vais bien, merci.', emoji: '😊'),
+        LessonItem(term: 'Comment vous appelez-vous ?', pronunciation: 'ko-man voo za-pleh voo', translation: 'What is your name?', example: 'Comment vous appelez-vous ? Je m\'appelle Jean.', emoji: '👤'),
+      ],
+    },
+    // ───────── TURC ─────────
+    'tr': {
+      'cat_nombres_tr': [
+        LessonItem(term: 'Sıfır', pronunciation: 'sı-fır', translation: '0 — Zéro', example: 'Sıfır hata.', emoji: '0️⃣'),
+        LessonItem(term: 'Bir', pronunciation: 'bir', translation: '1 — Un', example: 'Bir elma yedim.', emoji: '1️⃣'),
+        LessonItem(term: 'İki', pronunciation: 'i-ki', translation: '2 — Deux', example: 'İki kitap okudum.', emoji: '2️⃣'),
+        LessonItem(term: 'Üç', pronunciation: 'üç', translation: '3 — Trois', example: 'Üç kardeşiz.', emoji: '3️⃣'),
+        LessonItem(term: 'Dört', pronunciation: 'dört', translation: '4 — Quatre', example: 'Dört mevsim var.', emoji: '4️⃣'),
+        LessonItem(term: 'Beş', pronunciation: 'beş', translation: '5 — Cinq', example: 'Beş parmağım var.', emoji: '5️⃣'),
+      ],
+      'cat_salutations_tr': [
+        LessonItem(term: 'Merhaba', pronunciation: 'mer-ha-ba', translation: 'Bonjour / Hello', example: 'Merhaba, nasılsın? = Salut, comment vas-tu ?', emoji: '👋'),
+        LessonItem(term: 'Selam', pronunciation: 'se-lam', translation: 'Salut / Hi', example: 'Selam arkadaşlar!', emoji: '👋'),
+        LessonItem(term: 'Güle güle', pronunciation: 'gü-le gü-le', translation: 'Au revoir', example: 'Güle güle, yine bekleriz!', emoji: '👋'),
+        LessonItem(term: 'Teşekkür ederim', pronunciation: 'te-shek-kür e-de-rim', translation: 'Merci', example: 'Yardımın için teşekkür ederim.', emoji: '🙏'),
+        LessonItem(term: 'Lütfen', pronunciation: 'lüt-fen', translation: 'S\'il vous plaît', example: 'Lütfen buraya gel.', emoji: '🙏'),
+        LessonItem(term: 'Evet', pronunciation: 'e-vet', translation: 'Oui', example: 'Evet, geliyorum.', emoji: '✅'),
+        LessonItem(term: 'Hayır', pronunciation: 'ha-yır', translation: 'Non', example: 'Hayır, istemiyorum.', emoji: '❌'),
+        LessonItem(term: 'Nasılsın?', pronunciation: 'na-sıl-sın', translation: 'Comment vas-tu ?', example: 'Nasılsın bugün?', emoji: '🤔'),
+        LessonItem(term: 'İyiyim', pronunciation: 'i-yi-yim', translation: 'Je vais bien', example: 'İyiyim, teşekkürler.', emoji: '😊'),
+        LessonItem(term: 'Adın ne?', pronunciation: 'a-dın ne', translation: 'Comment t\'appelles-tu ?', example: 'Adın ne? Benim adım Elif.', emoji: '👤'),
       ],
     },
     // ───────── ALLEMAND ─────────
@@ -135,85 +236,22 @@ class LessonContentData {
         LessonItem(term: 'No', pronunciation: 'NOH', translation: 'Non', example: 'No, grazie = Non, merci', emoji: '❌'),
         LessonItem(term: 'Arrivederci', pronunciation: 'ar-ree-veh-DER-chee', translation: 'Au revoir', example: 'Arrivederci! A presto! = Au revoir ! À bientôt !', emoji: '👋'),
         LessonItem(term: 'Come stai?', pronunciation: 'KO-meh STAI', translation: 'Comment vas-tu ?', example: 'Come stai oggi? = Comment vas-tu aujourd\'hui ?', emoji: '🤔'),
-        LessonItem(term: 'Sto bene', pronunciation: 'STO BEH-neh', translation: 'Je vais bien', example: 'Sto bene, grâce! = Je vais bien, merci !', emoji: '😊'),
+        LessonItem(term: 'Sto bene', pronunciation: 'STO BEH-neh', translation: 'Je vais bien', example: 'Sto bene, grazie! = Je vais bien, merci !', emoji: '😊'),
         LessonItem(term: 'Come ti chiami?', pronunciation: 'KO-meh tee KYAH-mee', translation: 'Comment tu t\'appelles ?', example: 'Come ti chiami? Mi chiamo Marco = Je m\'appelle Marco', emoji: '👤'),
-      ],
-    },
-    // ───────── FRANÇAIS ─────────
-    'fr': {
-      'cat_salutations_fr': [
-        LessonItem(term: 'Bonjour', pronunciation: 'bon-zhoor', translation: 'Bonjour / Good morning', example: 'Bonjour ! Comment ça va ?', emoji: '👋'),
-        LessonItem(term: 'Salut', pronunciation: 'sa-lu', translation: 'Salut / Hi', example: 'Salut tout le monde !', emoji: '👋'),
-        LessonItem(term: 'Merci', pronunciation: 'mer-see', translation: 'Merci / Thank you', example: 'Merci beaucoup !', emoji: '🙏'),
-        LessonItem(term: 'S\'il vous plaît', pronunciation: 'seel voo pleh', translation: 'S\'il vous plaît / Please', example: 'S\'il vous plaît, aidez-moi.', emoji: '🙏'),
-        LessonItem(term: 'Oui', pronunciation: 'wee', translation: 'Oui / Yes', example: 'Oui, je suis d\'accord.', emoji: '✅'),
-        LessonItem(term: 'Non', pronunciation: 'non', translation: 'Non / No', example: 'Non, merci.', emoji: '❌'),
-        LessonItem(term: 'Au revoir', pronunciation: 'oh re-vwar', translation: 'Au revoir / Goodbye', example: 'Au revoir, à demain !', emoji: '👋'),
-        LessonItem(term: 'Comment allez-vous ?', pronunciation: 'ko-man ta-leh voo', translation: 'How are you?', example: 'Comment allez-vous aujourd\'hui ?', emoji: '🤔'),
-        LessonItem(term: 'Je vais bien', pronunciation: 'zhe veh byen', translation: 'I am fine', example: 'Je vais bien, merci.', emoji: '😊'),
-        LessonItem(term: 'Comment vous appelez-vous ?', pronunciation: 'ko-man voo za-pleh voo', translation: 'What is your name?', example: 'Comment vous appelez-vous ? Je m\'appelle Jean.', emoji: '👤'),
-      ],
-      'cat_nombres_fr': [
-        LessonItem(term: 'Zéro', pronunciation: 'ze-ro', translation: '0 — Zero', example: 'Zéro faute !', emoji: '0️⃣'),
-        LessonItem(term: 'Un', pronunciation: 'un', translation: '1 — One', example: 'Un pour tous, tous pour un.', emoji: '1️⃣'),
-        LessonItem(term: 'Deux', pronunciation: 'deu', translation: '2 — Two', example: 'Deux têtes valent mieux qu\'une.', emoji: '2️⃣'),
-        LessonItem(term: 'Trois', pronunciation: 'trwa', translation: '3 — Three', example: 'Les trois mousquetaires.', emoji: '3️⃣'),
-        LessonItem(term: 'Quatre', pronunciation: 'ka-tr', translation: '4 — Four', example: 'Quatre saisons.', emoji: '4️⃣'),
-        LessonItem(term: 'Cinq', pronunciation: 'sank', translation: '5 — Five', example: 'Cinq doigts de la main.', emoji: '5️⃣'),
-        LessonItem(term: 'Six', pronunciation: 'seess', translation: '6 — Six', example: 'Six mois de vacances.', emoji: '6️⃣'),
-        LessonItem(term: 'Sept', pronunciation: 'set', translation: '7 — Seven', example: 'Sept jours dans la semaine.', emoji: '7️⃣'),
-        LessonItem(term: 'Huit', pronunciation: 'weet', translation: '8 — Eight', example: 'Huit heures de sommeil.', emoji: '8️⃣'),
-        LessonItem(term: 'Neuf', pronunciation: 'neuf', translation: '9 — Nine', example: 'Neuf vies de chat.', emoji: '9️⃣'),
-      ],
-    },
-    // ───────── TURC ─────────
-    'tr': {
-      'cat_salutations_tr': [
-        LessonItem(term: 'Merhaba', pronunciation: 'mer-ha-ba', translation: 'Bonjour / Hello', example: 'Merhaba, nasılsın? = Salut, comment vas-tu ?', emoji: '👋'),
-        LessonItem(term: 'Selam', pronunciation: 'se-lam', translation: 'Salut / Hi', example: 'Selam arkadaşlar!', emoji: '👋'),
-        LessonItem(term: 'Güle güle', pronunciation: 'gü-le gü-le', translation: 'Au revoir', example: 'Güle güle, yine bekleriz!', emoji: '👋'),
-        LessonItem(term: 'Teşekkür ederim', pronunciation: 'te-shek-kür e-de-rim', translation: 'Merci', example: 'Yardımın için teşekkür ederim.', emoji: '🙏'),
-        LessonItem(term: 'Lütfen', pronunciation: 'lüt-fen', translation: 'S\'il vous plaît', example: 'Lütfen buraya gel.', emoji: '🙏'),
-        LessonItem(term: 'Evet', pronunciation: 'e-vet', translation: 'Oui', example: 'Evet, geliyorum.', emoji: '✅'),
-        LessonItem(term: 'Hayır', pronunciation: 'ha-yır', translation: 'Non', example: 'Hayır, istemiyorum.', emoji: '❌'),
-        LessonItem(term: 'Nasılsın?', pronunciation: 'na-sıl-sın', translation: 'Comment vas-tu ?', example: 'Nasılsın bugün?', emoji: '🤔'),
-        LessonItem(term: 'İyiyim', pronunciation: 'i-yi-yim', translation: 'Je vais bien', example: 'İyiyim, teşekkürler.', emoji: '😊'),
-        LessonItem(term: 'Adın ne?', pronunciation: 'a-dın ne', translation: 'Comment t\'appelles-tu ?', example: 'Adın ne? Benim adım Elif.', emoji: '👤'),
-      ],
-      'cat_nombres_tr': [
-        LessonItem(term: 'Sıfır', pronunciation: 'sı-fır', translation: '0 — Zéro', example: 'Sıfır hata.', emoji: '0️⃣'),
-        LessonItem(term: 'Bir', pronunciation: 'bir', translation: '1 — Un', example: 'Bir elma yedim.', emoji: '1️⃣'),
-        LessonItem(term: 'İki', pronunciation: 'i-ki', translation: '2 — Deux', example: 'İki kitap okudum.', emoji: '2️⃣'),
-        LessonItem(term: 'Üç', pronunciation: 'üç', translation: '3 — Trois', example: 'Üç kardeşiz.', emoji: '3️⃣'),
-        LessonItem(term: 'Dört', pronunciation: 'dört', translation: '4 — Quatre', example: 'Dört mevsim var.', emoji: '4️⃣'),
-        LessonItem(term: 'Beş', pronunciation: 'beş', translation: '5 — Cinq', example: 'Beş parmağım var.', emoji: '5️⃣'),
-      ],
-    },
-    // ───────── ANGLAIS ─────────
-    'en': {
-      'cat_salutations_en': [
-        LessonItem(term: 'Hello', pronunciation: 'hel-oh', translation: 'Bonjour / Hello', example: 'Hello! How are you?', emoji: '👋'),
-        LessonItem(term: 'Hi', pronunciation: 'hi', translation: 'Salut / Hi', example: 'Hi there!', emoji: '👋'),
-        LessonItem(term: 'Good morning', pronunciation: 'good mor-ning', translation: 'Bonjour (matin)', example: 'Good morning, everyone!', emoji: '🌅'),
-        LessonItem(term: 'Thank you', pronunciation: 'thank yoo', translation: 'Merci', example: 'Thank you very much!', emoji: '🙏'),
-        LessonItem(term: 'Please', pronunciation: 'pleez', translation: 'S\'il vous plaît', example: 'Please help me.', emoji: '🙏'),
-        LessonItem(term: 'Yes', pronunciation: 'yes', translation: 'Oui', example: 'Yes, I can.', emoji: '✅'),
-        LessonItem(term: 'No', pronunciation: 'noh', translation: 'Non', example: 'No, thanks.', emoji: '❌'),
-        LessonItem(term: 'Goodbye', pronunciation: 'good-bye', translation: 'Au revoir', example: 'Goodbye! See you later.', emoji: '👋'),
-        LessonItem(term: 'How are you?', pronunciation: 'how ar yoo', translation: 'Comment vas-tu ?', example: 'How are you today?', emoji: '🤔'),
-        LessonItem(term: 'I am fine', pronunciation: 'i am fyn', translation: 'Je vais bien', example: 'I am fine, thank you.', emoji: '😊'),
       ],
     },
   };
 
   /// Retourne la liste des items de contenu pour une langue et une catégorie données.
+  /// Fait un fallback intelligent sur la catégorie générique si la langue spécifique n'est pas trouvée.
   static List<LessonItem> getItems(String languageId, String categoryId) {
     final langContent = content[languageId];
     if (langContent == null) return _defaultItems(categoryId);
 
+    // Try to match by categoryId directly
     if (langContent.containsKey(categoryId)) return langContent[categoryId]!;
 
-    // Flou matching pour supporter les variations d'ID entre branches
+    // Try to find by category type (nombres, salutations, etc.)
     for (final key in langContent.keys) {
       if (categoryId.contains('nombres') && key.contains('nombres')) return langContent[key]!;
       if (categoryId.contains('salutations') && key.contains('salutations')) return langContent[key]!;
@@ -233,13 +271,19 @@ class LessonContentData {
   }
 
   static List<LessonItem> _defaultItems(String categoryId) {
-    // Fournit au moins 5 items pour que le générateur de quiz fonctionne toujours
+    if (categoryId.contains('nombres')) {
+      return [
+        const LessonItem(term: '0', pronunciation: 'Zéro', translation: '0 — Zéro', example: 'Zéro = le début de tout', emoji: '0️⃣'),
+        const LessonItem(term: '1', pronunciation: 'Un', translation: '1 — Un', example: 'Un = l\'unité', emoji: '1️⃣'),
+        const LessonItem(term: '2', pronunciation: 'Deux', translation: '2 — Deux', example: 'Deux = une paire', emoji: '2️⃣'),
+        const LessonItem(term: '3', pronunciation: 'Trois', translation: '3 — Trois', example: 'Trois = un trio', emoji: '3️⃣'),
+        const LessonItem(term: '4', pronunciation: 'Quatre', translation: '4 — Quatre', example: 'Quatre = les quatre coins', emoji: '4️⃣'),
+      ];
+    }
     return [
+      const LessonItem(term: '📚', pronunciation: '--', translation: 'Contenu bientôt disponible', example: 'Revenez plus tard pour accéder à ce cours !', emoji: '🔜'),
       const LessonItem(term: 'Bonjour', pronunciation: '...', translation: 'Hello', example: 'Bonjour !', emoji: '👋'),
       const LessonItem(term: 'Merci', pronunciation: '...', translation: 'Thank you', example: 'Merci beaucoup !', emoji: '🙏'),
-      const LessonItem(term: 'Oui', pronunciation: '...', translation: 'Yes', example: 'Oui, s\'il vous plaît.', emoji: '✅'),
-      const LessonItem(term: 'Non', pronunciation: '...', translation: 'No', example: 'Non, merci.', emoji: '❌'),
-      const LessonItem(term: 'Chat', pronunciation: '...', translation: 'Cat', example: 'Le chat dort.', emoji: '🐱'),
     ];
   }
 }

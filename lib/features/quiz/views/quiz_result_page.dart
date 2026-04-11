@@ -1,5 +1,6 @@
 // lib/features/quiz/views/quiz_result_page.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../gamification/models/gamification_model.dart';
 import '../models/quiz_result_model.dart';
@@ -9,6 +10,7 @@ class QuizResultPage extends StatefulWidget {
   final GamificationResult? gamificationResult;
   final String lessonTitle;
   final VoidCallback onRetry;
+  final VoidCallback onContinue;
 
   const QuizResultPage({
     super.key,
@@ -16,6 +18,7 @@ class QuizResultPage extends StatefulWidget {
     required this.gamificationResult,
     required this.lessonTitle,
     required this.onRetry,
+    required this.onContinue,
   });
 
   @override
@@ -158,11 +161,9 @@ class _QuizResultPageState extends State<QuizResultPage>
 
               const SizedBox(height: 32),
 
-              // ── Actions ──
               _ActionRow(
                 onRetry: widget.onRetry,
-                onHome: () =>
-                    Navigator.of(context).popUntil((r) => r.isFirst),
+                onHome: widget.onContinue,
               ),
 
               const SizedBox(height: 20),
