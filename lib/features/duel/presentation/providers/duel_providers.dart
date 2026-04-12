@@ -304,6 +304,13 @@ class DuelArenaNotifier extends StateNotifier<DuelArenaState> {
         questions: state.questions,
         currentUserId: currentUserId,
         currentProgression: progression!,
+        onAddXP: (sourceType, xpAmount) {
+          return _ref.read(addXPProvider)(
+            sourceType: sourceType,
+            sourceName: 'Duel terminé',
+            overrideAmount: xpAmount,
+          );
+        },
       );
 
       // Invalider les providers M7 pour forcer un rechargement

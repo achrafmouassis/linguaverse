@@ -279,6 +279,7 @@ class DuelService {
     required List<DuelQuestionModel> questions,
     required String currentUserId,
     required UserProgressionModel currentProgression,
+    required Future<XpGainResult> Function(String sourceType, int xpAmount) onAddXP,
   }) async {
     final db = await _db.database;
 
@@ -352,15 +353,10 @@ class DuelService {
       ''', [currentUserId]);
     }
 
-    // 4. Ajouter XP via ProgressionService (M7)
-    final xpResult = await _progressionService.addXP(
-      userId: currentUserId,
-      userName: session.player1Name,
-      userInitials:
-          session.player1Name.isNotEmpty ? session.player1Name.substring(0, 1).toUpperCase() : 'P',
-      sourceType: won ? (isPerfect ? 'duel_perfect' : 'duel_win') : 'duel_loss',
-      overrideAmount: xpEarned,
-      sourceName: 'Duel terminé',
+    // 4. Ajouter XP via addXPProvider injecté
+    final xpResult = await onAddXP(
+      won ? (isPerfect ? 'duel_perfect' : 'duel_win') : 'duel_loss',
+      xpEarned,
     );
 
     // 5. Check les badges duel

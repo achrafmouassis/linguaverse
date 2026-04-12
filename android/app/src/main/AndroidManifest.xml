@@ -1,4 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Caméra — obligatoire pour AR -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Internet — pour Claude API -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Localisation GPS approximative (étape 5 future) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Déclarer que la caméra est utilisée -->
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
     <application
         android:label="linguaverse"
         android:name="${applicationName}"

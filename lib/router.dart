@@ -12,6 +12,7 @@ import 'features/gamification/presentation/mini_games/hangman_game_page.dart';
 import 'features/gamification/presentation/mini_games/synonym_game_page.dart';
 import 'features/gamification/presentation/mini_games/emoji_game_page.dart';
 import 'features/duel/duel_exports.dart';
+import 'features/ar/presentation/pages/ar_scanner_page.dart';
 import 'package:flutter/foundation.dart';
 
 class AppRoutes {
@@ -157,8 +158,11 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.ar,
-      name: 'ar',
-      builder: (context, state) => const _PlaceholderPage(title: 'AR Scanner'),
+      name: 'arScanner',
+      pageBuilder: (context, state) => const MaterialPage(
+        fullscreenDialog: true,
+        child: ArScannerPage(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.aiQuiz,

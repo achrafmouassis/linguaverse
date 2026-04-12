@@ -15,4 +15,8 @@ export 'presentation/providers/gamification_providers.dart'
         currentUserIdProvider,
         currentUserNameProvider,
         currentUserInitialsProvider,
-        activeMilestonesProvider;
+        activeMilestonesProvider,
+        progressionServiceProvider,
+        streakServiceProvider,
+        milestoneServiceProvider,
+        badgeServiceProvider;

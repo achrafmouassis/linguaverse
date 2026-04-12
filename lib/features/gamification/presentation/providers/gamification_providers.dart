@@ -70,8 +70,10 @@ class UserProgressionNotifier extends StateNotifier<AsyncValue<UserProgressionMo
         await ref.read(databaseHelperProvider).initUserProgression(userId);
         prog = await service.getProgression(userId);
       }
+      if (!mounted) return;
       state = AsyncData(prog);
     } catch (e, st) {
+      if (!mounted) return;
       state = AsyncError(e, st);
     }
   }
@@ -96,8 +98,10 @@ class BadgesNotifier extends StateNotifier<AsyncValue<List<BadgeModel>>> {
     try {
       final userId = ref.read(currentUserIdProvider);
       final badges = await ref.read(badgeServiceProvider).getAllBadges(userId);
+      if (!mounted) return;
       state = AsyncData(badges);
     } catch (e, st) {
+      if (!mounted) return;
       state = AsyncError(e, st);
     }
   }
@@ -122,8 +126,10 @@ class LeaderboardNotifier extends StateNotifier<AsyncValue<LeaderboardData>> {
       final userId = ref.read(currentUserIdProvider);
       final data =
           await ref.read(leaderboardServiceProvider).getLeaderboardWithUserPosition(userId);
+      if (!mounted) return;
       state = AsyncData(data);
     } catch (e, st) {
+      if (!mounted) return;
       state = AsyncError(e, st);
     }
   }
@@ -149,8 +155,10 @@ class MilestonesNotifier extends StateNotifier<AsyncValue<List<MilestoneModel>>>
       final service = ref.read(milestoneServiceProvider);
       await service.initDefaultMilestones(userId);
       final active = await service.getActiveMilestones(userId);
+      if (!mounted) return;
       state = AsyncData(active);
     } catch (e, st) {
+      if (!mounted) return;
       state = AsyncError(e, st);
     }
   }
@@ -199,10 +207,18 @@ final addXPProvider = Provider<
           overrideAmount: overrideAmount,
         );
 
-    // Synchro Jalons basé sur la nouvelle progression
-    await ref
-        .read(milestoneServiceProvider)
-        .syncProgress(userId, result.newTotalXP, result.newLevel);
+    // Activité
+    await ref.read(streakServiceProvider).recordActivity(userId);
+
+    // Sync jalons :
+    final milestoneService = ref.read(milestoneServiceProvider);
+    final prog = await ref.read(progressionServiceProvider).getProgression(userId);
+    if (prog != null) {
+      await milestoneService.updateProgress(userId, 'xp_goal', prog.totalXpEver);
+      await milestoneService.updateProgress(userId, 'streak_goal', prog.streakDays);
+      await milestoneService.updateProgress(userId, 'lessons_goal', prog.lessonsCompleted);
+      await milestoneService.updateProgress(userId, 'words_goal', prog.wordsMastered);
+    }
 
     // Invalidate dependent providers to trigger UI refresh
     ref.invalidate(userProgressionProvider);
