@@ -4,9 +4,6 @@ import 'features/home/presentation/pages/home_page.dart';
 import 'features/auth/views/login_screen.dart';
 import 'features/auth/views/signup_screen.dart';
 import 'features/auth/views/onboarding_screen.dart';
-import 'features/ai_quiz/views/ai_setup_page.dart';
-import 'features/ai_quiz/views/ai_quiz_game_page.dart';
-import 'features/ai_quiz/views/ai_result_page.dart';
 
 class AppRoutes {
   static const String login = '/login';
@@ -19,8 +16,6 @@ class AppRoutes {
   static const String pronunciation = '/pronunciation';
   static const String ar = '/ar';
   static const String aiQuiz = '/ai-quiz';
-  static const String aiQuizGame = '/ai-quiz/game';
-  static const String aiQuizResult = '/ai-quiz/result';
 
   static const List<String> authRoutes = [login, signup, onboarding];
   static const List<String> availableRoutes = [
@@ -31,13 +26,11 @@ class AppRoutes {
     pronunciation,
     ar,
     aiQuiz,
-    aiQuizGame,
-    aiQuizResult,
   ];
 }
 
 /// Notifier pour déclencher la redirection du router
-class AuthRouterNotifier extends ChangeNotifier {
+class _AuthRouterNotifier extends ChangeNotifier {
   bool? _isAuthenticated;
   bool? _isOnboardingRequired;
   bool? _isLoading;
@@ -62,16 +55,16 @@ class AuthRouterNotifier extends ChangeNotifier {
   bool get isLoading => _isLoading ?? false;
 }
 
-final authRouterNotifier = AuthRouterNotifier();
+final _authRouterNotifier = _AuthRouterNotifier();
 
 /// GoRouter statique que l'on réutilise
 final appRouter = GoRouter(
   initialLocation: AppRoutes.login,
-  refreshListenable: authRouterNotifier,
+  refreshListenable: _authRouterNotifier,
   redirect: (context, state) {
-    final isAuthenticated = authRouterNotifier.isAuthenticated;
-    final isLoading = authRouterNotifier.isLoading;
-    final isOnboardingRequired = authRouterNotifier.isOnboardingRequired;
+    final isAuthenticated = _authRouterNotifier.isAuthenticated;
+    final isLoading = _authRouterNotifier.isLoading;
+    final isOnboardingRequired = _authRouterNotifier.isOnboardingRequired;
     final currentLocation = state.matchedLocation;
 
     // Si l'authentification est en cours de chargement, ne pas rediriger
@@ -184,44 +177,7 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.aiQuiz,
       name: 'ai-quiz',
-      pageBuilder: (context, state) => CustomTransitionPage(
-        child: const AiSetupPage(),
-        transitionsBuilder: (context, animation, _, child) => FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-        transitionDuration: const Duration(milliseconds: 300),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.aiQuizGame,
-      name: 'ai-quiz-game',
-      pageBuilder: (context, state) => CustomTransitionPage(
-        child: const AiQuizGamePage(),
-        transitionsBuilder: (context, animation, _, child) => FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-        transitionDuration: const Duration(milliseconds: 300),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.aiQuizResult,
-      name: 'ai-quiz-result',
-      pageBuilder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>? ?? {};
-        final score = extra['score'] as int? ?? 0;
-        final total = extra['total'] as int? ?? 10;
-        final xpEarned = extra['xp'] as int? ?? 0;
-        return CustomTransitionPage(
-          child: AiResultPage(score: score, total: total, xpEarned: xpEarned),
-          transitionsBuilder: (context, animation, _, child) => FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-          transitionDuration: const Duration(milliseconds: 300),
-        );
-      },
+      builder: (context, state) => const _PlaceholderPage(title: 'IA Quiz'),
     ),
   ],
 );
