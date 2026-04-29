@@ -59,7 +59,9 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
         ? 5
         : screenWidth > 760
             ? 4
-            : 3;
+            : screenWidth > 500
+                ? 3
+                : 2;
 
     final filtered = _query.isEmpty
         ? languages
@@ -116,12 +118,16 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
                   ),
                   if (_query.isNotEmpty) ...[
                     const SizedBox(width: 8),
-                    Text(
-                      'Résultats pour "$_query"',
-                      style: TextStyle(
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w500,
-                        color: isDark ? Colors.white38 : Colors.black45,
+                    Flexible(
+                      child: Text(
+                        'Résultats pour "$_query"',
+                        style: TextStyle(
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? Colors.white38 : Colors.black45,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -138,7 +144,11 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
                 crossAxisCount: crossAxisCount,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: screenWidth > 760 ? 0.9 : 0.84,
+                childAspectRatio: screenWidth > 760 
+                    ? 0.9 
+                    : screenWidth > 500
+                        ? 0.84 
+                        : 0.80,
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -276,28 +286,34 @@ class _AnimatedHeader extends StatelessWidget {
                                 style: TextStyle(fontSize: 20)),
                           ),
                           const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Catalogue des Langues',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: -0.3,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Catalogue des Langues',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: -0.3,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                'Choisissez votre prochaine aventure',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w400,
+                                const SizedBox(height: 2),
+                                Text(
+                                  'Choisissez votre prochaine aventure',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontSize: 12.5,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),

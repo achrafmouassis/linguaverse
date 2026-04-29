@@ -161,9 +161,12 @@ class _QuizPageState extends ConsumerState<QuizPage>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Quiz · ${widget.lessonTitle}',
-                              style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+                            Flexible(
+                              child: Text(
+                                'Quiz · ${widget.lessonTitle}',
+                                style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             // Quick Timer Badge integrated directly into the Top Bar
                             _buildTimerBadge(state.timerProgress),
