@@ -13,10 +13,10 @@ class AppTheme {
           centerTitle: false,
           foregroundColor: AppColors.textPrimary,
         ),
-        cardTheme: CardThemeData(
+        cardTheme: const CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           color: AppColors.surface,
         ),
@@ -69,12 +69,16 @@ class AppTheme {
           elevation: 0,
           centerTitle: false,
         ),
-        cardTheme: CardThemeData(
+        cardTheme: const CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
+<<<<<<< HEAD
           color: AppColors.bgLevel4,
+=======
+          color: Color(0xFF1E293B),
+>>>>>>> integration/quiz-lessons
         ),
       );
 }

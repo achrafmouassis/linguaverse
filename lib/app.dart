@@ -16,7 +16,7 @@ class LinguaVerseApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'LinguaVerse',
-      debugShowCheckedModeBanner: kDebugMode, // badge debug visible uniquement en dev
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode, // ← branché sur le provider
