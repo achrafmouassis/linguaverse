@@ -374,6 +374,7 @@ class _MatchingCardState extends State<MatchingCard> {
     super.initState();
     _translations =
         widget.question.pairs.map((p) => p.translation).toList();
+    _translations.shuffle();
   }
 
   void _onTermTap(String term) {
@@ -406,13 +407,26 @@ class _MatchingCardState extends State<MatchingCard> {
       children: [
         _QuestionPromptCard(
           label: 'Associez chaque mot à sa traduction',
-          child: Text(
-            'Sélectionnez un mot puis sa traduction',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontStyle: FontStyle.italic, color: Colors.white70),
-            textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              Text(
+                widget.question.prompt,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Colors.white, height: 1.4),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Sélectionnez un élément à gauche puis son équivalent à droite',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontStyle: FontStyle.italic, color: Colors.white70),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 16),

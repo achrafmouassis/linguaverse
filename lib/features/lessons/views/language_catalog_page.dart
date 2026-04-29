@@ -54,7 +54,12 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
     final languages = ref.watch(languagesProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
-    final crossAxisCount = screenWidth > 700 ? 4 : 3;
+    final horizontalPadding = screenWidth > 900 ? 24.0 : 14.0;
+    final crossAxisCount = screenWidth > 1100
+        ? 5
+        : screenWidth > 760
+            ? 4
+            : 3;
 
     final filtered = _query.isEmpty
         ? languages
@@ -81,38 +86,59 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
           // ── Search bar ───────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              padding: EdgeInsets.fromLTRB(horizontalPadding + 2, 0, horizontalPadding + 2, 8),
               child: _SearchBar(controller: _searchCtrl, isDark: isDark),
             ),
           ),
 
           // ── Count label ──────────────────────────────────
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+            padding: EdgeInsets.fromLTRB(horizontalPadding + 6, 4, horizontalPadding + 6, 8),
             sliver: SliverToBoxAdapter(
-              child: Text(
-                filtered.isEmpty
-                    ? 'Aucune langue trouvée'
-                    : '${filtered.length} langue${filtered.length > 1 ? 's' : ''} disponible${filtered.length > 1 ? 's' : ''}',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: isDark ? Colors.white38 : Colors.black38,
-                  letterSpacing: 0.4,
-                ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.04),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      filtered.isEmpty
+                          ? 'Aucune langue'
+                          : '${filtered.length} langue${filtered.length > 1 ? 's' : ''}',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white70 : AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                  if (_query.isNotEmpty) ...[
+                    const SizedBox(width: 8),
+                    Text(
+                      'Résultats pour "$_query"',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w500,
+                        color: isDark ? Colors.white38 : Colors.black45,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           ),
 
           // ── Grid ─────────────────────────────────────────
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             sliver: SliverGrid(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 0.88,
+                childAspectRatio: screenWidth > 760 ? 0.9 : 0.84,
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -298,6 +324,7 @@ class _SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasQuery = controller.text.isNotEmpty;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
@@ -328,7 +355,7 @@ class _SearchBar extends StatelessWidget {
             color: isDark ? Colors.white38 : Colors.black38,
             size: 20,
           ),
-          suffixIcon: controller.text.isNotEmpty
+          suffixIcon: hasQuery
               ? IconButton(
                   icon: Icon(Icons.close_rounded,
                       size: 18,
@@ -406,6 +433,7 @@ class _LanguageCardState extends State<_LanguageCard>
   Widget build(BuildContext context) {
     final color = widget.language.color as Color;
     final isDark = widget.isDark;
+    final badgeBg = isDark ? color.withOpacity(0.2) : color.withOpacity(0.15);
 
     return FadeTransition(
       opacity: _fadeAnim,
@@ -485,9 +513,9 @@ class _LanguageCardState extends State<_LanguageCard>
                                 shape: BoxShape.circle,
                               ),
                               alignment: Alignment.center,
-                              child: Text(
+                          child: Text(
                                 widget.language.flagEmoji,
-                                style: const TextStyle(fontSize: 28),
+                                style: const TextStyle(fontSize: 29),
                               ),
                             ),
 
@@ -497,8 +525,8 @@ class _LanguageCardState extends State<_LanguageCard>
                             Text(
                               widget.language.name,
                               style: TextStyle(
-                                fontSize: 13.5,
-                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
                                 color: isDark
                                     ? Colors.white
                                     : AppColors.textPrimary,
@@ -515,7 +543,7 @@ class _LanguageCardState extends State<_LanguageCard>
                             Text(
                               widget.tagline,
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 10.5,
                                 fontWeight: FontWeight.w500,
                                 color: isDark
                                     ? Colors.white38
@@ -533,7 +561,7 @@ class _LanguageCardState extends State<_LanguageCard>
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
-                                  color: color.withOpacity(0.15),
+                                  color: badgeBg,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
@@ -547,6 +575,24 @@ class _LanguageCardState extends State<_LanguageCard>
                                 ),
                               ),
                             ],
+                            const SizedBox(height: 7),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? Colors.white.withOpacity(0.07)
+                                    : color.withOpacity(0.08),
+                                borderRadius: BorderRadius.circular(999),
+                              ),
+                              child: Text(
+                                'Explorer',
+                                style: TextStyle(
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark ? Colors.white70 : color,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),

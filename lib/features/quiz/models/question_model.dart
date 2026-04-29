@@ -145,6 +145,9 @@ class MatchingPair {
 }
 
 class MatchingQuestion extends Question {
+  /// Enoncé affiché au-dessus de l'exercice d'association
+  final String prompt;
+
   /// Paires à associer (4 paires mélangées)
   final List<MatchingPair> pairs;
 
@@ -156,6 +159,7 @@ class MatchingQuestion extends Question {
     required super.sourceItem,
     required super.languageId,
     required super.categoryId,
+    required this.prompt,
     required this.pairs,
     required this.correctPairs,
   }) : super(type: QuestionType.matching);
