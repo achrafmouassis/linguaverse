@@ -39,7 +39,9 @@ class QuestionGenerator {
     final types = _balancedTypes(
         count: count, available: shuffled.length);
 
-    for (int i = 0; i < types.length && i < shuffled.length; i++) {
+    // On itère sur [count] slots — les items cyclent avec %
+    // pour pouvoir générer 10 questions même avec 3 items (types différents)
+    for (int i = 0; i < types.length; i++) {
       final item = shuffled[i % shuffled.length];
       final qId = '${lessonId}_q$i';
 
@@ -157,20 +159,19 @@ class QuestionGenerator {
 
     if (showCorrect) {
       statement =
-          '« ${item.term} » signifie « ${item.translation} ».';
+          'Le mot français pour « ${item.translation} » est « ${item.term} ».';
       answer = true;
     } else {
-      // Choisit une mauvaise traduction
       final wrong = lessonItems
           .where((i) => i.term != item.term)
           .toList();
       if (wrong.isEmpty) {
-        statement = '« ${item.term} » signifie « ${item.translation} ».';
+        statement = 'Le mot français pour « ${item.translation} » est « ${item.term} ».';
         answer = true;
       } else {
         final wrongItem = wrong[_rng.nextInt(wrong.length)];
         statement =
-            '« ${item.term} » signifie « ${wrongItem.translation} ».';
+            'La traduction de « ${item.term} » est « ${wrongItem.translation} ».';
         answer = false;
       }
     }
@@ -226,13 +227,16 @@ class QuestionGenerator {
     String categoryId,
     String id,
   ) {
-    // On utilise l'exemple de phrase : remplace le term par ___
+    // On utilise l'exemple de phrase : remplace le term par ___ (insensible à la casse)
     final example = item.example;
-    final blank = example.replaceFirst(item.term, '___');
-    // Si le remplacement n'a pas fonctionné, utilise un template générique
+    final regex = RegExp(RegExp.escape(item.term), caseSensitive: false);
+    final blank = example.replaceFirst(regex, '___');
+    
+    // S'il n'y a pas eu de remplacement (ex: verbe conjugué, pluriel différent),
+    // on propose une question sémantique claire au lieu d'afficher la phonétique.
     final sentenceWithBlank = blank.contains('___')
         ? blank
-        : '${item.pronunciation} → ___';
+        : 'Traduisez en français :\n« ${item.translation} » = ___';
 
     final distractors = _pickDistractors(
       correct: item.term,

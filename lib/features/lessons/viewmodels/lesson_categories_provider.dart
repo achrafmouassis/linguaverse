@@ -50,7 +50,7 @@ String _translate(String key, String languageId) {
       'es': 'Descripción de relaciones y vocabulario contextual',
     },
     'cat_couleurs': {
-      'fr': 'Les coureurs', 'en': 'Colors', 'ar': 'الألوان', 'es': 'Colores', 'it': 'Colori', 'tr': 'Renkler', 'de': 'Farben',
+      'fr': 'Les couleurs', 'en': 'Colors', 'ar': 'الألوان', 'es': 'Colores', 'it': 'Colori', 'tr': 'Renkler', 'de': 'Farben',
     },
     'method_couleurs': {
       'fr': 'Association de termes et illustrations',

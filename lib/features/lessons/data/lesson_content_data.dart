@@ -138,29 +138,144 @@ class LessonContentData {
     },
     // ───────── FRANÇAIS ─────────
     'fr': {
-      'cat_nombres_fr': [
-        LessonItem(term: 'Zéro', pronunciation: 'ze-ro', translation: '0 — Zero', example: 'Zéro faute !', emoji: '0️⃣'),
-        LessonItem(term: 'Un', pronunciation: 'un', translation: '1 — One', example: 'Un pour tous, tous pour un.', emoji: '1️⃣'),
-        LessonItem(term: 'Deux', pronunciation: 'deu', translation: '2 — Two', example: 'Deux têtes valent mieux qu\'une.', emoji: '2️⃣'),
-        LessonItem(term: 'Trois', pronunciation: 'trwa', translation: '3 — Three', example: 'Les trois mousquetaires.', emoji: '3️⃣'),
-        LessonItem(term: 'Quatre', pronunciation: 'ka-tr', translation: '4 — Four', example: 'Quatre saisons.', emoji: '4️⃣'),
-        LessonItem(term: 'Cinq', pronunciation: 'sank', translation: '5 — Five', example: 'Cinq doigts de la main.', emoji: '5️⃣'),
-        LessonItem(term: 'Six', pronunciation: 'seess', translation: '6 — Six', example: 'Six mois de vacances.', emoji: '6️⃣'),
-        LessonItem(term: 'Sept', pronunciation: 'set', translation: '7 — Seven', example: 'Sept jours dans la semaine.', emoji: '7️⃣'),
-        LessonItem(term: 'Huit', pronunciation: 'weet', translation: '8 — Eight', example: 'Huit heures de sommeil.', emoji: '8️⃣'),
-        LessonItem(term: 'Neuf', pronunciation: 'neuf', translation: '9 — Nine', example: 'Neuf vies de chat.', emoji: '9️⃣'),
+      // ── L'Alphabet ───────────────────────────────────────────
+      'cat_alphabet_fr': [
+        LessonItem(term: 'A',  pronunciation: '[a]',     translation: 'Letter A — vowel',    example: 'A comme Avion ✈️',      emoji: '🔤'),
+        LessonItem(term: 'E',  pronunciation: '[ə/e/ɛ]', translation: 'Letter E — vowel',    example: 'E comme École 🏫',       emoji: '🔤'),
+        LessonItem(term: 'I',  pronunciation: '[i]',     translation: 'Letter I — vowel',    example: 'I comme Île 🏝️',         emoji: '🔤'),
+        LessonItem(term: 'O',  pronunciation: '[o/ɔ]',   translation: 'Letter O — vowel',    example: 'O comme Oiseau 🐦',      emoji: '🔤'),
+        LessonItem(term: 'U',  pronunciation: '[y]',     translation: 'Letter U — vowel',    example: 'U comme Usine 🏭',       emoji: '🔤'),
+        LessonItem(term: 'Y',  pronunciation: '[i.gʁɛk]',translation: 'Letter Y — semi-vowel',example: 'Y comme Yeux 👀',      emoji: '🔤'),
+        LessonItem(term: 'B',  pronunciation: '[be]',    translation: 'Letter B — consonant', example: 'B comme Bateau ⛵',     emoji: '🔤'),
+        LessonItem(term: 'C',  pronunciation: '[se]',    translation: 'Letter C — consonant', example: 'C comme Chat 🐱',       emoji: '🔤'),
+        LessonItem(term: 'D',  pronunciation: '[de]',    translation: 'Letter D — consonant', example: 'D comme Danseur 💃',    emoji: '🔤'),
+        LessonItem(term: 'F',  pronunciation: '[ɛf]',    translation: 'Letter F — consonant', example: 'F comme Forêt 🌲',      emoji: '🔤'),
       ],
+
+      // ── Les Nombres ──────────────────────────────────────────
+      'cat_nombres_fr': [
+        LessonItem(term: 'Zéro',   pronunciation: '[ze.ʁo]',   translation: '0 — Zero',    example: 'J\'ai zéro idée pour ce soir.', emoji: '0️⃣'),
+        LessonItem(term: 'Un',     pronunciation: '[œ̃]',       translation: '1 — One',     example: 'Il reste un billet.', emoji: '1️⃣'),
+        LessonItem(term: 'Deux',   pronunciation: '[dø]',       translation: '2 — Two',     example: 'Deux cafés, s\'il vous plaît !', emoji: '2️⃣'),
+        LessonItem(term: 'Trois',  pronunciation: '[tʁwa]',     translation: '3 — Three',   example: 'Il y a trois erreurs ici.', emoji: '3️⃣'),
+        LessonItem(term: 'Quatre', pronunciation: '[katʁ]',     translation: '4 — Four',    example: 'J\'ai quatre frères.', emoji: '4️⃣'),
+        LessonItem(term: 'Cinq',   pronunciation: '[sɛ̃k]',     translation: '5 — Five',    example: 'Cinq doigts à chaque main.', emoji: '5️⃣'),
+        LessonItem(term: 'Six',    pronunciation: '[sis]',      translation: '6 — Six',     example: 'Six mois se sont écoulés.', emoji: '6️⃣'),
+        LessonItem(term: 'Sept',   pronunciation: '[sɛt]',      translation: '7 — Seven',   example: 'Sept jours dans la semaine.', emoji: '7️⃣'),
+        LessonItem(term: 'Huit',   pronunciation: '[ɥit]',      translation: '8 — Eight',   example: 'Huit heures de sommeil chaque nuit.', emoji: '8️⃣'),
+        LessonItem(term: 'Neuf',   pronunciation: '[nœf]',      translation: '9 — Nine',    example: 'Un chat a neuf vies.', emoji: '9️⃣'),
+      ],
+
+      // ── Les Salutations ──────────────────────────────────────
       'cat_salutations_fr': [
-        LessonItem(term: 'Bonjour', pronunciation: 'bon-zhoor', translation: 'Bonjour / Good morning', example: 'Bonjour ! Comment ça va ?', emoji: '👋'),
-        LessonItem(term: 'Salut', pronunciation: 'sa-lu', translation: 'Salut / Hi', example: 'Salut tout le monde !', emoji: '👋'),
-        LessonItem(term: 'Merci', pronunciation: 'mer-see', translation: 'Merci / Thank you', example: 'Merci beaucoup !', emoji: '🙏'),
-        LessonItem(term: 'S\'il vous plaît', pronunciation: 'seel voo pleh', translation: 'S\'il vous plaît / Please', example: 'S\'il vous plaît, aidez-moi.', emoji: '🙏'),
-        LessonItem(term: 'Oui', pronunciation: 'wee', translation: 'Oui / Yes', example: 'Oui, je suis d\'accord.', emoji: '✅'),
-        LessonItem(term: 'Non', pronunciation: 'non', translation: 'Non / No', example: 'Non, merci.', emoji: '❌'),
-        LessonItem(term: 'Au revoir', pronunciation: 'oh re-vwar', translation: 'Au revoir / Goodbye', example: 'Au revoir, à demain !', emoji: '👋'),
-        LessonItem(term: 'Comment allez-vous ?', pronunciation: 'ko-man ta-leh voo', translation: 'How are you?', example: 'Comment allez-vous aujourd\'hui ?', emoji: '🤔'),
-        LessonItem(term: 'Je vais bien', pronunciation: 'zhe veh byen', translation: 'I am fine', example: 'Je vais bien, merci.', emoji: '😊'),
-        LessonItem(term: 'Comment vous appelez-vous ?', pronunciation: 'ko-man voo za-pleh voo', translation: 'What is your name?', example: 'Comment vous appelez-vous ? Je m\'appelle Jean.', emoji: '👤'),
+        LessonItem(term: 'Bonjour',                  pronunciation: '[bɔ̃.ʒuʁ]',     translation: 'Good morning / Hello',       example: 'Bonjour ! Bien dormi ?', emoji: '🌅'),
+        LessonItem(term: 'Bonsoir',                  pronunciation: '[bɔ̃.swaʁ]',    translation: 'Good evening',               example: 'Bonsoir, bienvenue au restaurant.', emoji: '🌆'),
+        LessonItem(term: 'Salut',                    pronunciation: '[sa.ly]',       translation: 'Hi / Hey',                   example: 'Salut ! Ça fait longtemps !', emoji: '👋'),
+        LessonItem(term: 'Au revoir',                pronunciation: '[o.ʁe.vwaʁ]',  translation: 'Goodbye',                    example: 'Au revoir, à lundi !', emoji: '👋'),
+        LessonItem(term: 'Merci',                    pronunciation: '[mɛʁ.si]',      translation: 'Thank you',                  example: 'Merci pour votre aide.', emoji: '🙏'),
+        LessonItem(term: 'De rien',                  pronunciation: '[də.ʁjɛ̃]',    translation: 'You\'re welcome',            example: 'Merci ! — De rien !', emoji: '😊'),
+        LessonItem(term: 'S\'il vous plaît',         pronunciation: '[sil.vu.plɛ]',  translation: 'Please (formal)',            example: 'Un café, s\'il vous plaît.', emoji: '🙏'),
+        LessonItem(term: 'Comment allez-vous ?',     pronunciation: '[kɔ.mɑ̃.ta.le.vu]', translation: 'How are you? (formal)',   example: 'Bonjour ! Comment allez-vous ?', emoji: '🤔'),
+        LessonItem(term: 'Je vais bien',             pronunciation: '[ʒə.vɛ.bjɛ̃]', translation: 'I am fine',                  example: 'Je vais bien, merci beaucoup !', emoji: '😊'),
+        LessonItem(term: 'Enchanté(e)',              pronunciation: '[ɑ̃.ʃɑ̃.te]',  translation: 'Nice to meet you',           example: 'Je m\'appelle Sophie. — Enchanté !', emoji: '🤝'),
+      ],
+
+      // ── La Famille ───────────────────────────────────────────
+      'cat_famille_fr': [
+        LessonItem(term: 'Le père',        pronunciation: '[lə.pɛʁ]',      translation: 'The father',       example: 'Mon père est médecin.', emoji: '👨'),
+        LessonItem(term: 'La mère',        pronunciation: '[la.mɛʁ]',      translation: 'The mother',       example: 'Ma mère fait la cuisine.', emoji: '👩'),
+        LessonItem(term: 'Le frère',       pronunciation: '[lə.fʁɛʁ]',     translation: 'The brother',      example: 'J\'ai un grand frère.', emoji: '👦'),
+        LessonItem(term: 'La sœur',        pronunciation: '[la.sœʁ]',      translation: 'The sister',       example: 'Ma sœur est au lycée.', emoji: '👧'),
+        LessonItem(term: 'Le grand-père',  pronunciation: '[lə.gʁɑ̃.pɛʁ]', translation: 'The grandfather', example: 'Mon grand-père a 75 ans.', emoji: '👴'),
+        LessonItem(term: 'La grand-mère', pronunciation: '[la.gʁɑ̃.mɛʁ]', translation: 'The grandmother', example: 'Ma grand-mère fait d\'excellentes tartes.', emoji: '👵'),
+        LessonItem(term: 'L\'oncle',       pronunciation: '[lɔ̃kl]',        translation: 'The uncle',        example: 'Mon oncle vit à Lyon.', emoji: '🧔'),
+        LessonItem(term: 'La tante',       pronunciation: '[la.tɑ̃t]',      translation: 'The aunt',         example: 'Ma tante est très gentille.', emoji: '👩'),
+        LessonItem(term: 'Le fils',        pronunciation: '[lə.fis]',       translation: 'The son',          example: 'Voici mon fils, il a 10 ans.', emoji: '👦'),
+        LessonItem(term: 'La fille',       pronunciation: '[la.fij]',       translation: 'The daughter',     example: 'Sa fille est très intelligente.', emoji: '👧'),
+      ],
+
+      // ── Les Couleurs ─────────────────────────────────────────
+      'cat_couleurs_fr': [
+        LessonItem(term: 'Rouge',   pronunciation: '[ʁuʒ]',   translation: 'Red',    example: 'Une pomme rouge.', emoji: '🔴'),
+        LessonItem(term: 'Bleu',    pronunciation: '[blø]',   translation: 'Blue',   example: 'Le ciel est bleu.', emoji: '🔵'),
+        LessonItem(term: 'Vert',    pronunciation: '[vɛʁ]',   translation: 'Green',  example: 'L\'herbe est verte.', emoji: '🟢'),
+        LessonItem(term: 'Jaune',   pronunciation: '[ʒon]',   translation: 'Yellow', example: 'Un citron jaune.', emoji: '🟡'),
+        LessonItem(term: 'Orange',  pronunciation: '[ɔ.ʁɑ̃ʒ]',translation: 'Orange', example: 'Une orange orange !', emoji: '🟠'),
+        LessonItem(term: 'Violet',  pronunciation: '[vjɔ.lɛ]',translation: 'Purple', example: 'Une fleur violette.', emoji: '🟣'),
+        LessonItem(term: 'Rose',    pronunciation: '[ʁoz]',   translation: 'Pink',   example: 'Un flamant rose.', emoji: '🌸'),
+        LessonItem(term: 'Noir',    pronunciation: '[nwaʁ]',  translation: 'Black',  example: 'Un chat noir porte bonheur.', emoji: '⬛'),
+        LessonItem(term: 'Blanc',   pronunciation: '[blɑ̃]',  translation: 'White',  example: 'La neige est blanche.', emoji: '⬜'),
+        LessonItem(term: 'Gris',    pronunciation: '[gʁi]',   translation: 'Grey',   example: 'Un ciel gris en automne.', emoji: '🩶'),
+      ],
+
+      // ── Les Jours ────────────────────────────────────────────
+      'cat_jours_fr': [
+        LessonItem(term: 'Lundi',    pronunciation: '[lœ̃.di]',   translation: 'Monday',    example: 'Lundi, retour au travail !', emoji: '📅'),
+        LessonItem(term: 'Mardi',    pronunciation: '[maʁ.di]',   translation: 'Tuesday',   example: 'On se voit mardi ?', emoji: '📅'),
+        LessonItem(term: 'Mercredi', pronunciation: '[mɛʁ.kʁe.di]', translation: 'Wednesday', example: 'Mercredi, pas d\'école !', emoji: '📅'),
+        LessonItem(term: 'Jeudi',    pronunciation: '[ʒø.di]',    translation: 'Thursday',  example: 'Jeudi soir, ciné !', emoji: '📅'),
+        LessonItem(term: 'Vendredi', pronunciation: '[vɑ̃.dʁe.di]',translation: 'Friday',    example: 'Vendredi, fin de la semaine !', emoji: '🎉'),
+        LessonItem(term: 'Samedi',   pronunciation: '[sam.di]',   translation: 'Saturday',  example: 'Samedi marché au village.', emoji: '🛍️'),
+        LessonItem(term: 'Dimanche', pronunciation: '[di.mɑ̃ʃ]',  translation: 'Sunday',    example: 'Dimanche, repos et famille.', emoji: '☀️'),
+        LessonItem(term: 'Aujourd\'hui', pronunciation: '[o.ʒuʁ.dɥi]', translation: 'Today', example: 'Aujourd\'hui c\'est lundi.', emoji: '📆'),
+        LessonItem(term: 'Demain',   pronunciation: '[də.mɛ̃]',   translation: 'Tomorrow',  example: 'À demain !', emoji: '⏭️'),
+        LessonItem(term: 'Hier',     pronunciation: '[jɛʁ]',      translation: 'Yesterday', example: 'Hier il faisait beau.', emoji: '⏮️'),
+      ],
+
+      // ── Les Animaux ──────────────────────────────────────────
+      'cat_animaux_fr': [
+        LessonItem(term: 'Le chien',  pronunciation: '[lə.ʃjɛ̃]',  translation: 'The dog',      example: 'Mon chien s\'appelle Rex.', emoji: '🐕'),
+        LessonItem(term: 'Le chat',   pronunciation: '[lə.ʃa]',    translation: 'The cat',      example: 'Le chat dort sur le canapé.', emoji: '🐈'),
+        LessonItem(term: 'L\'oiseau', pronunciation: '[lwa.zo]',   translation: 'The bird',     example: 'L\'oiseau chante le matin.', emoji: '🐦'),
+        LessonItem(term: 'Le cheval', pronunciation: '[lə.ʃval]',  translation: 'The horse',    example: 'Le cheval court dans le pré.', emoji: '🐴'),
+        LessonItem(term: 'La vache',  pronunciation: '[la.vaʃ]',   translation: 'The cow',      example: 'La vache donne du lait.', emoji: '🐄'),
+        LessonItem(term: 'Le lapin',  pronunciation: '[lə.lapɛ̃]', translation: 'The rabbit',   example: 'Le lapin mange des carottes.', emoji: '🐇'),
+        LessonItem(term: 'Le poisson',pronunciation: '[lə.pwa.sɔ̃]',translation: 'The fish',    example: 'Le poisson nage dans l\'aquarium.', emoji: '🐟'),
+        LessonItem(term: 'L\'éléphant',pronunciation: '[le.le.fɑ̃]',translation: 'The elephant',example: 'L\'éléphant est le plus grand animal terrestre.', emoji: '🐘'),
+        LessonItem(term: 'Le lion',   pronunciation: '[lə.ljɔ̃]',  translation: 'The lion',     example: 'Le lion rugit dans la savane.', emoji: '🦁'),
+        LessonItem(term: 'Le canard', pronunciation: '[lə.ka.naʁ]',translation: 'The duck',    example: 'Le canard barbote dans l\'eau.', emoji: '🦆'),
+      ],
+
+      // ── Les Aliments ─────────────────────────────────────────
+      'cat_aliments_fr': [
+        LessonItem(term: 'Le pain',    pronunciation: '[lə.pɛ̃]',   translation: 'The bread',   example: 'Je mange du pain au petit-déjeuner.', emoji: '🍞'),
+        LessonItem(term: 'Le lait',    pronunciation: '[lə.lɛ]',    translation: 'The milk',    example: 'Un verre de lait froid.', emoji: '🥛'),
+        LessonItem(term: 'Le café',    pronunciation: '[lə.ka.fe]', translation: 'The coffee',  example: 'Un café, s\'il vous plaît.', emoji: '☕'),
+        LessonItem(term: 'La pomme',   pronunciation: '[la.pɔm]',   translation: 'The apple',   example: 'Une pomme par jour éloigne le médecin.', emoji: '🍎'),
+        LessonItem(term: 'Le fromage', pronunciation: '[lə.fʁo.maʒ]',translation: 'The cheese', example: 'La France produit 1000 fromages.', emoji: '🧀'),
+        LessonItem(term: 'Le poulet',  pronunciation: '[lə.pu.lɛ]', translation: 'The chicken', example: 'Du poulet rôti pour ce soir.', emoji: '🍗'),
+        LessonItem(term: 'L\'eau',     pronunciation: '[lo]',        translation: 'The water',   example: 'Boire de l\'eau chaque jour.', emoji: '💧'),
+        LessonItem(term: 'Le riz',     pronunciation: '[lə.ʁi]',     translation: 'The rice',    example: 'Du riz avec des légumes.', emoji: '🍚'),
+        LessonItem(term: 'La tomate',  pronunciation: '[la.tɔ.mat]', translation: 'The tomato',  example: 'Une tomate bien rouge et juteuse.', emoji: '🍅'),
+        LessonItem(term: 'Le chocolat',pronunciation: '[lə.ʃɔ.kɔ.la]',translation: 'The chocolate',example: 'Un carré de chocolat noir.', emoji: '🍫'),
+      ],
+
+      // ── Les Verbes de Base ───────────────────────────────────
+      'cat_verbes_fr': [
+        LessonItem(term: 'Être',    pronunciation: '[ɛtʁ]',    translation: 'To be',      example: 'Je suis français.', emoji: '🔵'),
+        LessonItem(term: 'Avoir',   pronunciation: '[a.vwaʁ]', translation: 'To have',    example: 'J\'ai deux enfants.', emoji: '🤲'),
+        LessonItem(term: 'Aller',   pronunciation: '[a.le]',   translation: 'To go',      example: 'Je vais à Paris demain.', emoji: '🚶'),
+        LessonItem(term: 'Faire',   pronunciation: '[fɛʁ]',    translation: 'To do / make', example: 'Je fais du sport le matin.', emoji: '💪'),
+        LessonItem(term: 'Manger',  pronunciation: '[mɑ̃.ʒe]', translation: 'To eat',     example: 'Nous mangeons à midi.', emoji: '🍽️'),
+        LessonItem(term: 'Boire',   pronunciation: '[bwaʁ]',   translation: 'To drink',   example: 'Il boit un verre d\'eau.', emoji: '🥤'),
+        LessonItem(term: 'Parler',  pronunciation: '[paʁ.le]', translation: 'To speak',   example: 'Elle parle trois langues.', emoji: '💬'),
+        LessonItem(term: 'Aimer',   pronunciation: '[ɛ.me]',   translation: 'To love / like', example: 'J\'aime la musique classique.', emoji: '❤️'),
+        LessonItem(term: 'Vouloir', pronunciation: '[vu.lwaʁ]',translation: 'To want',    example: 'Je veux apprendre le français.', emoji: '🌟'),
+        LessonItem(term: 'Dormir',  pronunciation: '[dɔʁ.miʁ]',translation: 'To sleep',   example: 'Il dort huit heures par nuit.', emoji: '😴'),
+      ],
+
+      // ── Les Mois ─────────────────────────────────────────────
+      'cat_mois_fr': [
+        LessonItem(term: 'Janvier',   pronunciation: '[ʒɑ̃.vje]',  translation: 'January',   example: 'Janvier est le premier mois de l\'année.', emoji: '❄️'),
+        LessonItem(term: 'Février',   pronunciation: '[fe.vʁije]', translation: 'February',  example: 'Février est le mois le plus court.', emoji: '💝'),
+        LessonItem(term: 'Mars',      pronunciation: '[maʁs]',     translation: 'March',     example: 'En mars, le printemps arrive.', emoji: '🌱'),
+        LessonItem(term: 'Avril',     pronunciation: '[avʁil]',    translation: 'April',     example: 'En avril, ne te découvre pas d\'un fil !', emoji: '🌸'),
+        LessonItem(term: 'Mai',       pronunciation: '[mɛ]',       translation: 'May',       example: 'Le muguet symbolise le 1er mai.', emoji: '🌼'),
+        LessonItem(term: 'Juin',      pronunciation: '[ʒɥɛ̃]',     translation: 'June',      example: 'Juin marque le début de l\'été.', emoji: '☀️'),
+        LessonItem(term: 'Juillet',   pronunciation: '[ʒɥijɛ]',    translation: 'July',      example: 'Le 14 juillet est la fête nationale française.', emoji: '🎆'),
+        LessonItem(term: 'Août',      pronunciation: '[u]',         translation: 'August',    example: 'En août, tout le monde est en vacances.', emoji: '🏖️'),
+        LessonItem(term: 'Septembre', pronunciation: '[sɛp.tɑ̃bʁ]',translation: 'September', example: 'La rentrée scolaire est en septembre.', emoji: '📚'),
+        LessonItem(term: 'Octobre',   pronunciation: '[ɔk.tɔbʁ]',  translation: 'October',   example: 'En octobre, les feuilles tombent des arbres.', emoji: '🍂'),
       ],
     },
     // ───────── TURC ─────────

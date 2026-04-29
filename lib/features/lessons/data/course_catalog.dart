@@ -3,7 +3,9 @@ import '../models/lesson_course.dart';
 import 'courses/numbers_courses.dart';
 import 'courses/greetings_courses.dart';
 import 'courses/alphabet_courses.dart';
+import 'courses/alphabet_fr_courses.dart';
 import 'courses/colors_courses.dart';
+import 'courses/french_courses.dart';
 
 class CourseCatalog {
   /// Clé de lookup = languageId + '_' + categoryId
@@ -11,7 +13,9 @@ class CourseCatalog {
         ...NumbersCourses.all,
         ...GreetingsCourses.all,
         ...AlphabetCourses.all,
+        ...AlphabetFrCourses.all,
         ...ColorsCourses.all,
+        ...FrenchCourses.all,
       };
 
   // ─── Lookup principal ───────────────────────────────────────
@@ -113,11 +117,15 @@ class CourseCatalog {
 
   static String _typeToLabel(String type, String languageId) {
     const Map<String, Map<String, String>> labels = {
-      'nombres': {'fr': 'Les nombres', 'en': 'Numbers', 'ar': 'الأرقام', 'es': 'Números'},
-      'alphabet': {'fr': 'L\'alphabet', 'en': 'Alphabet', 'ar': 'الأبجدية', 'es': 'Alfabeto'},
-      'salutations': {'fr': 'Les salutations', 'en': 'Greetings', 'ar': 'التحيات', 'es': 'Saludos'},
-      'famille': {'fr': 'La famille', 'en': 'Family', 'ar': 'العائلة', 'es': 'Familia'},
-      'couleurs': {'fr': 'Les couleurs', 'en': 'Colors', 'ar': 'الألوان', 'es': 'Colores'},
+      'nombres':    {'fr': 'Les nombres',      'en': 'Numbers',   'ar': 'الأرقام',    'es': 'Números'},
+      'alphabet':   {'fr': 'L\'alphabet',      'en': 'Alphabet',  'ar': 'الأبجدية',  'es': 'Alfabeto'},
+      'salutations':{'fr': 'Les salutations',  'en': 'Greetings', 'ar': 'التحيات',   'es': 'Saludos'},
+      'famille':    {'fr': 'La famille',        'en': 'Family',    'ar': 'العائلة',    'es': 'Familia'},
+      'couleurs':   {'fr': 'Les couleurs',      'en': 'Colors',    'ar': 'الألوان',    'es': 'Colores'},
+      'jours':      {'fr': 'Les jours',         'en': 'Days',      'ar': 'الأيام',     'es': 'Días'},
+      'animaux':    {'fr': 'Les animaux',       'en': 'Animals',   'ar': 'الحيوانات',  'es': 'Animales'},
+      'aliments':   {'fr': 'Les aliments',      'en': 'Food',      'ar': 'الطعام',     'es': 'Alimentos'},
+      'verbes':     {'fr': 'Les verbes de base','en': 'Basic verbs','ar': 'الأفعال الأساسية','es': 'Verbos básicos'},
     };
     return labels[type]?[languageId] ?? labels[type]?['en'] ?? type;
   }

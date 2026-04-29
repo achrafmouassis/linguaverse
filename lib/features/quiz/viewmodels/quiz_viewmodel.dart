@@ -53,7 +53,7 @@ class QuizViewModel extends StateNotifier<QuizState> {
     int? levelIndex,
     int? lessonIndex,   // index (0,1,2) de la leçon dans son niveau
     bool isUnitFinal = false,
-    int questionCount = 8,
+    int questionCount = 10,
   }) async {
     state = state.copyWith(
       phase: QuizPhase.loading,
@@ -75,29 +75,16 @@ class QuizViewModel extends StateNotifier<QuizState> {
         return;
       }
 
-      // Quiz lié à une leçon spécifique : on prend les items de CETTE leçon
-      // Chaque leçon correspond à ~2 items dans LessonContentData.
-      // Ex : level 0 / lesson 0 → items[0..2], level 0 / lesson 1 → items[2..4]
-      if (levelIndex != null && !isUnitFinal && lessonIndex != null) {
-        final globalIdx = levelIndex * 3 + lessonIndex; // position absolue de la leçon
-        final start = globalIdx * 2;                    // 2 items par leçon
-        final end = (start + 3).clamp(0, items.length);
-        if (start < items.length) {
-          items = items.sublist(start, end);
-        }
-      } else if (levelIndex != null && !isUnitFinal) {
-        // Fallback niveau entier
-        final start = levelIndex * 2;
-        final end = (start + 3).clamp(0, items.length);
-        if (start < items.length) items = items.sublist(start, end);
-      }
+      // On utilise TOUT le contenu de la catégorie pour générer 10 questions variées.
+      // Cela garantit toujours assez d'items, quels que soient levelIndex/lessonIndex.
+      // Les items cyclent par quizz grâce au modulo dans QuestionGenerator.
 
       final questions = QuestionGenerator.generate(
         lessonItems: items,
         languageId: languageId,
         categoryId: categoryId,
         lessonId: lessonId,
-        count: isUnitFinal ? 15 : questionCount, // Plus de questions pour le final
+        count: isUnitFinal ? 15 : questionCount,
       );
 
       if (questions.isEmpty) {

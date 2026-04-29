@@ -35,7 +35,7 @@ class MultipleChoiceCard extends StatelessWidget {
             question.prompt,
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: AppColors.primary,
+                  color: Colors.white,
                   fontSize: 36,
                 ),
             textAlign: TextAlign.center,
@@ -82,7 +82,7 @@ class TrueFalseCard extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
-                ?.copyWith(height: 1.5),
+                ?.copyWith(height: 1.5, color: Colors.white),
             textAlign: TextAlign.center,
           ),
         ),
@@ -226,12 +226,12 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _isPlaying
-                        ? AppColors.primary
-                        : AppColors.primary.withOpacity(0.1),
+                        ? Colors.white
+                        : Colors.white.withOpacity(0.2),
                     boxShadow: _isPlaying
                         ? [
                             BoxShadow(
-                              color: AppColors.primary.withOpacity(0.4),
+                              color: Colors.white.withOpacity(0.4),
                               blurRadius: 20,
                               spreadRadius: 4,
                             )
@@ -243,14 +243,16 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
                         ? Icons.volume_up_rounded
                         : Icons.play_arrow_rounded,
                     size: 48,
-                    color: _isPlaying ? Colors.white : AppColors.primary,
+                    color: _isPlaying ? AppColors.primary : Colors.white,
                   ),
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 'Appuyez pour écouter',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.white70,
+                ),
               ),
             ],
           ),
@@ -296,7 +298,7 @@ class FillInBlankCard extends StatelessWidget {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
               children: _buildSpans(question.sentenceWithBlank, context),
             ),
           ),
@@ -326,12 +328,12 @@ class FillInBlankCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
           decoration: BoxDecoration(
             border: Border(
-                bottom: BorderSide(color: AppColors.primary, width: 2)),
+                bottom: const BorderSide(color: Colors.white, width: 2)),
           ),
           child: Text(
             selectedAnswer ?? '  ?  ',
-            style: TextStyle(
-              color: AppColors.primary,
+            style: const TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.w800,
               fontSize: 18,
             ),
@@ -409,7 +411,7 @@ class _MatchingCardState extends State<MatchingCard> {
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium
-                ?.copyWith(fontStyle: FontStyle.italic),
+                ?.copyWith(fontStyle: FontStyle.italic, color: Colors.white70),
             textAlign: TextAlign.center,
           ),
         ),

@@ -120,19 +120,107 @@ class _QuizPageState extends ConsumerState<QuizPage>
       }
     });
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(widget.lessonTitle,
-            style: const TextStyle(fontWeight: FontWeight.w700)),
-        leading: IconButton(
-          icon: const Icon(Icons.close_rounded),
-          onPressed: () => _showExitDialog(context, vm),
+      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF0F4FF),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // ─── Top bar ───
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => _showExitDialog(context, vm),
+                    child: Container(
+                      width: 40, height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.close_rounded, size: 22),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: LinearProgressIndicator(
+                            value: state.totalQuestions > 0 ? (state.currentIndex) / state.totalQuestions : 0.0,
+                            minHeight: 8,
+                            backgroundColor: Colors.grey.withOpacity(0.15),
+                            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Quiz · ${widget.lessonTitle}',
+                              style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+                            ),
+                            // Quick Timer Badge integrated directly into the Top Bar
+                            _buildTimerBadge(state.timerProgress),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Timer line indicator just below for visual flair
+            TweenAnimationBuilder<double>(
+              tween: Tween(begin: 1.0, end: state.timerProgress),
+              duration: const Duration(milliseconds: 300),
+              builder: (_, value, __) {
+                Color c = value > 0.5 ? AppColors.correctGreen : (value > 0.25 ? AppColors.streakOrange : AppColors.wrongRed);
+                return LinearProgressIndicator(
+                  value: value,
+                  minHeight: 2,
+                  backgroundColor: Colors.transparent,
+                  valueColor: AlwaysStoppedAnimation<Color>(c),
+                );
+              },
+            ),
+
+            // ─── Content ───
+            Expanded(child: _buildBody(state, vm)),
+          ],
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
-      body: _buildBody(state, vm),
+    );
+  }
+
+  Widget _buildTimerBadge(double progress) {
+    final secs = (progress * 30).ceil();
+    Color color = progress > 0.5 ? AppColors.correctGreen : (progress > 0.25 ? AppColors.streakOrange : AppColors.wrongRed);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.4)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.timer_outlined, size: 12, color: color),
+          const SizedBox(width: 4),
+          Text(
+            '${secs}s',
+            style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 11),
+          ),
+        ],
+      ),
     );
   }
 
@@ -192,13 +280,6 @@ class _QuizPageState extends ConsumerState<QuizPage>
 
     return Column(
       children: [
-        // Header: progress + timer
-        QuizProgressBar(
-          current: state.currentIndex + 1,
-          total: state.totalQuestions,
-          timerProgress: state.timerProgress,
-        ),
-
         // Question card (animated slide-in)
         Expanded(
           child: SingleChildScrollView(
