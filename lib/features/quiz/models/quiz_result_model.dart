@@ -6,7 +6,7 @@ import 'question_model.dart';
 // ─────────────────────────────────────────────
 class AnsweredQuestion {
   final Question question;
-  final String? userAnswer;    // null = timeout
+  final String? userAnswer; // null = timeout
   final bool isCorrect;
   final int timeSpentMs;
 
@@ -54,8 +54,7 @@ class QuizResult {
   });
 
   /// Score en pourcentage (0–100)
-  int get scorePercent =>
-      totalQuestions == 0 ? 0 : (correctCount / totalQuestions * 100).ceil();
+  int get scorePercent => totalQuestions == 0 ? 0 : (correctCount / totalQuestions * 100).ceil();
 
   /// Lettre de grade
   String get grade {
@@ -87,16 +86,13 @@ class QuizResult {
         lessonId: map['lessonId'] as String,
         categoryId: map['categoryId'] as String,
         languageId: map['languageId'] as String,
-        completedAt: DateTime.fromMillisecondsSinceEpoch(
-            map['completedAt'] as int),
+        completedAt: DateTime.fromMillisecondsSinceEpoch(map['completedAt'] as int),
         answers: const [],
         totalQuestions: map['totalQuestions'] as int,
         correctCount: map['correctCount'] as int,
         xpEarned: map['xpEarned'] as int,
         durationSeconds: map['durationSeconds'] as int,
-        wordsToReview: (map['wordsToReview'] as String)
-            .split(',')
-            .where((s) => s.isNotEmpty)
-            .toList(),
+        wordsToReview:
+            (map['wordsToReview'] as String).split(',').where((s) => s.isNotEmpty).toList(),
       );
 }

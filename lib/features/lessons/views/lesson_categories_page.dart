@@ -24,7 +24,8 @@ class LessonCategoriesPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${language.flagEmoji} ${language.name}', style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('${language.flagEmoji} ${language.name}',
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => context.pop(),
@@ -83,12 +84,14 @@ class _CategoryNodeState extends State<_CategoryNode> {
 
   @override
   Widget build(BuildContext context) {
-    final double nodeSize = 90.0;
-    
+    const double nodeSize = 90.0;
+
     // Utiliser le vrai état de verrouillage
     final bool isActualLocked = !widget.category.isUnlocked;
 
-    final displayColor = isActualLocked ? (widget.isDark ? Colors.grey.shade800 : Colors.grey.shade300) : widget.color;
+    final displayColor = isActualLocked
+        ? (widget.isDark ? Colors.grey.shade800 : Colors.grey.shade300)
+        : widget.color;
     final iconColor = isActualLocked ? Colors.grey.shade500 : Colors.white;
 
     return GestureDetector(
@@ -174,8 +177,8 @@ class _CategoryNodeState extends State<_CategoryNode> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: isActualLocked 
-                  ? (widget.isDark ? Colors.white30 : Colors.black38) 
+              color: isActualLocked
+                  ? (widget.isDark ? Colors.white30 : Colors.black38)
                   : (widget.isDark ? Colors.white : AppColors.textPrimary),
             ),
           ),

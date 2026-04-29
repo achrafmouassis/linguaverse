@@ -4,14 +4,14 @@
 /// Algorithme simplifié (SM-2 like) :
 ///   interval augmente si réponse correcte, reset si incorrecte.
 class SrsCard {
-  final String wordTerm;      // Clé : term de LessonItem
+  final String wordTerm; // Clé : term de LessonItem
   final String categoryId;
   final String languageId;
 
-  final int repetitions;      // Nombre de succès consécutifs
-  final double easeFactor;    // Facteur de facilité (1.3 – 2.5)
-  final int intervalDays;     // Prochain intervalle de révision (jours)
-  final DateTime nextReview;  // Date de la prochaine révision
+  final int repetitions; // Nombre de succès consécutifs
+  final double easeFactor; // Facteur de facilité (1.3 – 2.5)
+  final int intervalDays; // Prochain intervalle de révision (jours)
+  final DateTime nextReview; // Date de la prochaine révision
   final DateTime lastReview;
   final int totalAttempts;
   final int correctAttempts;
@@ -47,8 +47,7 @@ class SrsCard {
     }
 
     final int newRep = repetitions + 1;
-    final double newEF = (easeFactor + (0.1 - (5 - 4) * (0.08 + (5 - 4) * 0.02)))
-        .clamp(1.3, 2.5);
+    final double newEF = (easeFactor + (0.1 - (5 - 4) * (0.08 + (5 - 4) * 0.02))).clamp(1.3, 2.5);
     final int newInterval = newRep == 1
         ? 1
         : newRep == 2
@@ -71,8 +70,7 @@ class SrsCard {
 
   bool get isDueForReview => DateTime.now().isAfter(nextReview);
 
-  double get accuracy =>
-      totalAttempts == 0 ? 0.0 : correctAttempts / totalAttempts;
+  double get accuracy => totalAttempts == 0 ? 0.0 : correctAttempts / totalAttempts;
 
   Map<String, dynamic> toMap() => {
         'wordTerm': wordTerm,

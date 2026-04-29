@@ -49,8 +49,7 @@ class QuizProgressBar extends StatelessWidget {
             value: value,
             minHeight: 6,
             backgroundColor: AppColors.outline,
-            valueColor:
-                const AlwaysStoppedAnimation<Color>(AppColors.primary),
+            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
           ),
         ),
         // Timer bar
@@ -91,8 +90,7 @@ class _TimerBadge extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             '${secs}s',
-            style: TextStyle(
-                color: color, fontWeight: FontWeight.w700, fontSize: 13),
+            style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 13),
           ),
         ],
       ),

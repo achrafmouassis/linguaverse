@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/home/presentation/pages/home_page.dart';
-<<<<<<< HEAD
 import 'features/gamification/presentation/pages/progression_dashboard_page.dart';
 import 'features/gamification/presentation/pages/badges_page.dart';
 import 'features/gamification/presentation/pages/leaderboard_page.dart';
@@ -15,7 +14,6 @@ import 'features/gamification/presentation/mini_games/emoji_game_page.dart';
 import 'features/duel/duel_exports.dart';
 import 'features/ar/presentation/pages/ar_scanner_page.dart';
 import 'package:flutter/foundation.dart';
-=======
 import 'features/quiz/views/quiz_entry_page.dart';
 import 'features/quiz/views/quiz_page.dart';
 import 'features/quiz/views/quiz_result_page.dart';
@@ -24,7 +22,6 @@ import 'features/lessons/views/lesson_categories_page.dart';
 import 'features/lessons/views/category_levels_page.dart';
 import 'features/lessons/views/lesson_content_page.dart';
 import 'features/quiz/models/quiz_result_model.dart';
->>>>>>> integration/quiz-lessons
 
 class AppRoutes {
   static const String home = '/';
@@ -57,7 +54,7 @@ final GoRouter appRouter = GoRouter(
         transitionDuration: const Duration(milliseconds: 350),
       ),
     ),
-<<<<<<< HEAD
+
     GoRoute(
       path: '/gamification',
       name: 'gamification',
@@ -124,8 +121,6 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const EmojiGamePage(),
     ),
     // Placeholder routes
-=======
->>>>>>> integration/quiz-lessons
     GoRoute(
       path: AppRoutes.lessons,
       name: 'lessons',
@@ -179,18 +174,18 @@ final GoRouter appRouter = GoRouter(
       name: 'quiz',
       builder: (context, state) {
         final qp = state.uri.queryParameters;
-        final languageId  = qp['languageId'];
-        final categoryId  = qp['categoryId'];
-        final lessonId    = qp['lessonId'];
-        final levelIndex  = qp['levelIndex'] != null ? int.tryParse(qp['levelIndex']!) : null;
+        final languageId = qp['languageId'];
+        final categoryId = qp['categoryId'];
+        final lessonId = qp['lessonId'];
+        final levelIndex = qp['levelIndex'] != null ? int.tryParse(qp['levelIndex']!) : null;
         final lessonIndex = qp['lessonIndex'] != null ? int.tryParse(qp['lessonIndex']!) : null;
         final isUnitFinal = qp['isUnitFinal'] == 'true';
 
         return QuizEntryPage(
-          languageId:  languageId,
-          categoryId:  categoryId,
-          lessonId:    lessonId,
-          levelIndex:  levelIndex,
+          languageId: languageId,
+          categoryId: categoryId,
+          lessonId: lessonId,
+          levelIndex: levelIndex,
           lessonIndex: lessonIndex,
           isUnitFinal: isUnitFinal,
         );
@@ -202,11 +197,11 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>;
             return QuizPage(
-              lessonId:    extra['lessonId']    ?? 'quiz_fallback',
+              lessonId: extra['lessonId'] ?? 'quiz_fallback',
               lessonTitle: extra['lessonTitle'] ?? 'Quiz',
-              languageId:  extra['languageId'],
-              categoryId:  extra['categoryId'],
-              levelIndex:  extra['levelIndex'],
+              languageId: extra['languageId'],
+              categoryId: extra['categoryId'],
+              levelIndex: extra['levelIndex'],
               lessonIndex: extra['lessonIndex'],
               isUnitFinal: extra['isUnitFinal'] ?? false,
             );

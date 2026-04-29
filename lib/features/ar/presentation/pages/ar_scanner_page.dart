@@ -19,8 +19,7 @@ class ArScannerPage extends ConsumerStatefulWidget {
   ConsumerState<ArScannerPage> createState() => _ArScannerPageState();
 }
 
-class _ArScannerPageState extends ConsumerState<ArScannerPage>
-    with WidgetsBindingObserver {
+class _ArScannerPageState extends ConsumerState<ArScannerPage> with WidgetsBindingObserver {
   CameraController? _cameraController;
   List<CameraDescription> _cameras = [];
   bool _isCameraInitialized = false;
@@ -80,8 +79,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
       if (mode != ArScanMode.object) return;
 
       final rotation = _getRotation();
-      final detections =
-          await ref.read(arObjectServiceProvider).processFrame(image, rotation);
+      final detections = await ref.read(arObjectServiceProvider).processFrame(image, rotation);
 
       if (!mounted || detections == null) return;
       final lang = ref.read(arTargetLanguageProvider);
@@ -102,14 +100,13 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
 
     try {
       await _stopObjectDetectionStream();
-      
+
       // Petit délai pour s'assurer que le flux est bien arrêté niveau matériel
       await Future.delayed(const Duration(milliseconds: 300));
 
       final xFile = await _cameraController!.takePicture();
       final inputImage = InputImage.fromFilePath(xFile.path);
-      final detection =
-          await ref.read(arTextServiceProvider).processCapture(inputImage);
+      final detection = await ref.read(arTextServiceProvider).processCapture(inputImage);
 
       if (!mounted) return;
 
@@ -125,8 +122,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
             content: const Text('Aucun texte détecté — pointez plus près'),
             backgroundColor: AppColors.bgLevel2,
             behavior: SnackBarBehavior.floating,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             margin: const EdgeInsets.all(16),
           ));
         }
@@ -154,8 +150,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
   }
 
   InputImageRotation _getRotation() {
-    final sensorOrientation =
-        _cameras.isNotEmpty ? _cameras.first.sensorOrientation : 0;
+    final sensorOrientation = _cameras.isNotEmpty ? _cameras.first.sensorOrientation : 0;
     return switch (sensorOrientation) {
       90 => InputImageRotation.rotation90deg,
       180 => InputImageRotation.rotation180deg,
@@ -251,8 +246,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
               top: MediaQuery.of(context).padding.top + 8,
               right: 12,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(20),
@@ -268,9 +262,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
-                    color: arState.apiCallsRemaining > 0
-                        ? AppColors.xpGold
-                        : AppColors.wrongRed,
+                    color: arState.apiCallsRemaining > 0 ? AppColors.xpGold : AppColors.wrongRed,
                   ),
                 ),
               ),
@@ -309,8 +301,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
               right: 20,
               child: Center(
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(20),
@@ -371,8 +362,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
               left: 20,
               right: 20,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 decoration: BoxDecoration(
                   color: AppColors.wrongRed.withValues(alpha: 0.15),
                   border: Border.all(
@@ -399,8 +389,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
                       ),
                     ),
                     GestureDetector(
-                      onTap: () =>
-                          ref.read(arScannerProvider.notifier).clearError(),
+                      onTap: () => ref.read(arScannerProvider.notifier).clearError(),
                       child: const Icon(
                         Icons.close_rounded,
                         color: AppColors.wrongRed,
@@ -462,9 +451,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage>
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: selected
-              ? AppColors.primary.withValues(alpha: 0.85)
-              : Colors.transparent,
+          color: selected ? AppColors.primary.withValues(alpha: 0.85) : Colors.transparent,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Row(

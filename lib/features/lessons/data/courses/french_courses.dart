@@ -4,12 +4,11 @@ import '../../models/lesson_course.dart';
 
 class FrenchCourses {
   static Map<String, List<LessonCourse>> all = {
-
     // ════════════════════════════════════
     // FRANÇAIS – FAMILLE
     // ════════════════════════════════════
     'fr_cat_famille_fr': [
-      LessonCourse(
+      const LessonCourse(
         id: 'fr_famille_n1_c1',
         title: 'La famille proche',
         language: 'Français',
@@ -85,8 +84,7 @@ class FrenchCourses {
             example: 'Sa fille est médecin.',
           ),
         ],
-        phoneticsExplanation:
-            '• "Père/mère" : le è [ɛ] est ouvert, comme dans "faire".\n'
+        phoneticsExplanation: '• "Père/mère" : le è [ɛ] est ouvert, comme dans "faire".\n'
             '• "Sœur" [sœʁ] : le œ est arrondi — un son entre "eu" et "è".\n'
             '• "Grand-père" : le d de "grand" est muet, mais avec liaison [gʁɑ̃.t‿pɛʁ].\n'
             '• "Oncle" [ɔ̃kl] : o nasalisé + kl final sans voyelle épenthétique.\n'
@@ -114,7 +112,7 @@ class FrenchCourses {
     // FRANÇAIS – JOURS DE LA SEMAINE
     // ════════════════════════════════════
     'fr_cat_jours_fr': [
-      LessonCourse(
+      const LessonCourse(
         id: 'fr_jours_n1_c1',
         title: 'Les jours de la semaine',
         language: 'Français',
@@ -190,8 +188,7 @@ class FrenchCourses {
             example: 'Hier, il faisait très beau.',
           ),
         ],
-        phoneticsExplanation:
-            '• "Lundi" [lœ̃.di] : "un" est une voyelle nasale [œ̃].\n'
+        phoneticsExplanation: '• "Lundi" [lœ̃.di] : "un" est une voyelle nasale [œ̃].\n'
             '• "Mercredi" [mɛʁ.kʁe.di] : 4 syllabes bien distinctes.\n'
             '• "Vendredi" [vɑ̃.dʁe.di] : "en" nasalisé [ɑ̃] + "dr" groupe consonantique.\n'
             '• "Dimanche" [di.mɑ̃ʃ] : "an" nasalisé + finale "che" [ʃ].\n'
@@ -219,7 +216,7 @@ class FrenchCourses {
     // FRANÇAIS – ANIMAUX
     // ════════════════════════════════════
     'fr_cat_animaux_fr': [
-      LessonCourse(
+      const LessonCourse(
         id: 'fr_animaux_n1_c1',
         title: 'Les animaux du quotidien',
         language: 'Français',
@@ -324,7 +321,7 @@ class FrenchCourses {
     // FRANÇAIS – ALIMENTS
     // ════════════════════════════════════
     'fr_cat_aliments_fr': [
-      LessonCourse(
+      const LessonCourse(
         id: 'fr_aliments_n1_c1',
         title: 'Les aliments de base',
         language: 'Français',
@@ -429,7 +426,7 @@ class FrenchCourses {
     // FRANÇAIS – VERBES DE BASE
     // ════════════════════════════════════
     'fr_cat_verbes_fr': [
-      LessonCourse(
+      const LessonCourse(
         id: 'fr_verbes_n1_c1',
         title: 'Les verbes essentiels',
         language: 'Français',
@@ -505,8 +502,7 @@ class FrenchCourses {
             example: 'Il faut dormir 8 heures par nuit.',
           ),
         ],
-        phoneticsExplanation:
-            '• "Être" [ɛtʁ] : "ê" ouvert [ɛ] + groupe "tr".\n'
+        phoneticsExplanation: '• "Être" [ɛtʁ] : "ê" ouvert [ɛ] + groupe "tr".\n'
             '• "Avoir" [a.vwaʁ] : "oi" = diphtongue [wa].\n'
             '• "Faire" [fɛʁ] : como "fère", guttural r final.\n'
             '• "Manger" [mɑ̃.ʒe] : "an" nasalisé + "ger" = [ʒe].\n'

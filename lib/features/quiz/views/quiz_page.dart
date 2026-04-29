@@ -5,10 +5,8 @@ import '../../../shared/theme/app_colors.dart';
 import '../models/question_model.dart';
 import '../viewmodels/quiz_state.dart';
 import '../viewmodels/quiz_viewmodel.dart';
-import 'quiz_result_page.dart';
 import 'widgets/feedback_overlay.dart';
 import 'widgets/question_cards.dart';
-import 'widgets/quiz_progress_bar.dart';
 
 class QuizPage extends ConsumerStatefulWidget {
   final String lessonId;
@@ -34,16 +32,14 @@ class QuizPage extends ConsumerStatefulWidget {
   ConsumerState<QuizPage> createState() => _QuizPageState();
 }
 
-class _QuizPageState extends ConsumerState<QuizPage>
-    with SingleTickerProviderStateMixin {
+class _QuizPageState extends ConsumerState<QuizPage> with SingleTickerProviderStateMixin {
   late final AnimationController _slideCtrl;
   late final Animation<Offset> _slideAnim;
 
   @override
   void initState() {
     super.initState();
-    _slideCtrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 350));
+    _slideCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 350));
     _slideAnim = Tween<Offset>(
       begin: const Offset(1.0, 0),
       end: Offset.zero,
@@ -52,13 +48,13 @@ class _QuizPageState extends ConsumerState<QuizPage>
     // Démarrer le quiz au prochain frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(quizViewModelProvider.notifier).startQuiz(
-            lessonId:    widget.lessonId,
-            categoryId:  widget.categoryId,
-            languageId:  widget.languageId,
-            levelIndex:  widget.levelIndex,
+            lessonId: widget.lessonId,
+            categoryId: widget.categoryId,
+            languageId: widget.languageId,
+            levelIndex: widget.levelIndex,
             lessonIndex: widget.lessonIndex,
             isUnitFinal: widget.isUnitFinal,
-      );
+          );
     });
   }
 
@@ -94,10 +90,10 @@ class _QuizPageState extends ConsumerState<QuizPage>
               context.pushReplacementNamed(
                 'quiz_page',
                 extra: {
-                  'lessonId':    widget.lessonId,
-                  'categoryId':  widget.categoryId,
-                  'languageId':  widget.languageId,
-                  'levelIndex':  widget.levelIndex,
+                  'lessonId': widget.lessonId,
+                  'categoryId': widget.categoryId,
+                  'languageId': widget.languageId,
+                  'levelIndex': widget.levelIndex,
                   'lessonIndex': widget.lessonIndex,
                   'isUnitFinal': widget.isUnitFinal,
                   'lessonTitle': widget.lessonTitle,
@@ -107,12 +103,12 @@ class _QuizPageState extends ConsumerState<QuizPage>
           },
         );
       }
-      
+
       // Déclenche animation slide à chaque nouvelle question
       // (On l'active aussi quand on passe du chargement à la 1re question)
-      final hasTransitionedToAnswering = 
+      final hasTransitionedToAnswering =
           prev?.phase == QuizPhase.loading && next.phase == QuizPhase.answering;
-      final hasChangedQuestion = 
+      final hasChangedQuestion =
           prev?.currentIndex != next.currentIndex && next.phase == QuizPhase.answering;
 
       if (hasTransitionedToAnswering || hasChangedQuestion) {
@@ -135,7 +131,8 @@ class _QuizPageState extends ConsumerState<QuizPage>
                   GestureDetector(
                     onTap: () => _showExitDialog(context, vm),
                     child: Container(
-                      width: 40, height: 40,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.12),
                         borderRadius: BorderRadius.circular(12),
@@ -151,7 +148,9 @@ class _QuizPageState extends ConsumerState<QuizPage>
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: LinearProgressIndicator(
-                            value: state.totalQuestions > 0 ? (state.currentIndex) / state.totalQuestions : 0.0,
+                            value: state.totalQuestions > 0
+                                ? (state.currentIndex) / state.totalQuestions
+                                : 0.0,
                             minHeight: 8,
                             backgroundColor: Colors.grey.withOpacity(0.15),
                             valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
@@ -185,7 +184,9 @@ class _QuizPageState extends ConsumerState<QuizPage>
               tween: Tween(begin: 1.0, end: state.timerProgress),
               duration: const Duration(milliseconds: 300),
               builder: (_, value, __) {
-                Color c = value > 0.5 ? AppColors.correctGreen : (value > 0.25 ? AppColors.streakOrange : AppColors.wrongRed);
+                Color c = value > 0.5
+                    ? AppColors.correctGreen
+                    : (value > 0.25 ? AppColors.streakOrange : AppColors.wrongRed);
                 return LinearProgressIndicator(
                   value: value,
                   minHeight: 2,
@@ -205,7 +206,9 @@ class _QuizPageState extends ConsumerState<QuizPage>
 
   Widget _buildTimerBadge(double progress) {
     final secs = (progress * 30).ceil();
-    Color color = progress > 0.5 ? AppColors.correctGreen : (progress > 0.25 ? AppColors.streakOrange : AppColors.wrongRed);
+    Color color = progress > 0.5
+        ? AppColors.correctGreen
+        : (progress > 0.25 ? AppColors.streakOrange : AppColors.wrongRed);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       decoration: BoxDecoration(
@@ -248,15 +251,12 @@ class _QuizPageState extends ConsumerState<QuizPage>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.error_outline, size: 64,
-                    color: AppColors.wrongRed),
+                const Icon(Icons.error_outline, size: 64, color: AppColors.wrongRed),
                 const SizedBox(height: 16),
-                Text(state.errorMessage ?? 'Erreur inconnue',
-                    textAlign: TextAlign.center),
+                Text(state.errorMessage ?? 'Erreur inconnue', textAlign: TextAlign.center),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Retour')),
+                    onPressed: () => Navigator.pop(context), child: const Text('Retour')),
               ],
             ),
           ),
@@ -363,22 +363,18 @@ class _QuizPageState extends ConsumerState<QuizPage>
     return null;
   }
 
-  Future<void> _showExitDialog(
-      BuildContext context, QuizViewModel vm) async {
+  Future<void> _showExitDialog(BuildContext context, QuizViewModel vm) async {
     final exit = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Quitter le quiz ?'),
-        content:
-            const Text('Ta progression sera perdue. Tu veux vraiment partir ?'),
+        content: const Text('Ta progression sera perdue. Tu veux vraiment partir ?'),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Continuer')),
+              onPressed: () => Navigator.pop(context, false), child: const Text('Continuer')),
           TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Quitter',
-                  style: TextStyle(color: AppColors.wrongRed))),
+              child: const Text('Quitter', style: TextStyle(color: AppColors.wrongRed))),
         ],
       ),
     );

@@ -5,11 +5,11 @@ import '../../lessons/data/lesson_content_data.dart';
 // Enum des types de questions
 // ─────────────────────────────────────────────
 enum QuestionType {
-  multipleChoice,   // QCM
-  trueFalse,        // Vrai / Faux
-  listenAndChoose,  // Écouter & Choisir (TTS)
-  fillInBlank,      // Compléter la phrase
-  matching,         // Association (drag & drop)
+  multipleChoice, // QCM
+  trueFalse, // Vrai / Faux
+  listenAndChoose, // Écouter & Choisir (TTS)
+  fillInBlank, // Compléter la phrase
+  matching, // Association (drag & drop)
 }
 
 // ─────────────────────────────────────────────
@@ -139,7 +139,7 @@ class FillInBlankQuestion extends Question {
 // 5. Matching — Association
 // ─────────────────────────────────────────────
 class MatchingPair {
-  final String term;        // Mot cible
+  final String term; // Mot cible
   final String translation; // Traduction française
   const MatchingPair({required this.term, required this.translation});
 }

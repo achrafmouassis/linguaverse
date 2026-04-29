@@ -79,10 +79,8 @@ class TrueFalseCard extends StatelessWidget {
           label: 'Vrai ou Faux ?',
           child: Text(
             question.statement,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(height: 1.5, color: Colors.white),
+            style:
+                Theme.of(context).textTheme.titleLarge?.copyWith(height: 1.5, color: Colors.white),
             textAlign: TextAlign.center,
           ),
         ),
@@ -94,9 +92,7 @@ class TrueFalseCard extends StatelessWidget {
                 label: '✅  Vrai',
                 value: 'true',
                 selected: selectedAnswer == 'true',
-                correct: showFeedback
-                    ? question.correctAnswer
-                    : null,
+                correct: showFeedback ? question.correctAnswer : null,
                 onTap: showFeedback ? null : () => onAnswer('true'),
                 color: AppColors.correctGreen,
               ),
@@ -107,9 +103,7 @@ class TrueFalseCard extends StatelessWidget {
                 label: '❌  Faux',
                 value: 'false',
                 selected: selectedAnswer == 'false',
-                correct: showFeedback
-                    ? !question.correctAnswer
-                    : null,
+                correct: showFeedback ? !question.correctAnswer : null,
                 onTap: showFeedback ? null : () => onAnswer('false'),
                 color: AppColors.wrongRed,
               ),
@@ -188,7 +182,7 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
       await _tts.setSpeechRate(0.4);
       await _tts.setVolume(1.0);
       await _tts.setPitch(1.0);
-      
+
       await _tts.speak(widget.question.wordToSpeak);
     } catch (e) {
       debugPrint("TTS Speak Error: $e");
@@ -225,9 +219,7 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _isPlaying
-                        ? Colors.white
-                        : Colors.white.withOpacity(0.2),
+                    color: _isPlaying ? Colors.white : Colors.white.withOpacity(0.2),
                     boxShadow: _isPlaying
                         ? [
                             BoxShadow(
@@ -239,9 +231,7 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
                         : [],
                   ),
                   child: Icon(
-                    _isPlaying
-                        ? Icons.volume_up_rounded
-                        : Icons.play_arrow_rounded,
+                    _isPlaying ? Icons.volume_up_rounded : Icons.play_arrow_rounded,
                     size: 48,
                     color: _isPlaying ? AppColors.primary : Colors.white,
                   ),
@@ -251,8 +241,8 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
               Text(
                 'Appuyez pour écouter',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white70,
-                ),
+                      color: Colors.white70,
+                    ),
               ),
             ],
           ),
@@ -261,9 +251,7 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
         ...widget.question.options.map((opt) => _OptionButton(
               label: opt,
               selected: widget.selectedAnswer == opt,
-              correct: widget.showFeedback
-                  ? opt == widget.question.correctAnswer
-                  : null,
+              correct: widget.showFeedback ? opt == widget.question.correctAnswer : null,
               onTap: widget.showFeedback ? null : () => widget.onAnswer(opt),
             )),
       ],
@@ -307,8 +295,7 @@ class FillInBlankCard extends StatelessWidget {
         ...question.options.map((opt) => _OptionButton(
               label: opt,
               selected: selectedAnswer == opt,
-              correct:
-                  showFeedback ? opt == question.correctAnswer : null,
+              correct: showFeedback ? opt == question.correctAnswer : null,
               onTap: showFeedback ? null : () => onAnswer(opt),
             )),
       ],
@@ -326,9 +313,8 @@ class FillInBlankCard extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 4),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-          decoration: BoxDecoration(
-            border: Border(
-                bottom: const BorderSide(color: Colors.white, width: 2)),
+          decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.white, width: 2)),
           ),
           child: Text(
             selectedAnswer ?? '  ?  ',
@@ -372,8 +358,7 @@ class _MatchingCardState extends State<MatchingCard> {
   @override
   void initState() {
     super.initState();
-    _translations =
-        widget.question.pairs.map((p) => p.translation).toList();
+    _translations = widget.question.pairs.map((p) => p.translation).toList();
     _translations.shuffle();
   }
 
@@ -390,9 +375,7 @@ class _MatchingCardState extends State<MatchingCard> {
     });
     if (_matched.length == widget.question.pairs.length) {
       // Build ordered list matching correctPairs terms order
-      final order = widget.question.correctPairs
-          .map((p) => _matched[p.term] ?? '')
-          .toList();
+      final order = widget.question.correctPairs.map((p) => _matched[p.term] ?? '').toList();
       widget.onSubmit(order);
     }
   }
@@ -474,8 +457,7 @@ class _MatchingCardState extends State<MatchingCard> {
             runSpacing: 6,
             children: _matched.entries
                 .map((e) => Chip(
-                      label: Text('${e.key} → ${e.value}',
-                          style: const TextStyle(fontSize: 12)),
+                      label: Text('${e.key} → ${e.value}', style: const TextStyle(fontSize: 12)),
                       backgroundColor: AppColors.primaryLight,
                     ))
                 .toList(),
@@ -589,9 +571,7 @@ class _OptionButton extends StatelessWidget {
           boxShadow: selected
               ? [
                   BoxShadow(
-                      color: _border().withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2))
+                      color: _border().withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 2))
                 ]
               : [],
         ),
@@ -608,11 +588,9 @@ class _OptionButton extends StatelessWidget {
               ),
             ),
             if (correct == true)
-              const Icon(Icons.check_circle_rounded,
-                  color: AppColors.correctGreen, size: 20)
+              const Icon(Icons.check_circle_rounded, color: AppColors.correctGreen, size: 20)
             else if (correct == false && selected)
-              const Icon(Icons.cancel_rounded,
-                  color: AppColors.wrongRed, size: 20),
+              const Icon(Icons.cancel_rounded, color: AppColors.wrongRed, size: 20),
           ],
         ),
       ),

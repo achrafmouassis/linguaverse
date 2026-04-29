@@ -74,11 +74,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-<<<<<<< HEAD
           color: AppColors.bgLevel4,
-=======
-          color: Color(0xFF1E293B),
->>>>>>> integration/quiz-lessons
         ),
       );
 }

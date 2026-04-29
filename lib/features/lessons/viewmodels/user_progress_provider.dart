@@ -34,8 +34,7 @@ class UserProgressNotifier extends Notifier<Set<String>> {
     await _persist();
   }
 
-  bool isLessonCompleted(String lessonId) =>
-      state.contains('lesson_done__$lessonId');
+  bool isLessonCompleted(String lessonId) => state.contains('lesson_done__$lessonId');
 
   // ─── Quiz d'une leçon individuelle ────────────────────────────────────────
 
@@ -47,8 +46,7 @@ class UserProgressNotifier extends Notifier<Set<String>> {
     await _persist();
   }
 
-  bool isLessonQuizPassed(String lessonId) =>
-      state.contains('quiz_done__$lessonId');
+  bool isLessonQuizPassed(String lessonId) => state.contains('quiz_done__$lessonId');
 
   // ─── Quiz final d'unité ────────────────────────────────────────────────────
 

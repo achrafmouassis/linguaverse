@@ -33,8 +33,7 @@ class ArObjectService {
   ) async {
     // Throttle : ne traiter qu'une frame toutes les arFrameMs millisecondes
     final now = DateTime.now();
-    if (now.difference(_lastProcessedTime).inMilliseconds <
-        AppConstants.arFrameMs) {
+    if (now.difference(_lastProcessedTime).inMilliseconds < AppConstants.arFrameMs) {
       return null;
     }
     _lastProcessedTime = now;
@@ -52,8 +51,7 @@ class ArObjectService {
       double imageConfidence = 1.0;
 
       if (labels.isNotEmpty) {
-        final bestLabel =
-            labels.reduce((a, b) => a.confidence > b.confidence ? a : b);
+        final bestLabel = labels.reduce((a, b) => a.confidence > b.confidence ? a : b);
         imageLabel = bestLabel.label.toLowerCase();
         imageConfidence = bestLabel.confidence;
         debugPrint('🎯 IMAGE LABELER: $imageLabel ($imageConfidence)');
@@ -63,17 +61,14 @@ class ArObjectService {
 
       final bool isRotated = rotation == InputImageRotation.rotation90deg ||
           rotation == InputImageRotation.rotation270deg;
-      final double logicalWidth =
-          isRotated ? image.height.toDouble() : image.width.toDouble();
-      final double logicalHeight =
-          isRotated ? image.width.toDouble() : image.height.toDouble();
+      final double logicalWidth = isRotated ? image.height.toDouble() : image.width.toDouble();
+      final double logicalHeight = isRotated ? image.width.toDouble() : image.height.toDouble();
 
       for (final obj in objects) {
         String rawLabel = imageLabel;
         double confidence = imageConfidence;
 
-        final normalizedLabel =
-            M4MockData.mlLabelNormalization[rawLabel] ?? rawLabel;
+        final normalizedLabel = M4MockData.mlLabelNormalization[rawLabel] ?? rawLabel;
 
         if (!M4MockData.objectDictionary.containsKey(normalizedLabel)) {
           continue; // Ignore complètement au lieu d'afficher "Objet/unknown"
@@ -117,8 +112,7 @@ class ArObjectService {
     final langData = M4MockData.objectDictionary[normalizedLabel];
     if (langData == null) return null;
 
-    final englishData = langData['Anglais'] ??
-        {'word': normalizedLabel, 'roman': '', 'sound': ''};
+    final englishData = langData['Anglais'] ?? {'word': normalizedLabel, 'roman': '', 'sound': ''};
     final targetData = langData[targetLanguage] ?? langData['Anglais']!;
 
     return ArTranslationModel.fromDictionary(
@@ -138,8 +132,7 @@ class ArObjectService {
         allBytes.putUint8List(plane.bytes);
       }
       final bytes = allBytes.done().buffer.asUint8List();
-      final format = InputImageFormatValue.fromRawValue(image.format.raw) ??
-          InputImageFormat.nv21;
+      final format = InputImageFormatValue.fromRawValue(image.format.raw) ?? InputImageFormat.nv21;
 
       return InputImage.fromBytes(
         bytes: bytes,

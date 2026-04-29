@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../data/course_catalog.dart';
-import '../models/category_level.dart';
 import '../models/lesson_course.dart';
 import '../viewmodels/user_progress_provider.dart';
 import '../viewmodels/lesson_categories_provider.dart';
@@ -122,8 +121,8 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: widget.color),
                 textAlign: TextAlign.center),
             const SizedBox(height: 8),
-            Text('Vous avez parcouru tout le contenu. Excellent travail !',
-                textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey)),
+            const Text('Vous avez parcouru tout le contenu. Excellent travail !',
+                textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 24),
             const Text('🎯 Passez le quiz pour débloquer la suite !',
                 style: TextStyle(color: AppColors.correctGreen, fontWeight: FontWeight.bold),
@@ -147,11 +146,11 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
 
                   Navigator.of(ctx).pop();
                   context.pushNamed('quiz', queryParameters: {
-                    'languageId':  widget.languageId,
-                    'categoryId':  widget.categoryId,
-                    'levelIndex':  widget.levelIndex.toString(),
+                    'languageId': widget.languageId,
+                    'categoryId': widget.categoryId,
+                    'levelIndex': widget.levelIndex.toString(),
                     'lessonIndex': lessonIdx.toString(),
-                    'lessonId':    lesson.id,
+                    'lessonId': lesson.id,
                   });
                 },
                 child: const Text('🎯 Passer le Quiz',
@@ -184,7 +183,8 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                   GestureDetector(
                     onTap: () => context.pop(),
                     child: Container(
-                      width: 40, height: 40,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.12),
                         borderRadius: BorderRadius.circular(12),
@@ -242,7 +242,11 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                         child: Icon(
                           _sectionIcons[i],
                           size: 16,
-                          color: active ? Colors.white : done ? widget.color : Colors.grey,
+                          color: active
+                              ? Colors.white
+                              : done
+                                  ? widget.color
+                                  : Colors.grey,
                         ),
                       ),
                     ),
@@ -290,13 +294,17 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                           color: widget.color,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
-                            BoxShadow(color: widget.color.withOpacity(0.35), blurRadius: 12, offset: const Offset(0, 4)),
+                            BoxShadow(
+                                color: widget.color.withOpacity(0.35),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4)),
                           ],
                         ),
                         child: Center(
                           child: Text(
                             isLastPage ? '✅  Terminer le niveau' : 'Suivant →',
-                            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -344,7 +352,8 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [widget.color, widget.color.withOpacity(0.7)],
-                begin: Alignment.topLeft, end: Alignment.bottomRight,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -353,9 +362,12 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
               children: [
                 const Icon(Icons.menu_book_rounded, color: Colors.white70, size: 32),
                 const SizedBox(height: 12),
-                Text(course.title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
+                Text(course.title,
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
                 const SizedBox(height: 4),
-                Text('${course.language} · ${course.category}', style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                Text('${course.language} · ${course.category}',
+                    style: const TextStyle(color: Colors.white70, fontSize: 13)),
               ],
             ),
           ),
@@ -374,46 +386,56 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
           const SizedBox(height: 16),
 
           // Prerequisites
-          _card(isDark, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionLabel('Pré-requis', Icons.checklist_rounded, Colors.orange),
-              const SizedBox(height: 8),
-              Text(course.prerequisites, style: TextStyle(color: isDark ? Colors.white70 : AppColors.textSecondary)),
-            ],
-          )),
+          _card(isDark,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionLabel('Pré-requis', Icons.checklist_rounded, Colors.orange),
+                  const SizedBox(height: 8),
+                  Text(course.prerequisites,
+                      style: TextStyle(color: isDark ? Colors.white70 : AppColors.textSecondary)),
+                ],
+              )),
           const SizedBox(height: 12),
 
           // Introduction text
-          _card(isDark, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionLabel('Introduction', Icons.info_rounded, widget.color),
-              const SizedBox(height: 8),
-              Text(course.introduction, style: TextStyle(height: 1.6, color: isDark ? Colors.white70 : AppColors.textPrimary)),
-            ],
-          )),
+          _card(isDark,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionLabel('Introduction', Icons.info_rounded, widget.color),
+                  const SizedBox(height: 8),
+                  Text(course.introduction,
+                      style: TextStyle(
+                          height: 1.6, color: isDark ? Colors.white70 : AppColors.textPrimary)),
+                ],
+              )),
           const SizedBox(height: 12),
 
           // Objectives
-          _card(isDark, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionLabel('Objectifs du cours', Icons.flag_rounded, AppColors.correctGreen),
-              const SizedBox(height: 10),
-              ...course.objectives.map((obj) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.arrow_right_rounded, color: widget.color, size: 22),
-                    const SizedBox(width: 6),
-                    Expanded(child: Text(obj, style: TextStyle(color: isDark ? Colors.white70 : AppColors.textPrimary, height: 1.4))),
-                  ],
-                ),
+          _card(isDark,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionLabel('Objectifs du cours', Icons.flag_rounded, AppColors.correctGreen),
+                  const SizedBox(height: 10),
+                  ...course.objectives.map((obj) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.arrow_right_rounded, color: widget.color, size: 22),
+                            const SizedBox(width: 6),
+                            Expanded(
+                                child: Text(obj,
+                                    style: TextStyle(
+                                        color: isDark ? Colors.white70 : AppColors.textPrimary,
+                                        height: 1.4))),
+                          ],
+                        ),
+                      )),
+                ],
               )),
-            ],
-          )),
           const SizedBox(height: 12),
         ],
       ),
@@ -446,9 +468,14 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 36, height: 36,
-                      decoration: BoxDecoration(color: widget.color, borderRadius: BorderRadius.circular(10)),
-                      child: Center(child: Text('${i + 1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                          color: widget.color, borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                          child: Text('${i + 1}',
+                              style: const TextStyle(
+                                  color: Colors.white, fontWeight: FontWeight.bold))),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -462,22 +489,38 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(item.word, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : AppColors.textPrimary)),
+                                    Text(item.word,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: isDark ? Colors.white : AppColors.textPrimary)),
                                     const SizedBox(height: 2),
                                     Row(
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                          decoration: BoxDecoration(color: widget.color.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
-                                          child: Text('[${item.pronunciation}]', style: TextStyle(color: widget.color, fontSize: 13, fontFamily: 'monospace')),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 2),
+                                          decoration: BoxDecoration(
+                                              color: widget.color.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(6)),
+                                          child: Text('[${item.pronunciation}]',
+                                              style: TextStyle(
+                                                  color: widget.color,
+                                                  fontSize: 13,
+                                                  fontFamily: 'monospace')),
                                         ),
                                         const SizedBox(width: 8),
                                         GestureDetector(
-                                          onTap: () => ref.read(ttsProvider).speak(item.word, widget.languageId),
+                                          onTap: () => ref
+                                              .read(ttsProvider)
+                                              .speak(item.word, widget.languageId),
                                           child: Container(
                                             padding: const EdgeInsets.all(4),
-                                            decoration: BoxDecoration(color: widget.color.withOpacity(0.1), shape: BoxShape.circle),
-                                            child: Icon(Icons.volume_up_rounded, size: 16, color: widget.color),
+                                            decoration: BoxDecoration(
+                                                color: widget.color.withOpacity(0.1),
+                                                shape: BoxShape.circle),
+                                            child: Icon(Icons.volume_up_rounded,
+                                                size: 16, color: widget.color),
                                           ),
                                         ),
                                       ],
@@ -494,7 +537,10 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(color: widget.color.withOpacity(0.2)),
                                     boxShadow: [
-                                      BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 2)),
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(0.05),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2)),
                                     ],
                                   ),
                                   child: ClipRRect(
@@ -504,23 +550,35 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                                       fit: BoxFit.cover,
                                       loadingBuilder: (context, child, loadingProgress) {
                                         if (loadingProgress == null) return child;
-                                        return Center(child: CircularProgressIndicator(strokeWidth: 2, color: widget.color));
+                                        return Center(
+                                            child: CircularProgressIndicator(
+                                                strokeWidth: 2, color: widget.color));
                                       },
-                                      errorBuilder: (context, error, stackTrace) => 
-                                          Icon(Icons.image_not_supported_outlined, color: Colors.grey.shade400),
+                                      errorBuilder: (context, error, stackTrace) => Icon(
+                                          Icons.image_not_supported_outlined,
+                                          color: Colors.grey.shade400),
                                     ),
                                   ),
                                 ),
                             ],
                           ),
                           const SizedBox(height: 8),
-                          Text(item.definition, style: TextStyle(color: isDark ? Colors.white60 : AppColors.textSecondary, fontSize: 13)),
+                          Text(item.definition,
+                              style: TextStyle(
+                                  color: isDark ? Colors.white60 : AppColors.textSecondary,
+                                  fontSize: 13)),
                           const SizedBox(height: 6),
                           Row(
                             children: [
-                              Icon(Icons.format_quote_rounded, size: 14, color: Colors.grey.shade400),
+                              Icon(Icons.format_quote_rounded,
+                                  size: 14, color: Colors.grey.shade400),
                               const SizedBox(width: 4),
-                              Expanded(child: Text(item.example, style: TextStyle(color: isDark ? Colors.white54 : Colors.grey.shade600, fontSize: 13, fontStyle: FontStyle.italic))),
+                              Expanded(
+                                  child: Text(item.example,
+                                      style: TextStyle(
+                                          color: isDark ? Colors.white54 : Colors.grey.shade600,
+                                          fontSize: 13,
+                                          fontStyle: FontStyle.italic))),
                             ],
                           ),
                         ],
@@ -547,62 +605,86 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
         children: [
           _sectionHeader('Prononciation & Phonétique', Icons.volume_up_rounded, widget.color),
           const SizedBox(height: 12),
-          _card(isDark, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionLabel('Guide de prononciation', Icons.record_voice_over_rounded, widget.color),
-              const SizedBox(height: 12),
-              ...currentCourse.phoneticsExplanation.split('\n').map((line) {
-                if (line.trim().isEmpty) return const SizedBox(height: 4);
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: widget.color.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: widget.color.withOpacity(0.12)),
-                    ),
-                    child: Text(line, style: TextStyle(height: 1.5, fontFamily: 'monospace', color: isDark ? Colors.white70 : AppColors.textPrimary, fontSize: 13)),
-                  ),
-                );
-              }),
-            ],
-          )),
+          _card(isDark,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionLabel(
+                      'Guide de prononciation', Icons.record_voice_over_rounded, widget.color),
+                  const SizedBox(height: 12),
+                  ...currentCourse.phoneticsExplanation.split('\n').map((line) {
+                    if (line.trim().isEmpty) return const SizedBox(height: 4);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: widget.color.withOpacity(0.06),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: widget.color.withOpacity(0.12)),
+                        ),
+                        child: Text(line,
+                            style: TextStyle(
+                                height: 1.5,
+                                fontFamily: 'monospace',
+                                color: isDark ? Colors.white70 : AppColors.textPrimary,
+                                fontSize: 13)),
+                      ),
+                    );
+                  }),
+                ],
+              )),
           const SizedBox(height: 12),
           // Quick reference table
-          _card(isDark, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionLabel('Tableau des sons', Icons.table_chart_rounded, Colors.teal),
-              const SizedBox(height: 10),
-              ...currentCourse.vocabulary.map((item) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  children: [
-                    Expanded(flex: 3, child: Text(item.word, style: TextStyle(fontWeight: FontWeight.w600, color: isDark ? Colors.white : AppColors.textPrimary))),
-                    Expanded(flex: 2, child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(color: widget.color.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
-                          child: Text('[${item.pronunciation}]', style: TextStyle(color: widget.color, fontFamily: 'monospace', fontSize: 12)),
+          _card(isDark,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionLabel('Tableau des sons', Icons.table_chart_rounded, Colors.teal),
+                  const SizedBox(height: 10),
+                  ...currentCourse.vocabulary.map((item) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 3,
+                                child: Text(item.word,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: isDark ? Colors.white : AppColors.textPrimary))),
+                            Expanded(
+                                flex: 2,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      padding:
+                                          const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                          color: widget.color.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(6)),
+                                      child: Text('[${item.pronunciation}]',
+                                          style: TextStyle(
+                                              color: widget.color,
+                                              fontFamily: 'monospace',
+                                              fontSize: 12)),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    IconButton(
+                                      icon: Icon(Icons.volume_up_rounded,
+                                          size: 18, color: widget.color),
+                                      onPressed: () =>
+                                          ref.read(ttsProvider).speak(item.word, widget.languageId),
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                    ),
+                                  ],
+                                )),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          icon: Icon(Icons.volume_up_rounded, size: 18, color: widget.color),
-                          onPressed: () => ref.read(ttsProvider).speak(item.word, widget.languageId),
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                        ),
-                      ],
-                    )),
-                  ],
-                ),
+                      )),
+                ],
               )),
-            ],
-          )),
           const SizedBox(height: 12),
         ],
       ),
@@ -637,12 +719,16 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(color: widget.color, borderRadius: BorderRadius.circular(6)),
-                        child: Text('Ex. ${entry.key + 1}', style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+                        decoration: BoxDecoration(
+                            color: widget.color, borderRadius: BorderRadius.circular(6)),
+                        child: Text('Ex. ${entry.key + 1}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
                       ),
                       IconButton(
                         icon: Icon(Icons.volume_up_rounded, size: 20, color: widget.color),
-                        onPressed: () => ref.read(ttsProvider).speak(parts[0].trim(), widget.languageId),
+                        onPressed: () =>
+                            ref.read(ttsProvider).speak(parts[0].trim(), widget.languageId),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                       ),
@@ -650,14 +736,23 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                   ),
                   const SizedBox(height: 10),
                   if (parts.isNotEmpty) ...[
-                    Text(parts[0].trim(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: isDark ? Colors.white : AppColors.textPrimary)),
+                    Text(parts[0].trim(),
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: isDark ? Colors.white : AppColors.textPrimary)),
                     if (parts.length > 1) ...[
                       const SizedBox(height: 6),
                       Row(
                         children: [
                           Icon(Icons.arrow_forward_rounded, size: 14, color: Colors.grey.shade400),
                           const SizedBox(width: 6),
-                          Expanded(child: Text(parts[1].trim(), style: TextStyle(color: isDark ? Colors.white54 : AppColors.textSecondary, fontSize: 14, fontStyle: FontStyle.italic))),
+                          Expanded(
+                              child: Text(parts[1].trim(),
+                                  style: TextStyle(
+                                      color: isDark ? Colors.white54 : AppColors.textSecondary,
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.italic))),
                         ],
                       ),
                     ],
@@ -680,42 +775,56 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _sectionHeader('Résumé & Points clés', Icons.check_circle_rounded, AppColors.correctGreen),
+          _sectionHeader(
+              'Résumé & Points clés', Icons.check_circle_rounded, AppColors.correctGreen),
           const SizedBox(height: 12),
-          _card(isDark, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionLabel('Ce que vous avez appris', Icons.workspace_premium_rounded, widget.color),
-              const SizedBox(height: 12),
-              ...currentCourse.summaryPoints.asMap().entries.map((entry) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 24, height: 24,
-                      decoration: BoxDecoration(color: AppColors.correctGreen, shape: BoxShape.circle),
-                      child: const Icon(Icons.check_rounded, color: Colors.white, size: 14),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(child: Text(entry.value, style: TextStyle(height: 1.4, color: isDark ? Colors.white70 : AppColors.textPrimary))),
-                  ],
-                ),
+          _card(isDark,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionLabel(
+                      'Ce que vous avez appris', Icons.workspace_premium_rounded, widget.color),
+                  const SizedBox(height: 12),
+                  ...currentCourse.summaryPoints.asMap().entries.map((entry) => Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: const BoxDecoration(
+                                  color: AppColors.correctGreen, shape: BoxShape.circle),
+                              child: const Icon(Icons.check_rounded, color: Colors.white, size: 14),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                                child: Text(entry.value,
+                                    style: TextStyle(
+                                        height: 1.4,
+                                        color: isDark ? Colors.white70 : AppColors.textPrimary))),
+                          ],
+                        ),
+                      )),
+                ],
               )),
-            ],
-          )),
           const SizedBox(height: 12),
-          _card(isDark, child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionLabel('Méta-informations', Icons.info_outline_rounded, Colors.blueGrey),
-              const SizedBox(height: 10),
-              _metaRow(Icons.timer_rounded, 'Durée estimée', currentCourse.estimatedDuration, isDark),
-              _metaRow(Icons.psychology_rounded, 'Méthode', currentCourse.learningMethod, isDark),
-              _metaRow(Icons.checklist_rounded, 'Pré-requis', currentCourse.prerequisites, isDark),
-              _metaRow(Icons.lock_open_rounded, 'Statut', 'Accessible', isDark, valueColor: AppColors.correctGreen),
-            ],
-          )),
+          _card(isDark,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionLabel('Méta-informations', Icons.info_outline_rounded, Colors.blueGrey),
+                  const SizedBox(height: 10),
+                  _metaRow(Icons.timer_rounded, 'Durée estimée', currentCourse.estimatedDuration,
+                      isDark),
+                  _metaRow(
+                      Icons.psychology_rounded, 'Méthode', currentCourse.learningMethod, isDark),
+                  _metaRow(
+                      Icons.checklist_rounded, 'Pré-requis', currentCourse.prerequisites, isDark),
+                  _metaRow(Icons.lock_open_rounded, 'Statut', 'Accessible', isDark,
+                      valueColor: AppColors.correctGreen),
+                ],
+              )),
           const SizedBox(height: 12),
         ],
       ),
@@ -741,7 +850,9 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
       children: [
         Icon(icon, color: color, size: 18),
         const SizedBox(width: 8),
-        Text(text, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: color, letterSpacing: 0.3)),
+        Text(text,
+            style: TextStyle(
+                fontSize: 13, fontWeight: FontWeight.bold, color: color, letterSpacing: 0.3)),
       ],
     );
   }
@@ -767,7 +878,8 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
   Widget _metaChip(IconData icon, String label, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+      decoration:
+          BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -786,9 +898,16 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
         children: [
           Icon(icon, size: 16, color: Colors.grey),
           const SizedBox(width: 8),
-          Text('$label :', style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.grey, fontSize: 13)),
+          Text('$label :',
+              style:
+                  const TextStyle(fontWeight: FontWeight.w500, color: Colors.grey, fontSize: 13)),
           const SizedBox(width: 6),
-          Flexible(child: Text(value, style: TextStyle(fontSize: 13, color: valueColor ?? (isDark ? Colors.white70 : AppColors.textPrimary), fontWeight: FontWeight.w600))),
+          Flexible(
+              child: Text(value,
+                  style: TextStyle(
+                      fontSize: 13,
+                      color: valueColor ?? (isDark ? Colors.white70 : AppColors.textPrimary),
+                      fontWeight: FontWeight.w600))),
         ],
       ),
     );

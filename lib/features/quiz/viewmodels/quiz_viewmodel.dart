@@ -7,8 +7,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../lessons/data/lesson_content_data.dart';
-import '../../gamification/models/gamification_model.dart';
-import '../../gamification/repositories/gamification_service.dart';
+import '../../gamification/presentation/providers/gamification_providers.dart';
 import '../models/question_model.dart';
 import '../models/quiz_result_model.dart';
 import '../repositories/quiz_repository.dart';
@@ -22,8 +21,7 @@ import '../../lessons/viewmodels/user_progress_provider.dart';
 
 final quizRepositoryProvider = Provider<QuizRepository>((_) => QuizRepository());
 
-final quizViewModelProvider =
-    StateNotifierProvider<QuizViewModel, QuizState>(
+final quizViewModelProvider = StateNotifierProvider<QuizViewModel, QuizState>(
   (ref) => QuizViewModel(ref),
 );
 
@@ -51,7 +49,7 @@ class QuizViewModel extends StateNotifier<QuizState> {
     required String categoryId,
     required String languageId,
     int? levelIndex,
-    int? lessonIndex,   // index (0,1,2) de la leçon dans son niveau
+    int? lessonIndex, // index (0,1,2) de la leçon dans son niveau
     bool isUnitFinal = false,
     int questionCount = 10,
   }) async {
@@ -158,8 +156,7 @@ class QuizViewModel extends StateNotifier<QuizState> {
     _stopTimer();
 
     // Compare ordre utilisateur vs ordre correct
-    final correctOrder =
-        q.correctPairs.map((p) => p.translation).toList();
+    final correctOrder = q.correctPairs.map((p) => p.translation).toList();
     final isCorrect = _listsEqual(userOrder, correctOrder);
     final timeMs = _elapsedMs();
 
@@ -229,35 +226,26 @@ class QuizViewModel extends StateNotifier<QuizState> {
   // ── 6. Compléter le quiz ──────────────────────────────────────────────────
 
   Future<void> _completeQuiz() async {
-    final correctAnswers = state.answers
-        .where((a) => a.isCorrect)
-        .map((a) => a.question.sourceItem.term)
-        .toList();
-    final incorrectAnswers = state.answers
-        .where((a) => !a.isCorrect)
-        .map((a) => a.question.sourceItem.term)
-        .toList();
+    final correctAnswers =
+        state.answers.where((a) => a.isCorrect).map((a) => a.question.sourceItem.term).toList();
+    final incorrectAnswers =
+        state.answers.where((a) => !a.isCorrect).map((a) => a.question.sourceItem.term).toList();
 
-    final durationSec = state.startedAt != null
-        ? DateTime.now().difference(state.startedAt!).inSeconds
-        : 0;
+    final durationSec =
+        state.startedAt != null ? DateTime.now().difference(state.startedAt!).inSeconds : 0;
 
-    // Calcul XP provisoire (sera recalculé avec GamificationService)
-    final xpEarned = GamificationService.calculateXp(
-      QuizResult(
-        id: _generateId(),
-        lessonId: state.lessonId,
-        categoryId: state.categoryId,
-        languageId: state.languageId,
-        completedAt: DateTime.now(),
-        answers: state.answers,
-        totalQuestions: state.totalQuestions,
-        correctCount: state.correctCount,
-        xpEarned: 0,
-        durationSeconds: durationSec,
-        wordsToReview: incorrectAnswers,
-      ),
+    final isPerfect = state.correctCount == state.totalQuestions;
+    final gamResult = await _ref.read(addXPProvider)(
+      sourceType: isPerfect ? 'quiz_perfect' : 'quiz_pass',
+      language: state.languageId,
     );
+
+    final progService = _ref.read(progressionServiceProvider);
+    final userId = _ref.read(currentUserIdProvider);
+    await progService.incrementStat(userId, 'quizzes_completed');
+    if (isPerfect) {
+      await progService.incrementStat(userId, 'perfect_scores');
+    }
 
     final result = QuizResult(
       id: _generateId(),
@@ -268,7 +256,7 @@ class QuizViewModel extends StateNotifier<QuizState> {
       answers: state.answers,
       totalQuestions: state.totalQuestions,
       correctCount: state.correctCount,
-      xpEarned: xpEarned,
+      xpEarned: gamResult.xpAdded,
       durationSeconds: durationSec,
       wordsToReview: incorrectAnswers,
     );
@@ -286,16 +274,6 @@ class QuizViewModel extends StateNotifier<QuizState> {
       // Non-bloquant : continue même si DB échoue (Web n'a pas sqflite)
     }
 
-    // Gamification
-    final profile = GamificationProfile(
-      totalXp: await _safeGetTotalXp(),
-      quizCount: await _safeGetQuizCount(),
-    );
-    final gamResult = GamificationService.processResult(
-      result: result,
-      profile: profile,
-    );
-
     state = state.copyWith(
       phase: QuizPhase.completed,
       result: result,
@@ -310,9 +288,9 @@ class QuizViewModel extends StateNotifier<QuizState> {
       // Si c'est un quiz final d'unité
       if (state.isUnitFinal && state.languageId.isNotEmpty && state.categoryId.isNotEmpty) {
         _ref.read(userProgressProvider.notifier).markUnitQuizPassed(
-          languageId: state.languageId,
-          categoryId: state.categoryId,
-        );
+              languageId: state.languageId,
+              categoryId: state.categoryId,
+            );
       }
     }
   }
@@ -326,8 +304,7 @@ class QuizViewModel extends StateNotifier<QuizState> {
 
     _timerTick = Timer.periodic(const Duration(milliseconds: 500), (_) {
       elapsed += 500;
-      final progress =
-          1.0 - (elapsed / (_questionDurationSeconds * 1000)).clamp(0.0, 1.0);
+      final progress = 1.0 - (elapsed / (_questionDurationSeconds * 1000)).clamp(0.0, 1.0);
       if (mounted) {
         state = state.copyWith(timerProgress: progress);
       }
@@ -368,24 +345,7 @@ class QuizViewModel extends StateNotifier<QuizState> {
     return true;
   }
 
-  String _generateId() =>
-      'quiz_${DateTime.now().millisecondsSinceEpoch}';
-
-  Future<int> _safeGetTotalXp() async {
-    try {
-      return await _repo.getTotalXp();
-    } catch (_) {
-      return 0;
-    }
-  }
-
-  Future<int> _safeGetQuizCount() async {
-    try {
-      return await _repo.getQuizCount();
-    } catch (_) {
-      return 0;
-    }
-  }
+  String _generateId() => 'quiz_${DateTime.now().millisecondsSinceEpoch}';
 
   // ── Public helpers pour l'UI ──────────────────────────────────────────────
 

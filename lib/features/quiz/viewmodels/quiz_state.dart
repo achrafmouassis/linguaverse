@@ -1,18 +1,18 @@
 // lib/features/quiz/viewmodels/quiz_state.dart
 import '../models/question_model.dart';
 import '../models/quiz_result_model.dart';
-import '../../gamification/models/gamification_model.dart';
+import '../../gamification/data/services/progression_service.dart';
 
 // ─────────────────────────────────────────────
 // États possibles du quiz (state machine)
 // ─────────────────────────────────────────────
 enum QuizPhase {
-  idle,        // Avant démarrage
-  loading,     // Génération des questions
-  answering,   // Question en cours
-  feedback,    // Affichage feedback immédiat
-  completed,   // Quiz terminé → résumé
-  error,       // Erreur
+  idle, // Avant démarrage
+  loading, // Génération des questions
+  answering, // Question en cours
+  feedback, // Affichage feedback immédiat
+  completed, // Quiz terminé → résumé
+  error, // Erreur
 }
 
 // ─────────────────────────────────────────────
@@ -38,7 +38,7 @@ class QuizState {
 
   // Résultat final
   final QuizResult? result;
-  final GamificationResult? gamificationResult;
+  final XpGainResult? gamificationResult;
 
   final String? errorMessage;
 
@@ -73,9 +73,7 @@ class QuizState {
   });
 
   Question? get currentQuestion =>
-      questions.isEmpty || currentIndex >= questions.length
-          ? null
-          : questions[currentIndex];
+      questions.isEmpty || currentIndex >= questions.length ? null : questions[currentIndex];
 
   int get totalQuestions => questions.length;
   bool get isLastQuestion => currentIndex >= questions.length - 1;
@@ -91,7 +89,7 @@ class QuizState {
     List<AnsweredQuestion>? answers,
     double? timerProgress,
     QuizResult? result,
-    GamificationResult? gamificationResult,
+    XpGainResult? gamificationResult,
     String? errorMessage,
     String? lessonId,
     String? categoryId,
@@ -107,8 +105,7 @@ class QuizState {
         phase: phase ?? this.phase,
         questions: questions ?? this.questions,
         currentIndex: currentIndex ?? this.currentIndex,
-        selectedAnswer:
-            clearSelectedAnswer ? null : (selectedAnswer ?? this.selectedAnswer),
+        selectedAnswer: clearSelectedAnswer ? null : (selectedAnswer ?? this.selectedAnswer),
         isCurrentCorrect: clearSelectedAnswer ? null : (isCurrentCorrect ?? this.isCurrentCorrect),
         matchingUserOrder:
             clearMatchingOrder ? null : (matchingUserOrder ?? this.matchingUserOrder),

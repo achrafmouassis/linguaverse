@@ -12,8 +12,7 @@ class ArTextOverlay extends StatefulWidget {
   State<ArTextOverlay> createState() => _ArTextOverlayState();
 }
 
-class _ArTextOverlayState extends State<ArTextOverlay>
-    with SingleTickerProviderStateMixin {
+class _ArTextOverlayState extends State<ArTextOverlay> with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
   late Animation<double> _slideAnim;
 

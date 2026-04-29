@@ -8,13 +8,31 @@ import 'user_progress_provider.dart';
 String _translate(String key, String languageId) {
   final Map<String, Map<String, String>> translations = {
     'level': {
-      'fr': 'Niveau', 'en': 'Level', 'ar': 'المستوى', 'es': 'Nivel', 'it': 'Livello', 'tr': 'Seviye', 'de': 'Stufe',
+      'fr': 'Niveau',
+      'en': 'Level',
+      'ar': 'المستوى',
+      'es': 'Nivel',
+      'it': 'Livello',
+      'tr': 'Seviye',
+      'de': 'Stufe',
     },
     'lesson': {
-      'fr': 'Leçon', 'en': 'Lesson', 'ar': 'الدرس', 'es': 'Lección', 'it': 'Lezione', 'tr': 'Ders', 'de': 'Lektion',
+      'fr': 'Leçon',
+      'en': 'Lesson',
+      'ar': 'الدرس',
+      'es': 'Lección',
+      'it': 'Lezione',
+      'tr': 'Ders',
+      'de': 'Lektion',
     },
     'cat_alphabet': {
-      'fr': 'L\'alphabet', 'en': 'Alphabet', 'ar': 'الأبجدية', 'es': 'El Alfabeto', 'it': 'L\'Alfabeto', 'tr': 'Alfabe', 'de': 'Alphabet',
+      'fr': 'L\'alphabet',
+      'en': 'Alphabet',
+      'ar': 'الأبجدية',
+      'es': 'El Alfabeto',
+      'it': 'L\'Alfabeto',
+      'tr': 'Alfabe',
+      'de': 'Alphabet',
     },
     'method_alphabet': {
       'fr': 'Présentation visuelle et phonétique de chaque lettre',
@@ -23,7 +41,13 @@ String _translate(String key, String languageId) {
       'es': 'Presentación visual y fonética de cada letra',
     },
     'cat_salutations': {
-      'fr': 'Les salutations', 'en': 'Greetings', 'ar': 'التحيات', 'es': 'Saludos', 'it': 'Saluti', 'tr': 'Selamlaşma', 'de': 'Grüße',
+      'fr': 'Les salutations',
+      'en': 'Greetings',
+      'ar': 'التحيات',
+      'es': 'Saludos',
+      'it': 'Saluti',
+      'tr': 'Selamlaşma',
+      'de': 'Grüße',
     },
     'method_salutations': {
       'fr': 'Présentation des formules et usages courants',
@@ -32,7 +56,13 @@ String _translate(String key, String languageId) {
       'es': 'Expresiones comunes y uso',
     },
     'cat_nombres': {
-      'fr': 'Les nombres', 'en': 'Numbers', 'ar': 'الأرقام', 'es': 'Números', 'it': 'Numeri', 'tr': 'Sayılar', 'de': 'Zahlen',
+      'fr': 'Les nombres',
+      'en': 'Numbers',
+      'ar': 'الأرقام',
+      'es': 'Números',
+      'it': 'Numeri',
+      'tr': 'Sayılar',
+      'de': 'Zahlen',
     },
     'method_nombres': {
       'fr': 'Explications graduelles et exemples progressifs',
@@ -41,7 +71,13 @@ String _translate(String key, String languageId) {
       'es': 'Explicaciones graduales y ejemplos progresivos',
     },
     'cat_famille': {
-      'fr': 'La famille', 'en': 'Family', 'ar': 'العائلة', 'es': 'Familia', 'it': 'Famiglia', 'tr': 'Aile', 'de': 'Familie',
+      'fr': 'La famille',
+      'en': 'Family',
+      'ar': 'العائلة',
+      'es': 'Familia',
+      'it': 'Famiglia',
+      'tr': 'Aile',
+      'de': 'Familie',
     },
     'method_famille': {
       'fr': 'Description des relations et vocabulaire contextuel',
@@ -50,7 +86,13 @@ String _translate(String key, String languageId) {
       'es': 'Descripción de relaciones y vocabulario contextual',
     },
     'cat_couleurs': {
-      'fr': 'Les couleurs', 'en': 'Colors', 'ar': 'الألوان', 'es': 'Colores', 'it': 'Colori', 'tr': 'Renkler', 'de': 'Farben',
+      'fr': 'Les couleurs',
+      'en': 'Colors',
+      'ar': 'الألوان',
+      'es': 'Colores',
+      'it': 'Colori',
+      'tr': 'Renkler',
+      'de': 'Farben',
     },
     'method_couleurs': {
       'fr': 'Association de termes et illustrations',
@@ -63,7 +105,8 @@ String _translate(String key, String languageId) {
   return translations[key]?[languageId] ?? translations[key]?['en'] ?? key;
 }
 
-List<CategoryLevel> _generateMockLevels(String categoryId, int count, Set<String> completedIds, String languageId) {
+List<CategoryLevel> _generateMockLevels(
+    String categoryId, int count, Set<String> completedIds, String languageId) {
   final levelLabel = _translate('level', languageId);
   final lessonLabel = _translate('lesson', languageId);
 
@@ -84,7 +127,8 @@ List<CategoryLevel> _generateMockLevels(String categoryId, int count, Set<String
   });
 }
 
-final _baseCategoriesProvider = Provider.family<List<LessonCategory>, (String, Set<String>)>((ref, args) {
+final _baseCategoriesProvider =
+    Provider.family<List<LessonCategory>, (String, Set<String>)>((ref, args) {
   final languageId = args.$1;
   final completedIds = args.$2;
 
@@ -109,9 +153,18 @@ final _baseCategoriesProvider = Provider.family<List<LessonCategory>, (String, S
           levelIndex: 0,
           title: '${_translate('level', languageId)} 1',
           lessons: [
-            Lesson(id: 'lsn_s1', title: '${_translate('lesson', languageId)} 1', isCompleted: completedIds.contains('lsn_s1')),
-            Lesson(id: 'lsn_s2', title: '${_translate('lesson', languageId)} 2', isCompleted: completedIds.contains('lsn_s2')),
-            Lesson(id: 'lsn_s3', title: '${_translate('lesson', languageId)} 3', isCompleted: completedIds.contains('lsn_s3')),
+            Lesson(
+                id: 'lsn_s1',
+                title: '${_translate('lesson', languageId)} 1',
+                isCompleted: completedIds.contains('lsn_s1')),
+            Lesson(
+                id: 'lsn_s2',
+                title: '${_translate('lesson', languageId)} 2',
+                isCompleted: completedIds.contains('lsn_s2')),
+            Lesson(
+                id: 'lsn_s3',
+                title: '${_translate('lesson', languageId)} 3',
+                isCompleted: completedIds.contains('lsn_s3')),
           ],
         ),
         ..._generateMockLevels('cat_salutations_rest_$languageId', 4, completedIds, languageId),

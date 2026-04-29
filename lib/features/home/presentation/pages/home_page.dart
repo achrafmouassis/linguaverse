@@ -482,8 +482,8 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
                         decoration: BoxDecoration(
                           color: AppColors.wrongRed.withOpacity(0.10),
                           borderRadius: BorderRadius.circular(AppRadius.sm),
-                          border: Border.all(
-                              color: AppColors.wrongRed.withOpacity(0.25), width: 0.5),
+                          border:
+                              Border.all(color: AppColors.wrongRed.withOpacity(0.25), width: 0.5),
                         ),
                         child: Row(
                           children: [
@@ -1636,7 +1636,6 @@ class _ModuleCardState extends State<_ModuleCard> {
                         color: widget.module.color), // Smaller bg icon
                   ),
                 ),
-<<<<<<< HEAD
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
@@ -1653,17 +1652,6 @@ class _ModuleCardState extends State<_ModuleCard> {
                         ),
                         child: Icon(widget.module.icon,
                             size: widget.isLarge ? 24 : 16, color: widget.module.color),
-=======
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(
-                          widget.isLarge ? AppSpacing.sm : 6), // Smaller icon padding
-                      decoration: BoxDecoration(
-                        color: widget.module.color.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(widget.isLarge ? AppRadius.md : 6),
->>>>>>> integration/quiz-lessons
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -1953,155 +1941,7 @@ class _LeaderboardRow extends StatelessWidget {
           },
         ),
       );
-<<<<<<< HEAD
     });
-=======
-    }
-
-    if (state.topPlayers.isEmpty) {
-      return Container(
-        height: 90,
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.leaderboard_outlined, size: 28, color: _textColor(context, opacity: 0.4)),
-            const SizedBox(height: 6),
-            Text(
-              'Pas encore de classement cette semaine',
-              style: TextStyle(fontSize: 11, color: _textColor(context, opacity: 0.5)),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return SizedBox(
-      height: 90,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: state.topPlayers.length,
-        itemBuilder: (context, index) {
-          final player = state.topPlayers[index];
-          final isCurrentUser = player.name == 'Hiba'; // En situation réelle, on comparerait l'ID
-          final isTop3 = index < 3;
-
-          String rankIcon;
-          if (index == 0) {
-            rankIcon = '🥇';
-          } else if (index == 1) {
-            rankIcon = '🥈';
-          } else if (index == 2) {
-            rankIcon = '🥉';
-          } else {
-            rankIcon = '#${index + 1}';
-          }
-
-          return AnimatedBuilder(
-            animation: cardsController,
-            builder: (context, child) {
-              final start = (index * 0.1).clamp(0.0, 0.8);
-              final end = (start + 0.2).clamp(0.0, 1.0);
-              final curve = CurvedAnimation(
-                  parent: cardsController, curve: Interval(start, end, curve: Curves.easeOutBack));
-
-              return Transform.translate(
-                offset: Offset(20 * (1 - curve.value), 0),
-                child: Opacity(
-                  opacity: curve.value.clamp(0.0, 1.0),
-                  child: child,
-                ),
-              );
-            },
-            child: Semantics(
-              button: true,
-              label: 'Joueur ${player.name}, position ${index + 1}, ${player.xp} XP',
-              child: InkWell(
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                },
-                borderRadius: BorderRadius.circular(AppRadius.lg),
-                splashColor: AppColors.primary.withOpacity(0.08),
-                child: Container(
-                  width: 80,
-                  margin: const EdgeInsets.only(right: AppSpacing.md),
-                  decoration: BoxDecoration(
-                    color: isCurrentUser
-                        ? AppColors.streakOrange.withOpacity(0.1)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: isCurrentUser
-                        ? Border.all(color: AppColors.streakOrange.withOpacity(0.3), width: 1)
-                        : null,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [player.baseColor, player.baseColor.withOpacity(0.6)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              border: Border.all(color: _surfaceColor(context), width: 2),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              player.initials,
-                              style: const TextStyle(
-                                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          ),
-                          Positioned(
-                            top: -6,
-                            right: -6,
-                            child: isTop3
-                                ? Text(rankIcon, style: const TextStyle(fontSize: 16))
-                                : Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: _surfaceColor(context),
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: _textColor(context, opacity: 0.1)),
-                                    ),
-                                    child: Text(rankIcon,
-                                        style: TextStyle(
-                                            fontSize: 8,
-                                            fontWeight: FontWeight.bold,
-                                            color: _textColor(context, opacity: 0.7))),
-                                  ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        player.name,
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: isCurrentUser ? FontWeight.w700 : FontWeight.w500,
-                            color: isCurrentUser ? AppColors.streakOrange : _textColor(context)),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
->>>>>>> integration/quiz-lessons
   }
 }
 
@@ -2398,9 +2238,7 @@ class _DevThemeToggle extends ConsumerWidget {
             color: isDark ? AppColors.glassBlue : AppColors.bgLevel3,
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: Border.all(
-              color: isDark
-                  ? Colors.black.withOpacity(0.08)
-                  : Colors.white.withOpacity(0.15),
+              color: isDark ? Colors.black.withOpacity(0.08) : Colors.white.withOpacity(0.15),
               width: 0.5,
             ),
           ),

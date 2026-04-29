@@ -84,8 +84,7 @@ class StartQuizButton extends StatelessWidget {
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 18),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 4,
           shadowColor: AppColors.primary.withOpacity(0.4),
         ),

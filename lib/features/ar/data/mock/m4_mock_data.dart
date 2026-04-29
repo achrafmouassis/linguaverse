@@ -24,8 +24,7 @@ class M4MockData {
   // TODO(DB) : Remplacer par une requête sqflite :
   //   SELECT * FROM vocabulary WHERE ml_label = '{mlLabel}'
   //     AND language IN ({languesActives})
-  static const Map<String, Map<String, Map<String, String>>> objectDictionary =
-      {
+  static const Map<String, Map<String, Map<String, String>>> objectDictionary = {
     // ── Maison / Bureau ───────────────────────────────────────
     'chair': {
       'Arabe': {'word': 'كرسي', 'roman': 'Kursi', 'sound': 'KUR-see'},
@@ -79,11 +78,7 @@ class M4MockData {
       'Arabe': {'word': 'حاسوب', 'roman': 'Hasub', 'sound': 'HA-soob'},
       'Anglais': {'word': 'Laptop', 'roman': '', 'sound': 'LAP-top'},
       'Espagnol': {'word': 'Ordenador', 'roman': '', 'sound': 'or-de-na-DOR'},
-      'Français': {
-        'word': 'Ordinateur',
-        'roman': '',
-        'sound': 'or-dee-na-TEUR'
-      },
+      'Français': {'word': 'Ordinateur', 'roman': '', 'sound': 'or-dee-na-TEUR'},
       'Allemand': {'word': 'Laptop', 'roman': '', 'sound': 'LAP-top'},
       'Japonais': {'word': 'ノートPC', 'roman': 'Nōto PC', 'sound': 'NOH-toh PC'},
     },

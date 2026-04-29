@@ -60,7 +60,8 @@ class CategoryLevelsPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('Méthode d\'apprentissage',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
                 const SizedBox(height: 4),
                 Text(
                   category.learningMethod,
@@ -95,9 +96,8 @@ class CategoryLevelsPage extends ConsumerWidget {
                 }
 
                 final level = category.levels[idx];
-                final isLevelUnlocked = idx == 0 ||
-                    notifier.isLessonQuizPassed(
-                        '${categoryId}_lvl_${idx - 1}_lsn_2');
+                final isLevelUnlocked =
+                    idx == 0 || notifier.isLessonQuizPassed('${categoryId}_lvl_${idx - 1}_lsn_2');
 
                 return _LevelCard(
                   level: level,
@@ -259,9 +259,7 @@ class _LessonRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: isDark
-              ? Colors.white.withOpacity(0.04)
-              : rowColor.withOpacity(0.06),
+          color: isDark ? Colors.white.withOpacity(0.04) : rowColor.withOpacity(0.06),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: rowColor.withOpacity(accessible ? 0.3 : 0.12),
@@ -437,9 +435,7 @@ class _FinalQuizCard extends StatelessWidget {
                 children: [
                   Text('Unité complétée !',
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800)),
+                          color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800)),
                   SizedBox(height: 4),
                   Text('Félicitations 🎉 Tu maîtrises cette unité.',
                       style: TextStyle(color: Colors.white70, fontSize: 13)),
@@ -493,22 +489,17 @@ class _FinalQuizCard extends StatelessWidget {
                       children: [
                         Text('Quiz Final de l\'Unité',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w800)),
+                                color: Colors.white, fontSize: 17, fontWeight: FontWeight.w800)),
                         SizedBox(height: 4),
                         Text('Évaluation complète · 15 questions · tous niveaux',
-                            style:
-                                TextStyle(color: Colors.white70, fontSize: 12)),
+                            style: TextStyle(color: Colors.white70, fontSize: 12)),
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(Icons.star_rounded,
-                                color: Colors.amber, size: 16),
+                            Icon(Icons.star_rounded, color: Colors.amber, size: 16),
                             SizedBox(width: 4),
                             Text('Score requis : 70%',
-                                style: TextStyle(
-                                    color: Colors.white70, fontSize: 12)),
+                                style: TextStyle(color: Colors.white70, fontSize: 12)),
                           ],
                         ),
                       ],
@@ -521,8 +512,7 @@ class _FinalQuizCard extends StatelessWidget {
                       color: Colors.white.withOpacity(0.2),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.arrow_forward_rounded,
-                        color: Colors.white, size: 22),
+                    child: const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 22),
                   ),
                 ],
               ),
@@ -542,12 +532,10 @@ class _FinalQuizCard extends StatelessWidget {
         margin: const EdgeInsets.only(top: 8, bottom: 24),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color:
-              isDark ? const Color(0xFF1E293B) : Colors.grey.shade100,
+          color: isDark ? const Color(0xFF1E293B) : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color:
-                isDark ? Colors.white12 : Colors.grey.shade300,
+            color: isDark ? Colors.white12 : Colors.grey.shade300,
             width: 1.5,
           ),
         ),
@@ -563,8 +551,7 @@ class _FinalQuizCard extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.15),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.lock_rounded,
-                      color: Colors.grey, size: 26),
+                  child: const Icon(Icons.lock_rounded, color: Colors.grey, size: 26),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -576,9 +563,7 @@ class _FinalQuizCard extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
-                            color: isDark
-                                ? Colors.white54
-                                : Colors.grey.shade600),
+                            color: isDark ? Colors.white54 : Colors.grey.shade600),
                       ),
                       const SizedBox(height: 3),
                       Text(
@@ -586,10 +571,7 @@ class _FinalQuizCard extends StatelessWidget {
                             ? 'Presque prêt...'
                             : '$remaining quiz restant${remaining > 1 ? 's' : ''} pour débloquer',
                         style: TextStyle(
-                            fontSize: 12,
-                            color: isDark
-                                ? Colors.white38
-                                : Colors.grey.shade500),
+                            fontSize: 12, color: isDark ? Colors.white38 : Colors.grey.shade500),
                       ),
                     ],
                   ),
@@ -599,9 +581,7 @@ class _FinalQuizCard extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: isDark
-                          ? Colors.white38
-                          : Colors.grey.shade500),
+                      color: isDark ? Colors.white38 : Colors.grey.shade500),
                 ),
               ],
             ),
@@ -612,13 +592,9 @@ class _FinalQuizCard extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: ratio,
                 minHeight: 7,
-                backgroundColor: isDark
-                    ? Colors.white12
-                    : Colors.grey.shade200,
+                backgroundColor: isDark ? Colors.white12 : Colors.grey.shade200,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  ratio >= 1.0
-                      ? AppColors.correctGreen
-                      : AppColors.primary,
+                  ratio >= 1.0 ? AppColors.correctGreen : AppColors.primary,
                 ),
               ),
             ),
@@ -627,8 +603,7 @@ class _FinalQuizCard extends StatelessWidget {
               'Réussissez tous les quiz de leçon pour débloquer l\'évaluation finale',
               style: TextStyle(
                   fontSize: 11,
-                  color:
-                      isDark ? Colors.white30 : Colors.grey.shade400,
+                  color: isDark ? Colors.white30 : Colors.grey.shade400,
                   fontStyle: FontStyle.italic),
             ),
           ],

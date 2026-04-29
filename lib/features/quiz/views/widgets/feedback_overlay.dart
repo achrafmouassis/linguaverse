@@ -18,16 +18,14 @@ class FeedbackOverlay extends StatefulWidget {
   State<FeedbackOverlay> createState() => _FeedbackOverlayState();
 }
 
-class _FeedbackOverlayState extends State<FeedbackOverlay>
-    with SingleTickerProviderStateMixin {
+class _FeedbackOverlayState extends State<FeedbackOverlay> with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
   late final Animation<double> _scale;
 
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 350));
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 350));
     _scale = CurvedAnimation(parent: _ctrl, curve: Curves.elasticOut);
     _ctrl.forward();
   }

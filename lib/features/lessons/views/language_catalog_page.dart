@@ -22,8 +22,7 @@ class LanguageCatalogPage extends ConsumerStatefulWidget {
   const LanguageCatalogPage({super.key});
 
   @override
-  ConsumerState<LanguageCatalogPage> createState() =>
-      _LanguageCatalogPageState();
+  ConsumerState<LanguageCatalogPage> createState() => _LanguageCatalogPageState();
 }
 
 class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
@@ -65,14 +64,10 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
 
     final filtered = _query.isEmpty
         ? languages
-        : languages
-            .where((l) =>
-                l.name.toLowerCase().contains(_query.toLowerCase()))
-            .toList();
+        : languages.where((l) => l.name.toLowerCase().contains(_query.toLowerCase())).toList();
 
     return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9),
+      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
@@ -102,7 +97,8 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.04),
+                      color:
+                          isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.04),
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
@@ -144,17 +140,16 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
                 crossAxisCount: crossAxisCount,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: screenWidth > 760 
-                    ? 0.9 
+                childAspectRatio: screenWidth > 760
+                    ? 0.9
                     : screenWidth > 500
-                        ? 0.84 
+                        ? 0.84
                         : 0.80,
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final lang = filtered[index];
-                  final meta = _langMeta[lang.id] ??
-                      (badge: '', tagline: '');
+                  final meta = _langMeta[lang.id] ?? (badge: '', tagline: '');
                   return _LanguageCard(
                     key: ValueKey(lang.id),
                     language: lang,
@@ -163,9 +158,7 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
                     index: index,
                     isDark: isDark,
                     onTap: () {
-                      ref
-                          .read(selectedLanguageIdProvider.notifier)
-                          .state = lang.id;
+                      ref.read(selectedLanguageIdProvider.notifier).state = lang.id;
                       context.push('/lessons/${lang.id}');
                     },
                   );
@@ -251,8 +244,7 @@ class _AnimatedHeader extends StatelessWidget {
                 ),
                 // Content
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -282,8 +274,7 @@ class _AnimatedHeader extends StatelessWidget {
                               color: Colors.white.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Text('🌍',
-                                style: TextStyle(fontSize: 20)),
+                            child: const Text('🌍', style: TextStyle(fontSize: 20)),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -374,14 +365,12 @@ class _SearchBar extends StatelessWidget {
           suffixIcon: hasQuery
               ? IconButton(
                   icon: Icon(Icons.close_rounded,
-                      size: 18,
-                      color: isDark ? Colors.white38 : Colors.black38),
+                      size: 18, color: isDark ? Colors.white38 : Colors.black38),
                   onPressed: () => controller.clear(),
                 )
               : null,
           border: InputBorder.none,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );
@@ -413,8 +402,7 @@ class _LanguageCard extends StatefulWidget {
   State<_LanguageCard> createState() => _LanguageCardState();
 }
 
-class _LanguageCardState extends State<_LanguageCard>
-    with SingleTickerProviderStateMixin {
+class _LanguageCardState extends State<_LanguageCard> with SingleTickerProviderStateMixin {
   late final AnimationController _entryCtrl;
   late final Animation<double> _fadeAnim;
   late final Animation<Offset> _slideAnim;
@@ -529,7 +517,7 @@ class _LanguageCardState extends State<_LanguageCard>
                                 shape: BoxShape.circle,
                               ),
                               alignment: Alignment.center,
-                          child: Text(
+                              child: Text(
                                 widget.language.flagEmoji,
                                 style: const TextStyle(fontSize: 29),
                               ),
@@ -543,9 +531,7 @@ class _LanguageCardState extends State<_LanguageCard>
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w800,
-                                color: isDark
-                                    ? Colors.white
-                                    : AppColors.textPrimary,
+                                color: isDark ? Colors.white : AppColors.textPrimary,
                                 letterSpacing: -0.2,
                               ),
                               textAlign: TextAlign.center,
@@ -561,9 +547,7 @@ class _LanguageCardState extends State<_LanguageCard>
                               style: TextStyle(
                                 fontSize: 10.5,
                                 fontWeight: FontWeight.w500,
-                                color: isDark
-                                    ? Colors.white38
-                                    : AppColors.textSecondary,
+                                color: isDark ? Colors.white38 : AppColors.textSecondary,
                               ),
                               textAlign: TextAlign.center,
                               maxLines: 1,
@@ -574,8 +558,7 @@ class _LanguageCardState extends State<_LanguageCard>
                             if (widget.badge.isNotEmpty) ...[
                               const SizedBox(height: 6),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
                                   color: badgeBg,
                                   borderRadius: BorderRadius.circular(20),

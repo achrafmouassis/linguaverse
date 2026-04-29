@@ -27,8 +27,7 @@ class ArTranslationModel {
   });
 
   /// Indique si on affiche la traduction (langue cible ≠ anglais)
-  bool get showTranslation =>
-      targetLanguage != 'Anglais' && targetWord.isNotEmpty;
+  bool get showTranslation => targetLanguage != 'Anglais' && targetWord.isNotEmpty;
 
   /// Ligne de traduction complète avec romanisation si disponible
   String get translationLine {
@@ -43,8 +42,7 @@ class ArTranslationModel {
     required String targetLanguage,
   }) {
     return ArTranslationModel(
-      englishWord:
-          englishWord.substring(0, 1).toUpperCase() + englishWord.substring(1),
+      englishWord: englishWord.substring(0, 1).toUpperCase() + englishWord.substring(1),
       targetWord: translationMap['word'] ?? '',
       romanization: translationMap['roman'] ?? '',
       pronunciation: translationMap['sound'] ?? '',

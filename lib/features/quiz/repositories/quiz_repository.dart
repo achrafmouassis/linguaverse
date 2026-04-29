@@ -104,15 +104,14 @@ class QuizRepository {
 
   Future<int> getTotalXp() async {
     final db = await _database;
-    final result = await db.rawQuery(
-        'SELECT COALESCE(SUM(xpEarned), 0) as total FROM $_tableResults');
+    final result =
+        await db.rawQuery('SELECT COALESCE(SUM(xpEarned), 0) as total FROM $_tableResults');
     return (result.first['total'] as int?) ?? 0;
   }
 
   Future<int> getQuizCount() async {
     final db = await _database;
-    final result = await db.rawQuery(
-        'SELECT COUNT(*) as count FROM $_tableResults');
+    final result = await db.rawQuery('SELECT COUNT(*) as count FROM $_tableResults');
     return (result.first['count'] as int?) ?? 0;
   }
 
@@ -145,14 +144,12 @@ class QuizRepository {
             categoryId: categoryId,
             languageId: languageId,
           );
-      final updated = card.update(
-          wasCorrect: correctWordTerms.contains(term));
+      final updated = card.update(wasCorrect: correctWordTerms.contains(term));
       await upsertSrsCard(updated);
     }
   }
 
-  Future<SrsCard?> getSrsCard(
-      String wordTerm, String categoryId, String languageId) async {
+  Future<SrsCard?> getSrsCard(String wordTerm, String categoryId, String languageId) async {
     final db = await _database;
     final maps = await db.query(
       _tableSrs,
@@ -176,15 +173,13 @@ class QuizRepository {
     return maps.map(SrsCard.fromMap).toList();
   }
 
-  Future<List<SrsCard>> getWeakCards(String languageId,
-      {int limit = 10}) async {
+  Future<List<SrsCard>> getWeakCards(String languageId, {int limit = 10}) async {
     final db = await _database;
     final maps = await db.query(
       _tableSrs,
       where: 'languageId = ? AND totalAttempts > 0',
       whereArgs: [languageId],
-      orderBy:
-          'CAST(correctAttempts AS REAL) / totalAttempts ASC, totalAttempts DESC',
+      orderBy: 'CAST(correctAttempts AS REAL) / totalAttempts ASC, totalAttempts DESC',
       limit: limit,
     );
     return maps.map(SrsCard.fromMap).toList();

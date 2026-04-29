@@ -80,9 +80,8 @@ class ArScannerState {
         isTranslating: isTranslating ?? this.isTranslating,
         errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
         apiCallsRemaining: apiCallsRemaining ?? this.apiCallsRemaining,
-        capturedTranslation: clearCaptured
-            ? null
-            : (capturedTranslation ?? this.capturedTranslation),
+        capturedTranslation:
+            clearCaptured ? null : (capturedTranslation ?? this.capturedTranslation),
       );
 }
 
@@ -114,14 +113,12 @@ class ArScannerNotifier extends StateNotifier<ArScannerState> {
 
     _clearTimer?.cancel();
 
-    final newTranslations =
-        Map<String, ArTranslationModel>.from(state.translations);
+    final newTranslations = Map<String, ArTranslationModel>.from(state.translations);
 
     for (final det in detections) {
       if (!newTranslations.containsKey(det.normalizedLabel)) {
-        final translation = _ref
-            .read(arObjectServiceProvider)
-            .getTranslation(det.normalizedLabel, targetLanguage);
+        final translation =
+            _ref.read(arObjectServiceProvider).getTranslation(det.normalizedLabel, targetLanguage);
         if (translation != null) {
           newTranslations[det.normalizedLabel] = translation;
           _awardXPForScan(det.normalizedLabel);
@@ -165,8 +162,7 @@ class ArScannerNotifier extends StateNotifier<ArScannerState> {
       state = state.copyWith(
         isTranslating: false,
         capturedTranslation: result,
-        apiCallsRemaining:
-            _ref.read(arTranslationServiceProvider).remainingQuota,
+        apiCallsRemaining: _ref.read(arTranslationServiceProvider).remainingQuota,
       );
       _awardXPForTextScan();
     } else {
@@ -177,12 +173,9 @@ class ArScannerNotifier extends StateNotifier<ArScannerState> {
     }
   }
 
-  void clearCapturedTranslation() =>
-      state = state.copyWith(clearCaptured: true);
+  void clearCapturedTranslation() => state = state.copyWith(clearCaptured: true);
 
   void clearError() => state = state.copyWith(clearError: true);
-
-
 
   void _awardXPForScan(String objectLabel) {
     if (_scannerForObjectAwardedThisSession) return;
@@ -195,9 +188,7 @@ class ArScannerNotifier extends StateNotifier<ArScannerState> {
     _scannerForObjectAwardedThisSession = true;
 
     final userId = _ref.read(currentUserIdProvider);
-    _ref
-        .read(progressionServiceProvider)
-        .incrementStat(userId, 'words_mastered');
+    _ref.read(progressionServiceProvider).incrementStat(userId, 'words_mastered');
   }
 
   void _awardXPForTextScan() {

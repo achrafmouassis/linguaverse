@@ -1,13 +1,13 @@
 // lib/features/quiz/views/quiz_result_page.dart
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../gamification/models/gamification_model.dart';
+import '../../gamification/data/services/progression_service.dart';
+import '../../gamification/data/models/badge_model.dart';
 import '../models/quiz_result_model.dart';
 
 class QuizResultPage extends StatefulWidget {
   final QuizResult result;
-  final GamificationResult? gamificationResult;
+  final XpGainResult? gamificationResult;
   final String lessonTitle;
   final VoidCallback onRetry;
   final VoidCallback onContinue;
@@ -25,8 +25,7 @@ class QuizResultPage extends StatefulWidget {
   State<QuizResultPage> createState() => _QuizResultPageState();
 }
 
-class _QuizResultPageState extends State<QuizResultPage>
-    with TickerProviderStateMixin {
+class _QuizResultPageState extends State<QuizResultPage> with TickerProviderStateMixin {
   late final AnimationController _scoreCtrl;
   late final AnimationController _badgeCtrl;
   late final Animation<double> _scoreFade;
@@ -37,17 +36,13 @@ class _QuizResultPageState extends State<QuizResultPage>
   void initState() {
     super.initState();
 
-    _scoreCtrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800));
-    _badgeCtrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 600));
+    _scoreCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _badgeCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
 
-    _scoreFade =
-        CurvedAnimation(parent: _scoreCtrl, curve: Curves.easeOut);
-    _scoreScale = Tween<double>(begin: 0.5, end: 1.0).animate(
-        CurvedAnimation(parent: _scoreCtrl, curve: Curves.elasticOut));
-    _badgeFade =
-        CurvedAnimation(parent: _badgeCtrl, curve: Curves.easeIn);
+    _scoreFade = CurvedAnimation(parent: _scoreCtrl, curve: Curves.easeOut);
+    _scoreScale = Tween<double>(begin: 0.5, end: 1.0)
+        .animate(CurvedAnimation(parent: _scoreCtrl, curve: Curves.elasticOut));
+    _badgeFade = CurvedAnimation(parent: _badgeCtrl, curve: Curves.easeIn);
 
     _scoreCtrl.forward().then((_) => _badgeCtrl.forward());
   }
@@ -140,8 +135,8 @@ class _QuizResultPageState extends State<QuizResultPage>
               if (gam != null)
                 FadeTransition(
                   opacity: _badgeFade,
-                  child: _XpBanner(xp: gam.xpEarned, leveledUp: gam.leveledUp,
-                      newLevel: gam.newLevel),
+                  child: _XpBanner(
+                      xp: gam.xpAdded, leveledUp: gam.levelUp != null, newLevel: gam.newLevel),
                 ),
 
               const SizedBox(height: 16),
@@ -156,8 +151,7 @@ class _QuizResultPageState extends State<QuizResultPage>
               const SizedBox(height: 16),
 
               // ── Mots à réviser ──
-              if (result.wordsToReview.isNotEmpty)
-                _ReviewWordsSection(words: result.wordsToReview),
+              if (result.wordsToReview.isNotEmpty) _ReviewWordsSection(words: result.wordsToReview),
 
               const SizedBox(height: 32),
 
@@ -206,10 +200,7 @@ class _ScoreCircle extends StatelessWidget {
             ),
             border: Border.all(color: color, width: 3),
             boxShadow: [
-              BoxShadow(
-                  color: color.withOpacity(0.3),
-                  blurRadius: 32,
-                  spreadRadius: 4),
+              BoxShadow(color: color.withOpacity(0.3), blurRadius: 32, spreadRadius: 4),
             ],
           ),
           child: Column(
@@ -226,8 +217,7 @@ class _ScoreCircle extends StatelessWidget {
               ),
               Text(
                 'Grade $grade',
-                style:
-                    TextStyle(color: color, fontWeight: FontWeight.w700),
+                style: TextStyle(color: color, fontWeight: FontWeight.w700),
               ),
             ],
           ),
@@ -260,8 +250,7 @@ class _StatsRow extends StatelessWidget {
         _StatCard(
             icon: Icons.cancel_rounded,
             color: AppColors.wrongRed,
-            value:
-                '${result.totalQuestions - result.correctCount}',
+            value: '${result.totalQuestions - result.correctCount}',
             label: 'Faux'),
         const SizedBox(width: 10),
         _StatCard(
@@ -273,8 +262,7 @@ class _StatsRow extends StatelessWidget {
     );
   }
 
-  String _fmt(int s) =>
-      s >= 60 ? '${s ~/ 60}m${s % 60}s' : '${s}s';
+  String _fmt(int s) => s >= 60 ? '${s ~/ 60}m${s % 60}s' : '${s}s';
 }
 
 class _StatCard extends StatelessWidget {
@@ -304,14 +292,8 @@ class _StatCard extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 22),
             const SizedBox(height: 6),
-            Text(value,
-                style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 20)),
-            Text(label,
-                style: const TextStyle(
-                    fontSize: 12, color: AppColors.textSecondary)),
+            Text(value, style: TextStyle(color: color, fontWeight: FontWeight.w800, fontSize: 20)),
+            Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
           ],
         ),
       ),
@@ -324,8 +306,7 @@ class _XpBanner extends StatelessWidget {
   final bool leveledUp;
   final int newLevel;
 
-  const _XpBanner(
-      {required this.xp, required this.leveledUp, required this.newLevel});
+  const _XpBanner({required this.xp, required this.leveledUp, required this.newLevel});
 
   @override
   Widget build(BuildContext context) {
@@ -340,9 +321,7 @@ class _XpBanner extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-              color: AppColors.xpGold.withOpacity(0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4)),
+              color: AppColors.xpGold.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
         ],
       ),
       child: Row(
@@ -355,13 +334,10 @@ class _XpBanner extends StatelessWidget {
               children: [
                 Text('+$xp XP gagnés !',
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18)),
+                        color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
                 if (leveledUp)
                   Text('🎉 Niveau $newLevel débloqué !',
-                      style: const TextStyle(
-                          color: Colors.white70, fontSize: 13)),
+                      style: const TextStyle(color: Colors.white70, fontSize: 13)),
               ],
             ),
           ),
@@ -372,7 +348,7 @@ class _XpBanner extends StatelessWidget {
 }
 
 class _BadgeSection extends StatelessWidget {
-  final List<QuizBadge> badges;
+  final List<BadgeModel> badges;
   const _BadgeSection({required this.badges});
 
   @override
@@ -380,39 +356,32 @@ class _BadgeSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Nouveaux badges 🏅',
-            style: Theme.of(context).textTheme.titleMedium),
+        Text('Nouveaux badges 🏅', style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 10),
         Wrap(
           spacing: 10,
           runSpacing: 10,
           children: badges
               .map((b) => Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                     decoration: BoxDecoration(
                       color: AppColors.primaryLight,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                          color: AppColors.primary.withOpacity(0.3)),
+                      border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(b.emoji,
-                            style: const TextStyle(fontSize: 20)),
+                        Text(b.iconEmoji, style: const TextStyle(fontSize: 20)),
                         const SizedBox(width: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(b.title,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 13)),
+                            Text(b.name,
+                                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
                             Text(b.description,
-                                style: const TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.textSecondary)),
+                                style:
+                                    const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
                           ],
                         ),
                       ],
@@ -438,8 +407,7 @@ class _ReviewWordsSection extends StatelessWidget {
           children: [
             const Text('🔁', style: TextStyle(fontSize: 18)),
             const SizedBox(width: 8),
-            Text('Mots à réviser (SRS)',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text('Mots à réviser (SRS)', style: Theme.of(context).textTheme.titleMedium),
           ],
         ),
         const SizedBox(height: 10),
@@ -448,8 +416,7 @@ class _ReviewWordsSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.wrongRed.withOpacity(0.05),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-                color: AppColors.wrongRed.withOpacity(0.2)),
+            border: Border.all(color: AppColors.wrongRed.withOpacity(0.2)),
           ),
           child: Wrap(
             spacing: 8,
@@ -457,13 +424,9 @@ class _ReviewWordsSection extends StatelessWidget {
             children: words
                 .map((w) => Chip(
                       label: Text(w,
-                          style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600)),
-                      backgroundColor:
-                          AppColors.wrongRed.withOpacity(0.1),
-                      side: BorderSide(
-                          color: AppColors.wrongRed.withOpacity(0.3)),
+                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                      backgroundColor: AppColors.wrongRed.withOpacity(0.1),
+                      side: BorderSide(color: AppColors.wrongRed.withOpacity(0.3)),
                     ))
                 .toList(),
           ),
@@ -471,10 +434,7 @@ class _ReviewWordsSection extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           'Ces mots seront automatiquement planifiés pour révision.',
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(fontStyle: FontStyle.italic),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
         ),
       ],
     );
@@ -495,14 +455,12 @@ class _ActionRow extends StatelessWidget {
         ElevatedButton.icon(
           onPressed: onRetry,
           icon: const Icon(Icons.refresh_rounded),
-          label: const Text('Rejouer',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+          label: const Text('Rejouer', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 16),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           ),
         ),
         const SizedBox(height: 12),
@@ -514,8 +472,7 @@ class _ActionRow extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.textPrimary,
             padding: const EdgeInsets.symmetric(vertical: 16),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           ),
         ),
       ],

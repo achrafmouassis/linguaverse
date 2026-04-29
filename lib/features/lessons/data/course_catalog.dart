@@ -9,7 +9,7 @@ import 'courses/french_courses.dart';
 
 class CourseCatalog {
   /// Clé de lookup = languageId + '_' + categoryId
-    static Map<String, List<LessonCourse>> get _allCourses => {
+  static Map<String, List<LessonCourse>> get _allCourses => {
         ...NumbersCourses.all,
         ...GreetingsCourses.all,
         ...AlphabetCourses.all,
@@ -39,8 +39,16 @@ class CourseCatalog {
 
   static String _extractCategoryType(String id) {
     for (final type in [
-      'nombres', 'alphabet', 'salutations', 'famille',
-      'couleurs', 'jours', 'mois', 'animaux', 'aliments', 'verbes'
+      'nombres',
+      'alphabet',
+      'salutations',
+      'famille',
+      'couleurs',
+      'jours',
+      'mois',
+      'animaux',
+      'aliments',
+      'verbes'
     ]) {
       if (id.toLowerCase().contains(type)) return type;
     }
@@ -58,8 +66,7 @@ class CourseCatalog {
   }
 
   // ─── Cours générique de fallback localisé ───────────────────
-  static List<LessonCourse> _genericCourses(
-      String languageId, String categoryId) {
+  static List<LessonCourse> _genericCourses(String languageId, String categoryId) {
     final categoryType = _extractCategoryType(categoryId);
     final typeLabel = _typeToLabel(categoryType, languageId);
 
@@ -72,10 +79,13 @@ class CourseCatalog {
         'es': 'Introducción: $typeLabel',
       },
       'desc': {
-        'fr': 'Ce cours vous introduit au thème "$typeLabel". Vous découvrirez le vocabulaire de base prochainement.',
-        'en': 'This course introduces you to "$typeLabel". You will discover the basic vocabulary soon.',
+        'fr':
+            'Ce cours vous introduit au thème "$typeLabel". Vous découvrirez le vocabulaire de base prochainement.',
+        'en':
+            'This course introduces you to "$typeLabel". You will discover the basic vocabulary soon.',
         'ar': 'هذه الدورة تقدم لك موضوع "$typeLabel". سوف تكتشف المفردات الأساسية قريباً.',
-        'es': 'Este curso te introduce al tema "$typeLabel". Descubrirás el vocabulario básico pronto.',
+        'es':
+            'Este curso te introduce al tema "$typeLabel". Descubrirás el vocabulario básico pronto.',
       },
       'soon': {
         'fr': 'Contenu complet disponible prochainement.',
@@ -117,15 +127,20 @@ class CourseCatalog {
 
   static String _typeToLabel(String type, String languageId) {
     const Map<String, Map<String, String>> labels = {
-      'nombres':    {'fr': 'Les nombres',      'en': 'Numbers',   'ar': 'الأرقام',    'es': 'Números'},
-      'alphabet':   {'fr': 'L\'alphabet',      'en': 'Alphabet',  'ar': 'الأبجدية',  'es': 'Alfabeto'},
-      'salutations':{'fr': 'Les salutations',  'en': 'Greetings', 'ar': 'التحيات',   'es': 'Saludos'},
-      'famille':    {'fr': 'La famille',        'en': 'Family',    'ar': 'العائلة',    'es': 'Familia'},
-      'couleurs':   {'fr': 'Les couleurs',      'en': 'Colors',    'ar': 'الألوان',    'es': 'Colores'},
-      'jours':      {'fr': 'Les jours',         'en': 'Days',      'ar': 'الأيام',     'es': 'Días'},
-      'animaux':    {'fr': 'Les animaux',       'en': 'Animals',   'ar': 'الحيوانات',  'es': 'Animales'},
-      'aliments':   {'fr': 'Les aliments',      'en': 'Food',      'ar': 'الطعام',     'es': 'Alimentos'},
-      'verbes':     {'fr': 'Les verbes de base','en': 'Basic verbs','ar': 'الأفعال الأساسية','es': 'Verbos básicos'},
+      'nombres': {'fr': 'Les nombres', 'en': 'Numbers', 'ar': 'الأرقام', 'es': 'Números'},
+      'alphabet': {'fr': 'L\'alphabet', 'en': 'Alphabet', 'ar': 'الأبجدية', 'es': 'Alfabeto'},
+      'salutations': {'fr': 'Les salutations', 'en': 'Greetings', 'ar': 'التحيات', 'es': 'Saludos'},
+      'famille': {'fr': 'La famille', 'en': 'Family', 'ar': 'العائلة', 'es': 'Familia'},
+      'couleurs': {'fr': 'Les couleurs', 'en': 'Colors', 'ar': 'الألوان', 'es': 'Colores'},
+      'jours': {'fr': 'Les jours', 'en': 'Days', 'ar': 'الأيام', 'es': 'Días'},
+      'animaux': {'fr': 'Les animaux', 'en': 'Animals', 'ar': 'الحيوانات', 'es': 'Animales'},
+      'aliments': {'fr': 'Les aliments', 'en': 'Food', 'ar': 'الطعام', 'es': 'Alimentos'},
+      'verbes': {
+        'fr': 'Les verbes de base',
+        'en': 'Basic verbs',
+        'ar': 'الأفعال الأساسية',
+        'es': 'Verbos básicos'
+      },
     };
     return labels[type]?[languageId] ?? labels[type]?['en'] ?? type;
   }

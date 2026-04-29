@@ -1,14 +1,13 @@
 // lib/features/quiz/views/quiz_entry_page.dart
 //
 // Page de sélection de quiz (accessible via /quiz route).
-// Permet à l'utilisateur de choisir la langue + catégorie  
+// Permet à l'utilisateur de choisir la langue + catégorie
 // pour lancer un quiz sans obligatoirement venir d'une leçon.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
-import 'quiz_page.dart';
 
 class QuizEntryPage extends ConsumerStatefulWidget {
   final String? languageId;
@@ -40,8 +39,7 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
   void initState() {
     super.initState();
     _selectedLanguage = widget.languageId ?? 'ar';
-    _selectedCategory = widget.categoryId ??
-        (_categories[_selectedLanguage]?.first['id'] ?? '');
+    _selectedCategory = widget.categoryId ?? (_categories[_selectedLanguage]?.first['id'] ?? '');
 
     // Redirection directe vers quiz_page si :
     //  • on vient d'une leçon précise (lessonId fourni), OU
@@ -59,10 +57,10 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
             : 'Quiz — Leçon ${(widget.lessonIndex ?? 0) + 1}';
 
         context.pushReplacementNamed('quiz_page', extra: {
-          'lessonId':    effectiveLessonId,
-          'categoryId':  widget.categoryId ?? '',
-          'languageId':  widget.languageId ?? 'ar',
-          'levelIndex':  widget.levelIndex,
+          'lessonId': effectiveLessonId,
+          'categoryId': widget.categoryId ?? '',
+          'languageId': widget.languageId ?? 'ar',
+          'levelIndex': widget.levelIndex,
           'lessonIndex': widget.lessonIndex,
           'isUnitFinal': widget.isUnitFinal,
           'lessonTitle': lessonTitle,
@@ -114,16 +112,14 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
   };
 
   List<Map<String, String>> get _currentCategories =>
-      (_categories[_selectedLanguage] ?? [])
-          .cast<Map<String, String>>();
+      (_categories[_selectedLanguage] ?? []).cast<Map<String, String>>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Quiz',
-            style: TextStyle(fontWeight: FontWeight.w800)),
+        title: const Text('Quiz', style: TextStyle(fontWeight: FontWeight.w800)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -153,15 +149,11 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
                       children: [
                         const Text('Teste tes connaissances !',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800)),
+                                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800)),
                         const SizedBox(height: 4),
                         Text(
                           '5 types de questions · Timer 30s · XP & badges',
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(0.8),
-                              fontSize: 12),
+                          style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
                         ),
                       ],
                     ),
@@ -173,8 +165,7 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
             const SizedBox(height: 28),
 
             // Langue
-            Text('Choisir la langue',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text('Choisir la langue', style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             GridView.builder(
               shrinkWrap: true,
@@ -192,9 +183,7 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
                   onTap: () => setState(() {
                     _selectedLanguage = lang['id']!;
                     _selectedCategory =
-                        _currentCategories.isNotEmpty
-                            ? _currentCategories.first['id']!
-                            : '';
+                        _currentCategories.isNotEmpty ? _currentCategories.first['id']! : '';
                   }),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -202,25 +191,17 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
                       color: sel ? AppColors.primaryLight : Colors.white,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                          color: sel
-                              ? AppColors.primary
-                              : AppColors.outline,
-                          width: sel ? 2 : 1),
+                          color: sel ? AppColors.primary : AppColors.outline, width: sel ? 2 : 1),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(lang['flag']!,
-                            style: const TextStyle(fontSize: 22)),
+                        Text(lang['flag']!, style: const TextStyle(fontSize: 22)),
                         const SizedBox(width: 8),
                         Text(lang['name']!,
                             style: TextStyle(
-                                fontWeight: sel
-                                    ? FontWeight.w700
-                                    : FontWeight.w500,
-                                color: sel
-                                    ? AppColors.primary
-                                    : AppColors.textPrimary)),
+                                fontWeight: sel ? FontWeight.w700 : FontWeight.w500,
+                                color: sel ? AppColors.primary : AppColors.textPrimary)),
                       ],
                     ),
                   ),
@@ -231,46 +212,34 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
             const SizedBox(height: 24),
 
             // Catégorie
-            Text('Choisir le thème',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text('Choisir le thème', style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             ..._currentCategories.map((cat) {
               final sel = _selectedCategory == cat['id'];
               return GestureDetector(
-                onTap: () =>
-                    setState(() => _selectedCategory = cat['id']!),
+                onTap: () => setState(() => _selectedCategory = cat['id']!),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 14),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   decoration: BoxDecoration(
                     color: sel ? AppColors.primaryLight : Colors.white,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                        color: sel
-                            ? AppColors.primary
-                            : AppColors.outline,
-                        width: sel ? 2 : 1),
+                        color: sel ? AppColors.primary : AppColors.outline, width: sel ? 2 : 1),
                   ),
                   child: Row(
                     children: [
-                      Text(cat['icon']!,
-                          style: const TextStyle(fontSize: 24)),
+                      Text(cat['icon']!, style: const TextStyle(fontSize: 24)),
                       const SizedBox(width: 12),
                       Text(cat['name']!,
                           style: TextStyle(
-                              fontWeight: sel
-                                  ? FontWeight.w700
-                                  : FontWeight.w500,
+                              fontWeight: sel ? FontWeight.w700 : FontWeight.w500,
                               fontSize: 15,
-                              color: sel
-                                  ? AppColors.primary
-                                  : AppColors.textPrimary)),
+                              color: sel ? AppColors.primary : AppColors.textPrimary)),
                       const Spacer(),
                       if (sel)
-                        const Icon(Icons.check_circle_rounded,
-                            color: AppColors.primary, size: 20),
+                        const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 20),
                     ],
                   ),
                 ),
@@ -294,27 +263,22 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
                             'levelIndex': widget.levelIndex,
                             'lessonIndex': widget.lessonIndex,
                             'isUnitFinal': widget.isUnitFinal,
-                            'lessonTitle': _currentCategories
-                                .firstWhere((c) =>
-                                    c['id'] == _selectedCategory,
-                                    orElse: () => {'name': 'Quiz'})['name']!,
+                            'lessonTitle': _currentCategories.firstWhere(
+                                (c) => c['id'] == _selectedCategory,
+                                orElse: () => {'name': 'Quiz'})['name']!,
                           },
                         ),
-                icon: const Text('🎯',
-                    style: TextStyle(fontSize: 20)),
+                icon: const Text('🎯', style: TextStyle(fontSize: 20)),
                 label: const Text('Lancer le Quiz',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800, fontSize: 16)),
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: AppColors.outline,
                   padding: const EdgeInsets.symmetric(vertical: 18),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   elevation: 4,
-                  shadowColor:
-                      AppColors.primary.withOpacity(0.4),
+                  shadowColor: AppColors.primary.withOpacity(0.4),
                 ),
               ),
             ),

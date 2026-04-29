@@ -70,8 +70,7 @@ Règles :
       _saveRequestCount();
 
       final content = response.data['content'][0]['text'] as String;
-      final cleanJson =
-          content.trim().replaceAll('```json', '').replaceAll('```', '').trim();
+      final cleanJson = content.trim().replaceAll('```json', '').replaceAll('```', '').trim();
       final jsonData = jsonDecode(cleanJson) as Map<String, dynamic>;
 
       final result = ArTranslationModel.fromAPI(
@@ -113,8 +112,8 @@ Règles :
     // TODO(DB) : Persister via shared_preferences
   }
 
-  int get remainingQuota => (AppConstants.aiQuotaPerDay - _requestsToday)
-      .clamp(0, AppConstants.aiQuotaPerDay);
+  int get remainingQuota =>
+      (AppConstants.aiQuotaPerDay - _requestsToday).clamp(0, AppConstants.aiQuotaPerDay);
 
   void clearCache() => _cache.clear();
 }

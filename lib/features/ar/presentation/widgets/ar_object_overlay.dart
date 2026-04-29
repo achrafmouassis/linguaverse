@@ -16,8 +16,7 @@ class ArObjectOverlay extends StatefulWidget {
   State<ArObjectOverlay> createState() => _ArObjectOverlayState();
 }
 
-class _ArObjectOverlayState extends State<ArObjectOverlay>
-    with SingleTickerProviderStateMixin {
+class _ArObjectOverlayState extends State<ArObjectOverlay> with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
   late Animation<double> _fadeAnim;
   late Animation<double> _scaleAnim;
