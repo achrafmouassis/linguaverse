@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/theme/app_colors.dart';
 import '../../../../shared/utils/constants.dart';
@@ -143,7 +144,12 @@ class _ProgressionDashboardPageState extends ConsumerState<ProgressionDashboardP
                     ],
                   ),
                 ),
-                actions: const [],
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.home_rounded, color: Colors.white),
+                    onPressed: () => context.go('/home'),
+                  ),
+                ],
               ),
               SliverPadding(
                 padding: const EdgeInsets.all(AppSpacing.lg),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+
 import 'package:linguaverse/shared/theme/app_colors.dart';
 import 'package:linguaverse/shared/utils/constants.dart';
 import 'package:linguaverse/features/gamification/gamification_exports.dart';
@@ -109,7 +110,17 @@ class _DuelLobbyPageState extends ConsumerState<DuelLobbyPage> with TickerProvid
                 icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white70, size: 18),
                 onPressed: () {
                   HapticFeedback.selectionClick();
-                  context.go('/');
+                  context.pop();
+                },
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              IconButton(
+                icon: const Icon(Icons.home_rounded, color: Colors.white70, size: 20),
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  context.go('/home');
                 },
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),

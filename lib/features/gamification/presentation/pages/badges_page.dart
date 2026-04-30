@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable, curly_braces_in_flow_control_structures
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/theme/app_colors.dart';
 import '../providers/gamification_providers.dart';
@@ -37,6 +38,12 @@ class _BadgesPageState extends ConsumerState<BadgesPage> {
       appBar: AppBar(
         title: const Text('Mes badges'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_rounded),
+            onPressed: () => context.go('/home'),
+          ),
+        ],
       ),
       body: badgesState.when(
         loading: () => const Center(child: CircularProgressIndicator()),

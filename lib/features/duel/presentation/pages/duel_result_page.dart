@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../shared/widgets/linguaverse_app_bar.dart';
 
 import 'package:linguaverse/shared/theme/app_colors.dart';
 import 'package:linguaverse/shared/utils/constants.dart';
@@ -93,6 +94,9 @@ class _DuelResultPageState extends ConsumerState<DuelResultPage> with TickerProv
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.bgScaffold : const Color(0xFFF4F6FA),
+      appBar: LinguaVerseAppBar(
+        titleText: 'Résultats Duel',
+      ),
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnim,
@@ -199,7 +203,7 @@ class _DuelResultPageState extends ConsumerState<DuelResultPage> with TickerProv
                     TextButton(
                       onPressed: () {
                         HapticFeedback.selectionClick();
-                        context.go('/');
+                        context.go('/home');
                       },
                       child:
                           const Text('Retour à l\'accueil', style: TextStyle(color: Colors.grey)),

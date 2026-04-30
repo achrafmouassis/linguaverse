@@ -107,6 +107,11 @@ class _AiSetupPageState extends ConsumerState<AiSetupPage>
               ),
             ),
             actions: [
+              // Bouton Home
+              IconButton(
+                icon: const Icon(Icons.home_rounded),
+                onPressed: () => context.go('/home'),
+              ),
               // Quota badge
               Container(
                 margin: const EdgeInsets.only(right: AppSpacing.lg),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/theme/app_colors.dart';
 import '../providers/gamification_providers.dart';
@@ -36,6 +37,12 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage>
       appBar: AppBar(
         title: const Text('Classement'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_rounded),
+            onPressed: () => context.go('/home'),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(110),
           child: Column(

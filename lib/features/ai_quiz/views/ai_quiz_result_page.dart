@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../shared/widgets/linguaverse_app_bar.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/utils/constants.dart';
 import '../viewmodels/ai_quiz_viewmodel.dart';
@@ -19,6 +20,9 @@ class AIQuizResultPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor:
           isDark ? AppColors.deepSpaceBlue : AppColors.bgScaffold,
+      appBar: const LinguaVerseAppBar(
+        titleText: 'Résultats IA',
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -174,7 +178,7 @@ class AIQuizResultPage extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               TextButton(
-                onPressed: () => context.go('/'),
+                onPressed: () => context.go('/home'),
                 child: const Text('Retour à l\'accueil'),
               ),
             ],

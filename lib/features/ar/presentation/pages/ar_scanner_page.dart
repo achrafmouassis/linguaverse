@@ -217,7 +217,7 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage> with WidgetsBindi
                 if (context.canPop()) {
                   context.pop();
                 } else {
-                  context.go('/');
+                  context.go('/home');
                 }
               },
               child: Container(
@@ -239,6 +239,34 @@ class _ArScannerPageState extends ConsumerState<ArScannerPage> with WidgetsBindi
               ),
             ),
           ),
+
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 8,
+              right: mode == ArScanMode.text ? 120 : 12,
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  context.go('/home');
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.5),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      width: 0.5,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.home_rounded,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                ),
+              ),
+            ),
 
           // Compteur API (mode texte seulement)
           if (mode == ArScanMode.text)

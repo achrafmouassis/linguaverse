@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../shared/widgets/linguaverse_app_bar.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/utils/constants.dart';
 import '../../gamification/gamification_exports.dart';
@@ -19,35 +20,16 @@ class AIQuizEntryPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.bgScaffold,
+      appBar: const LinguaVerseAppBar(
+        titleText: 'Quiz IA',
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // ── AppBar ──
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => context.pop(),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Text('Quiz IA',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(fontWeight: FontWeight.w800)),
-                ],
-              ),
+
               const SizedBox(height: 24),
 
               // ── Hero section ──

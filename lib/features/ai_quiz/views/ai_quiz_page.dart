@@ -79,6 +79,20 @@ class _AIQuizPageState extends ConsumerState<AIQuizPage>
                       child: const Icon(Icons.close_rounded, size: 22),
                     ),
                   ),
+                  const SizedBox(width: 8),
+                  // Bouton Home rapide
+                  GestureDetector(
+                    onTap: () => context.go('/home'),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.home_rounded, size: 20),
+                    ),
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(

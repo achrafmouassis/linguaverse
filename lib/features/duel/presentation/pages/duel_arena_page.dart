@@ -180,6 +180,11 @@ class _DuelArenaPageState extends ConsumerState<DuelArenaPage> with TickerProvid
             onTap: () => _showExitDialog(context),
             child: const Icon(Icons.close_rounded, color: Colors.grey, size: 24),
           ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () => context.go('/home'),
+            child: const Icon(Icons.home_rounded, color: Colors.grey, size: 22),
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
@@ -444,7 +449,7 @@ class _DuelArenaPageState extends ConsumerState<DuelArenaPage> with TickerProvid
             ),
             onPressed: () {
               Navigator.pop(ctx);
-              context.go('/');
+              context.go('/home');
             },
             child: const Text('Abandonner', style: TextStyle(color: Colors.white)),
           ),

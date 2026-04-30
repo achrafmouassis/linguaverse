@@ -59,6 +59,11 @@ class _AiPreviewPageState extends ConsumerState<AiPreviewPage> {
               ),
             ),
             actions: [
+              // Bouton Home
+              IconButton(
+                icon: const Icon(Icons.home_rounded),
+                onPressed: () => context.go('/home'),
+              ),
               // Question count
               Container(
                 margin: const EdgeInsets.only(right: AppSpacing.lg),

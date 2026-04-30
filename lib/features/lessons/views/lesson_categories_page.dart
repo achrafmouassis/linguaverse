@@ -30,6 +30,12 @@ class LessonCategoriesPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => context.pop(),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_rounded),
+            onPressed: () => context.go('/home'),
+          ),
+        ],
       ),
       body: ListView.builder(
         padding: const EdgeInsets.only(top: 40, bottom: 100),

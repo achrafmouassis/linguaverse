@@ -104,26 +104,15 @@ class _MiniGamesHubPageState extends ConsumerState<MiniGamesHubPage> with Ticker
                 ),
               ),
             ),
-            Positioned(
-              right: 16,
-              bottom: 16,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  children: [
-                    Text('Arabe ', style: TextStyle(color: Colors.white, fontSize: 12)),
-                    Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 16),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.home_rounded, color: Colors.white),
+          onPressed: () => context.go('/home'),
+        ),
+      ],
     );
   }
 

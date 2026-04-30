@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/theme/app_colors.dart';
 import '../providers/gamification_providers.dart';
@@ -31,6 +32,12 @@ class _MilestonesPageState extends ConsumerState<MilestonesPage> {
       appBar: AppBar(
         title: const Text('Objectifs'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_rounded),
+            onPressed: () => context.go('/home'),
+          ),
+        ],
       ),
       body: milestonesState.when(
         loading: () => const Center(child: CircularProgressIndicator()),

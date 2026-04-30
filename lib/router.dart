@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'shared/widgets/linguaverse_app_bar.dart';
+import 'shared/theme/app_colors.dart';
 import 'features/home/presentation/pages/home_page.dart';
 import 'features/gamification/presentation/pages/progression_dashboard_page.dart';
 import 'features/gamification/presentation/pages/badges_page.dart';
@@ -447,15 +449,17 @@ class _PlaceholderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: LinguaVerseAppBar(titleText: title),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.construction_rounded,
-                size: 64, color: Theme.of(context).colorScheme.primary),
+            Icon(Icons.construction_rounded, size: 64, color: AppColors.primary),
             const SizedBox(height: 16),
-            Text('$title — Bientôt disponible', style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              '$title arrive bientôt !',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),
