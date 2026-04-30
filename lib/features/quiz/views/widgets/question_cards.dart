@@ -445,7 +445,7 @@ class _QuestionPromptCard extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF1A56DB), Color(0xFF0E7490)],
+          colors: [AppColors.primary, AppColors.secondary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -497,8 +497,8 @@ class _OptionButton extends StatelessWidget {
   });
 
   Color _bg() {
-    if (correct == true) return const Color(0xFFECFDF5);
-    if (correct == false && selected) return const Color(0xFFFEF2F2);
+    if (correct == true) return AppColors.correctGreen.withValues(alpha: 0.1);
+    if (correct == false && selected) return AppColors.wrongRed.withValues(alpha: 0.1);
     if (selected) return AppColors.primaryLight;
     return Colors.white;
   }
@@ -581,10 +581,10 @@ class _TFButton extends StatelessWidget {
     Color bg = Colors.white;
     Color border = AppColors.outline;
     if (correct == true) {
-      bg = const Color(0xFFECFDF5);
+      bg = AppColors.correctGreen.withValues(alpha: 0.1);
       border = AppColors.correctGreen;
     } else if (correct == false && selected) {
-      bg = const Color(0xFFFEF2F2);
+      bg = AppColors.wrongRed.withValues(alpha: 0.1);
       border = AppColors.wrongRed;
     } else if (selected) {
       bg = color.withValues(alpha: 0.1);

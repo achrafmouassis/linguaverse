@@ -41,13 +41,13 @@ class _FeedbackOverlayState extends State<FeedbackOverlay> with SingleTickerProv
     final color = widget.isTimeout
         ? AppColors.streakOrange
         : widget.isCorrect
-            ? const Color(0xFF065F46)
-            : const Color(0xFF991B1B);
+            ? AppColors.correctGreen
+            : AppColors.wrongRed;
     final bg = widget.isTimeout
-        ? const Color(0xFFFFF7ED)
+        ? AppColors.streakOrange.withValues(alpha: 0.05)
         : widget.isCorrect
-            ? const Color(0xFFECFDF5)
-            : const Color(0xFFFEF2F2);
+            ? AppColors.correctGreen.withValues(alpha: 0.05)
+            : AppColors.wrongRed.withValues(alpha: 0.05);
     final icon = widget.isTimeout
         ? Icons.timer_off_rounded
         : widget.isCorrect

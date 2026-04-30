@@ -16,20 +16,7 @@ import 'package:linguaverse/router.dart';
 // ════════════════════════════════════════════════════════════════════
 // 1. MODÈLES DE DONNÉES
 // ════════════════════════════════════════════════════════════════════
-class LeaderboardEntry {
-  final String name;
-  final String initials;
-  final int xp;
-  final Color baseColor;
-
-  const LeaderboardEntry({
-    required this.name,
-    required this.initials,
-    required this.xp,
-    required this.baseColor,
-  });
-}
-
+// ModuleInfo definition remains
 class ModuleInfo {
   final String id;
   final String title;
@@ -192,11 +179,35 @@ class HomeNotifier extends StateNotifier<HomeState> {
   Timer? _challengeTimer;
 
   // Données fictives pour le leaderboard (hardcodées pour l'instant)
-  static const List<LeaderboardEntry> _mockTopPlayers = [
-    LeaderboardEntry(name: 'Amina', initials: 'A', xp: 4230, baseColor: AppColors.tertiary),
-    LeaderboardEntry(name: 'Hassan', initials: 'H', xp: 3890, baseColor: AppColors.secondary),
-    LeaderboardEntry(name: 'Youssef', initials: 'Y', xp: 3510, baseColor: AppColors.primary),
-    LeaderboardEntry(name: 'Karim', initials: 'K', xp: 3120, baseColor: AppColors.correctGreen),
+  static List<LeaderboardEntry> _mockTopPlayers = [
+    LeaderboardEntry(
+        userId: '1',
+        userName: 'Amina',
+        userInitials: 'A',
+        weekKey: '2024-W18',
+        language: 'ar',
+        xpEarned: 4230),
+    LeaderboardEntry(
+        userId: '2',
+        userName: 'Hassan',
+        userInitials: 'H',
+        weekKey: '2024-W18',
+        language: 'ar',
+        xpEarned: 3890),
+    LeaderboardEntry(
+        userId: '3',
+        userName: 'Youssef',
+        userInitials: 'Y',
+        weekKey: '2024-W18',
+        language: 'ar',
+        xpEarned: 3510),
+    LeaderboardEntry(
+        userId: '4',
+        userName: 'Karim',
+        userInitials: 'K',
+        weekKey: '2024-W18',
+        language: 'ar',
+        xpEarned: 3120),
   ];
 
   Future<void> _init() async {
@@ -1634,15 +1645,7 @@ class _ModuleMasonryGrid extends StatelessWidget {
                 child: _AnimatedGridItem(
                   index: 5,
                   controller: cardsController,
-<<<<<<< HEAD
                   child: _ModuleCard(module: gamificationModule, height: 110, onTap: onModuleTap),
-=======
-                  child: _AiQuizModuleCard(
-                    module: aiQuizModule,
-                    height: 90,
-                    onTap: onModuleTap,
-                  ),
->>>>>>> origin/feature/ai-quiz
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -1650,7 +1653,7 @@ class _ModuleMasonryGrid extends StatelessWidget {
                 child: _AnimatedGridItem(
                   index: 6,
                   controller: cardsController,
-                  child: _ModuleCard(module: aiQuizModule, height: 110, onTap: onModuleTap),
+                  child: _AiQuizModuleCard(module: aiQuizModule, height: 110, onTap: onModuleTap),
                 ),
               ),
             ],
@@ -2318,200 +2321,11 @@ class _LeaderboardRow extends StatelessWidget {
           },
         ),
       );
-<<<<<<< HEAD
     });
-=======
-    }
-
-    if (state.topPlayers.isEmpty) {
-      return Container(
-        height: 90,
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.leaderboard_outlined, size: 28, color: _textColor(context, opacity: 0.4)),
-            const SizedBox(height: 6),
-            Text(
-              'Pas encore de classement cette semaine',
-              style: TextStyle(fontSize: 11, color: _textColor(context, opacity: 0.5)),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return SizedBox(
-      height: 90,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: state.topPlayers.length,
-        itemBuilder: (context, index) {
-          return _LeaderboardItem(
-            key: ValueKey(state.topPlayers[index].name),
-            player: state.topPlayers[index],
-            index: index,
-            cardsController: cardsController,
-          );
-        },
-      ),
-    );
->>>>>>> origin/feature/ai-quiz
   }
 }
 
-// Widget dédié pour chaque item du leaderboard — gère le cycle de vie de la CurvedAnimation.
-class _LeaderboardItem extends StatefulWidget {
-  final LeaderboardEntry player;
-  final int index;
-  final AnimationController cardsController;
-
-  const _LeaderboardItem({
-    super.key,
-    required this.player,
-    required this.index,
-    required this.cardsController,
-  });
-
-  @override
-  State<_LeaderboardItem> createState() => _LeaderboardItemState();
-}
-
-class _LeaderboardItemState extends State<_LeaderboardItem> {
-  late final CurvedAnimation _curve;
-
-  @override
-  void initState() {
-    super.initState();
-    final start = (widget.index * 0.1).clamp(0.0, 0.8);
-    final end = (start + 0.2).clamp(0.0, 1.0);
-    _curve = CurvedAnimation(
-      parent: widget.cardsController,
-      curve: Interval(start, end, curve: Curves.easeOutBack),
-    );
-  }
-
-  @override
-  void dispose() {
-    _curve.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final player = widget.player;
-    final index = widget.index;
-    final isCurrentUser = player.name == 'Hiba';
-    final isTop3 = index < 3;
-    final String rankIcon;
-    if (index == 0) {
-      rankIcon = '🥇';
-    } else if (index == 1) {
-      rankIcon = '🥈';
-    } else if (index == 2) {
-      rankIcon = '🥉';
-    } else {
-      rankIcon = '#${index + 1}';
-    }
-
-    return AnimatedBuilder(
-      animation: _curve,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(20 * (1 - _curve.value), 0),
-          child: Opacity(
-            opacity: _curve.value.clamp(0.0, 1.0),
-            child: child,
-          ),
-        );
-      },
-      child: Semantics(
-        button: true,
-        label: 'Joueur ${player.name}, position ${index + 1}, ${player.xp} XP',
-        child: InkWell(
-          onTap: () => HapticFeedback.selectionClick(),
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          splashColor: AppColors.primary.withValues(alpha: 0.08),
-          child: Container(
-            width: 80,
-            margin: const EdgeInsets.only(right: AppSpacing.md),
-            decoration: BoxDecoration(
-              color: isCurrentUser
-                  ? AppColors.streakOrange.withValues(alpha: 0.1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: isCurrentUser
-                  ? Border.all(color: AppColors.streakOrange.withValues(alpha: 0.3), width: 1)
-                  : null,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [player.baseColor, player.baseColor.withValues(alpha: 0.6)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        border: Border.all(color: _surfaceColor(context), width: 2),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        player.initials,
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                    ),
-                    Positioned(
-                      top: -6,
-                      right: -6,
-                      child: isTop3
-                          ? Text(rankIcon, style: const TextStyle(fontSize: 16))
-                          : Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: _surfaceColor(context),
-                                shape: BoxShape.circle,
-                                border: Border.all(color: _textColor(context, opacity: 0.1)),
-                              ),
-                              child: Text(
-                                rankIcon,
-                                style: TextStyle(
-                                    fontSize: 8,
-                                    fontWeight: FontWeight.bold,
-                                    color: _textColor(context, opacity: 0.7)),
-                              ),
-                            ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  player.name,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: isCurrentUser ? FontWeight.w700 : FontWeight.w500,
-                      color: isCurrentUser ? AppColors.streakOrange : _textColor(context)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// _LeaderboardItem removed. Logic now inlined in _LeaderboardRow.
 
 class _DailyChallengeCard extends StatefulWidget {
   final HomeState state;

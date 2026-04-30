@@ -28,9 +28,6 @@ import 'features/auth/views/onboarding_screen.dart';
 import 'features/ai_quiz/views/ai_quiz_entry_page.dart';
 import 'features/ai_quiz/views/ai_quiz_page.dart';
 import 'features/ai_quiz/views/ai_quiz_result_page.dart';
-import 'features/ai_quiz/views/ai_setup_page.dart';
-import 'features/ai_quiz/views/ai_quiz_game_page.dart';
-import 'features/ai_quiz/views/ai_result_page.dart';
 
 class AppRoutes {
   static const String login = '/login';
@@ -414,33 +411,15 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.aiQuizGame,
-      name: 'ai-quiz-game',
+      name: 'aiQuizGame',
       pageBuilder: (context, state) => const CustomTransitionPage(
-        child: AIQuizPage(), // Using local AIQuizPage for consistency if stable
+        child: AIQuizPage(),
         transitionsBuilder: _fadeSlideTransition,
         transitionDuration: Duration(milliseconds: 300),
       ),
     ),
     GoRoute(
       path: AppRoutes.aiQuizResult,
-      name: 'ai-quiz-result',
-      pageBuilder: (context, state) => const CustomTransitionPage(
-        child: AIQuizResultPage(),
-        transitionsBuilder: _fadeSlideTransition,
-        transitionDuration: Duration(milliseconds: 300),
-      ),
-    ),
-    GoRoute(
-      path: '/ai-quiz/quiz',
-      name: 'aiQuiz',
-      pageBuilder: (context, state) => const CustomTransitionPage(
-        child: AIQuizPage(),
-        transitionsBuilder: _fadeSlideTransition,
-        transitionDuration: Duration(milliseconds: 250),
-      ),
-    ),
-    GoRoute(
-      path: '/ai-quiz/result',
       name: 'aiQuizResult',
       pageBuilder: (context, state) => const CustomTransitionPage(
         child: AIQuizResultPage(),

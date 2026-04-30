@@ -18,7 +18,7 @@ class AIQuizResultPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF0F172A) : AppColors.bgScaffold,
+          isDark ? AppColors.deepSpaceBlue : AppColors.bgScaffold,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -34,16 +34,16 @@ class AIQuizResultPage extends ConsumerWidget {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
                     colors: isPassed
-                        ? [const Color(0xFF10B981), const Color(0xFF059669)]
-                        : [const Color(0xFFEF4444), const Color(0xFFDC2626)],
+                        ? [AppColors.correctGreen, AppColors.correctGreen.withValues(alpha: 0.8)]
+                        : [AppColors.wrongRed, AppColors.wrongRed.withValues(alpha: 0.8)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: (isPassed
-                              ? const Color(0xFF10B981)
-                              : const Color(0xFFEF4444))
+                              ? AppColors.correctGreen
+                              : AppColors.wrongRed)
                           .withValues(alpha: 0.3),
                       blurRadius: 24,
                       offset: const Offset(0, 8),
@@ -79,25 +79,24 @@ class AIQuizResultPage extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF7C3AED).withValues(alpha: 0.1),
+                  color: AppColors.tertiary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color:
-                        const Color(0xFF7C3AED).withValues(alpha: 0.2),
+                    color: AppColors.tertiary.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(Icons.bolt_rounded,
-                        color: Color(0xFF7C3AED), size: 24),
+                        color: AppColors.tertiary, size: 24),
                     const SizedBox(width: 8),
                     Text(
                       '+${state.xpEarned} XP',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF7C3AED),
+                        color: AppColors.tertiary,
                       ),
                     ),
                   ],
@@ -146,7 +145,7 @@ class AIQuizResultPage extends ConsumerWidget {
                         TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF7C3AED),
+                    backgroundColor: AppColors.tertiary,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14)),
@@ -166,8 +165,8 @@ class AIQuizResultPage extends ConsumerWidget {
                         TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF7C3AED),
-                    side: const BorderSide(color: Color(0xFF7C3AED)),
+                    foregroundColor: AppColors.tertiary,
+                    side: const BorderSide(color: AppColors.tertiary),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14)),
                   ),

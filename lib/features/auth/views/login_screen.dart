@@ -116,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).brightness == Brightness.dark 
-              ? const Color(0xFF1E1E1E) 
+              ? AppColors.bgLevel2
               : Colors.white,
           title: const Text('Mot de passe oublié ?'),
           content: Column(
@@ -186,7 +186,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     // Cela cause des modifications d'état pendant la construction
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.background,
+      backgroundColor: isDark ? AppColors.deepSpaceBlue : AppColors.background,
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(

@@ -58,7 +58,7 @@ class _DuelLobbyPageState extends ConsumerState<DuelLobbyPage> with TickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.bgScaffold : const Color(0xFFF4F6FA),
+      backgroundColor: isDark ? AppColors.bgScaffold : AppColors.background,
       body: SafeArea(
         child: FadeTransition(
           opacity: _entryFade,
@@ -87,7 +87,7 @@ class _DuelLobbyPageState extends ConsumerState<DuelLobbyPage> with TickerProvid
           const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF2D1B6B), Color(0xFF1A056B)],
+          colors: [AppColors.primaryDark, Color(0xFF1A056B)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -266,7 +266,7 @@ class _DuelLobbyPageState extends ConsumerState<DuelLobbyPage> with TickerProvid
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: isDark ? Colors.white : const Color(0xFF1A056B),
+                  color: isDark ? Colors.white : AppColors.primaryDark,
                   letterSpacing: -0.3,
                 )),
           ),
@@ -418,7 +418,7 @@ class _OpponentCardState extends State<_OpponentCard> {
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 15,
-                              color: widget.isDark ? Colors.white : const Color(0xFF1A056B),
+                              color: widget.isDark ? Colors.white : AppColors.primaryDark,
                             )),
                         const SizedBox(width: AppSpacing.sm),
                         if (o.isBot)

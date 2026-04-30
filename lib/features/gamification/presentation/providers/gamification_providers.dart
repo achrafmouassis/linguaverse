@@ -14,6 +14,7 @@ import '../../data/services/streak_service.dart';
 import '../../data/services/badge_service.dart';
 import '../../data/services/leaderboard_service.dart';
 import '../../data/services/milestone_service.dart';
+import '../../../auth/viewmodels/auth_provider.dart';
 
 // ════════════════════════════════════════════════════════════════
 // MIGRATION_TODO v1.3.0 : Auth (M1) & Progression (M2) → SQLite
@@ -25,10 +26,24 @@ import '../../data/services/milestone_service.dart';
 // 4. Déplacer l'appel addXP() des modules au backend cloud.
 // ════════════════════════════════════════════════════════════════
 final currentUserIdProvider = Provider<String>((ref) {
-  return 'user_123'; // ← REMPLACER par authStateProvider quand M1 prêt
+  final user = ref.watch(authNotifierProvider).user;
+  return user?.id ?? 'user_123'; // Fallback to 'user_123' for dev/test
 });
-final currentUserNameProvider = Provider<String>((ref) => 'Jules Explorateur');
-final currentUserInitialsProvider = Provider<String>((ref) => 'JE');
+
+final currentUserNameProvider = Provider<String>((ref) {
+  final user = ref.watch(authNotifierProvider).user;
+  return user?.displayName ?? 'Jules Explorateur';
+});
+
+final currentUserInitialsProvider = Provider<String>((ref) {
+  final name = ref.watch(currentUserNameProvider);
+  if (name.isEmpty) return '??';
+  final parts = name.trim().split(' ');
+  if (parts.length >= 2) {
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
+  return name[0].toUpperCase();
+});
 
 final databaseHelperProvider = Provider<DatabaseHelper>((ref) => DatabaseHelper());
 

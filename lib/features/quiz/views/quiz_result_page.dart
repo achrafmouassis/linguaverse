@@ -58,7 +58,7 @@ class _QuizResultPageState extends State<QuizResultPage> with TickerProviderStat
     final g = widget.result.grade;
     switch (g) {
       case 'S':
-        return const Color(0xFFF59E0B);
+        return AppColors.xpGold;
       case 'A':
         return AppColors.correctGreen;
       case 'B':
@@ -314,7 +314,7 @@ class _XpBanner extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFF59E0B), Color(0xFFEA580C)],
+          colors: [AppColors.xpGold, AppColors.streakOrange],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

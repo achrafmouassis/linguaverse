@@ -255,7 +255,7 @@ class ChoiceOption extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withValues(alpha: 0.1)
-              : (isDark ? const Color(0xFF1E293B) : AppColors.surface),
+              : (isDark ? AppColors.bgLevel2 : AppColors.surface),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.outline,
             width: isSelected ? 2 : 1,

@@ -59,7 +59,7 @@ class _DuelResultPageState extends ConsumerState<DuelResultPage> with TickerProv
 
     if (arena.result == null || arena.session == null) {
       return Scaffold(
-        backgroundColor: isDark ? AppColors.bgScaffold : const Color(0xFFF4F6FA),
+        backgroundColor: isDark ? AppColors.bgScaffold : AppColors.background,
         body: const Center(child: Text('Aucun résultat !')),
       );
     }

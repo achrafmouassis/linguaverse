@@ -171,7 +171,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
     final progress = (currentStep + 1) / totalSteps;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF0F4FF),
+      backgroundColor: isDark ? AppColors.deepSpaceBlue : AppColors.glassBlue,
       body: SafeArea(
         child: Column(
           children: [
@@ -378,7 +378,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
             children: [
               _metaChip(Icons.timer_rounded, course.estimatedDuration, widget.color),
               const SizedBox(width: 8),
-              _metaChip(Icons.psychology_rounded, course.learningMethod, Colors.purple),
+              _metaChip(Icons.psychology_rounded, course.learningMethod, AppColors.tertiary),
               const SizedBox(width: 8),
               _metaChip(Icons.lock_open_rounded, 'Accessible', AppColors.correctGreen),
             ],
@@ -390,7 +390,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _sectionLabel('Pré-requis', Icons.checklist_rounded, Colors.orange),
+                  _sectionLabel('Pré-requis', Icons.checklist_rounded, AppColors.streakOrange),
                   const SizedBox(height: 8),
                   Text(course.prerequisites,
                       style: TextStyle(color: isDark ? Colors.white70 : AppColors.textSecondary)),
@@ -458,7 +458,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                color: isDark ? AppColors.bgLevel2 : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: widget.color.withValues(alpha: 0.15)),
               ),
@@ -640,7 +640,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _sectionLabel('Tableau des sons', Icons.table_chart_rounded, Colors.teal),
+                  _sectionLabel('Tableau des sons', Icons.table_chart_rounded, AppColors.secondary),
                   const SizedBox(height: 10),
                   ...currentCourse.vocabulary.map((item) => Padding(
                         padding: const EdgeInsets.only(bottom: 8),
@@ -707,7 +707,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                color: isDark ? AppColors.bgLevel2 : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: widget.color.withValues(alpha: 0.15)),
               ),

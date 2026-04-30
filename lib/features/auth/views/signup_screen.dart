@@ -103,7 +103,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     });
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F172A) : AppColors.background,
+      backgroundColor: isDark ? AppColors.deepSpaceBlue : AppColors.background,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,

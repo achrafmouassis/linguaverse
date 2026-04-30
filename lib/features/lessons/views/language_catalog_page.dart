@@ -67,7 +67,7 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
         : languages.where((l) => l.name.toLowerCase().contains(_query.toLowerCase())).toList();
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9),
+      backgroundColor: isDark ? AppColors.bgScaffold : AppColors.background,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
@@ -203,14 +203,14 @@ class _AnimatedHeader extends StatelessWidget {
               end: Alignment(1, math.sin(t * math.pi) * 0.5 + 0.5),
               colors: isDark
                   ? const [
-                      Color(0xFF1E3A5F),
-                      Color(0xFF1A56DB),
-                      Color(0xFF0E7490),
+                      AppColors.primaryDark,
+                      AppColors.primary,
+                      AppColors.secondary,
                     ]
                   : const [
-                      Color(0xFF1A56DB),
+                      AppColors.primary,
                       Color(0xFF1CB0F6),
-                      Color(0xFF0E7490),
+                      AppColors.secondary,
                     ],
             ),
           ),
@@ -335,7 +335,7 @@ class _SearchBar extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                color: isDark ? AppColors.bgLevel2 : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -457,7 +457,7 @@ class _LanguageCardState extends State<_LanguageCard> with SingleTickerProviderS
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 120),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                        color: isDark ? AppColors.bgLevel2 : Colors.white,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
                   color: color.withValues(alpha: _isPressed ? 0.6 : 0.25),

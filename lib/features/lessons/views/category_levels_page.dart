@@ -412,14 +412,14 @@ class _FinalQuizCard extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+            colors: [AppColors.xpGold, AppColors.bronze],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFF59E0B).withValues(alpha: 0.4),
+              color: AppColors.xpGold.withValues(alpha: 0.4),
               blurRadius: 16,
               offset: const Offset(0, 6),
             ),
@@ -453,14 +453,14 @@ class _FinalQuizCard extends StatelessWidget {
         margin: const EdgeInsets.only(top: 8, bottom: 24),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFF1A56DB), Color(0xFF7C3AED)],
+            colors: [AppColors.primary, AppColors.tertiary],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF1A56DB).withValues(alpha: 0.35),
+              color: AppColors.primary.withValues(alpha: 0.35),
               blurRadius: 18,
               offset: const Offset(0, 6),
             ),
@@ -532,7 +532,7 @@ class _FinalQuizCard extends StatelessWidget {
         margin: const EdgeInsets.only(top: 8, bottom: 24),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E293B) : Colors.grey.shade100,
+          color: isDark ? AppColors.bgLevel2 : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isDark ? Colors.white12 : Colors.grey.shade300,
