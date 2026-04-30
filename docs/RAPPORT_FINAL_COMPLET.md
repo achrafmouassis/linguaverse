@@ -1,7 +1,7 @@
 # RAPPORT FINAL COMPLET — LINGUAVERSE
-**Version :** 1.2.0-STABLE  
+**Version :** 1.2.5-STABLE  
 **Date :** 2026-04-30  
-**Branche :** `release/v1.2.0`  
+**Branche :** `develop`  
 **Architecture :** MVVM + Riverpod · sqflite · GoRouter  
 **Résultat `flutter analyze` :** ✅ 0 erreurs, 0 warnings (infos mineures de style uniquement)  
 **Tests Unitaires :** ✅ 36 / 36 passés (100% de réussite)
@@ -227,4 +227,19 @@ Le projet LinguaVerse est **stable, cohérent et opérationnel** sur l'ensemble 
 - Une passe finale de **normalisation UI** a été effectuée sur l'ensemble des modules (Quiz, IA Quiz, Leçons, Duel) pour garantir une cohérence visuelle parfaite via `AppColors`.
 - Les conflits de fusion sur `home_page.dart` ont été résolus et le code a été nettoyé de toute logique redondante.
 
-**Verdict final : ✅ PROJET STABILISÉ, AUDITÉ ET PRÊT POUR RELEASE (v1.2.0-STABLE)**
+**Verdict final : ✅ PROJET STABILISÉ, AUDITÉ ET PRÊT POUR RELEASE (v1.3.0-STABLE)**
+
+---
+
+## 9. MISES À JOUR v1.3.0 — UNIFICATION DE LA NAVIGATION
+
+L'application a subi une refonte complète de son système de navigation interne pour garantir une cohérence maximale :
+
+- **Standardisation des En-têtes** : Injection du widget `LinguaVerseAppBar` dans tous les modules (Leçons, Duel, AI Quiz, Gamification, AR).
+- **Navigation Dashboard** : Remplacement des liens racines par une redirection explicite vers `/home`.
+- **Accessibilité** : Bouton "Home" persistent ajouté sur tous les écrans secondaires pour un retour rapide au tableau de bord principal.
+- **Correction des Erreurs de Flux** : Unification des comportements "Back" (context.pop) et "Exit" (context.go('/home')).
+
+---
+LinguaVerse est désormais prêt pour une expérience utilisateur fluide et intuitive sur l'ensemble de ses 8 modules.
+
