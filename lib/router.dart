@@ -22,6 +22,9 @@ import 'features/lessons/views/lesson_categories_page.dart';
 import 'features/lessons/views/category_levels_page.dart';
 import 'features/lessons/views/lesson_content_page.dart';
 import 'features/quiz/models/quiz_result_model.dart';
+import 'features/ai_quiz/views/ai_quiz_entry_page.dart';
+import 'features/ai_quiz/views/ai_quiz_page.dart';
+import 'features/ai_quiz/views/ai_quiz_result_page.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -280,8 +283,30 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.aiQuiz,
-      name: 'ai-quiz',
-      builder: (context, state) => const _PlaceholderPage(title: 'IA Quiz'),
+      name: 'aiQuizEntry',
+      pageBuilder: (context, state) => const CustomTransitionPage(
+        child: AIQuizEntryPage(),
+        transitionsBuilder: _fadeSlideTransition,
+        transitionDuration: Duration(milliseconds: 300),
+      ),
+    ),
+    GoRoute(
+      path: '/ai-quiz/quiz',
+      name: 'aiQuiz',
+      pageBuilder: (context, state) => const CustomTransitionPage(
+        child: AIQuizPage(),
+        transitionsBuilder: _fadeSlideTransition,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+    ),
+    GoRoute(
+      path: '/ai-quiz/result',
+      name: 'aiQuizResult',
+      pageBuilder: (context, state) => const CustomTransitionPage(
+        child: AIQuizResultPage(),
+        transitionsBuilder: _fadeSlideTransition,
+        transitionDuration: Duration(milliseconds: 300),
+      ),
     ),
     if (kDebugMode)
       GoRoute(

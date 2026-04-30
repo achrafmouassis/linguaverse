@@ -98,7 +98,7 @@ class _LanguageCatalogPageState extends ConsumerState<LanguageCatalogPage>
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color:
-                          isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.04),
+                          isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.04),
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
@@ -226,7 +226,7 @@ class _AnimatedHeader extends StatelessWidget {
                     height: 140,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.07),
+                      color: Colors.white.withValues(alpha: 0.07),
                     ),
                   ),
                 ),
@@ -238,7 +238,7 @@ class _AnimatedHeader extends StatelessWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.07),
+                      color: Colors.white.withValues(alpha: 0.07),
                     ),
                   ),
                 ),
@@ -254,7 +254,7 @@ class _AnimatedHeader extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
+                            color: Colors.white.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Icon(
@@ -271,7 +271,7 @@ class _AnimatedHeader extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
+                              color: Colors.white.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Text('🌍', style: TextStyle(fontSize: 20)),
@@ -296,7 +296,7 @@ class _AnimatedHeader extends StatelessWidget {
                                 Text(
                                   'Choisissez votre prochaine aventure',
                                   style: TextStyle(
-                                    color: Colors.white.withOpacity(0.8),
+                                    color: Colors.white.withValues(alpha: 0.8),
                                     fontSize: 12.5,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -339,7 +339,7 @@ class _SearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.3 : 0.08),
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -437,7 +437,7 @@ class _LanguageCardState extends State<_LanguageCard> with SingleTickerProviderS
   Widget build(BuildContext context) {
     final color = widget.language.color as Color;
     final isDark = widget.isDark;
-    final badgeBg = isDark ? color.withOpacity(0.2) : color.withOpacity(0.15);
+    final badgeBg = isDark ? color.withValues(alpha: 0.2) : color.withValues(alpha: 0.15);
 
     return FadeTransition(
       opacity: _fadeAnim,
@@ -460,19 +460,19 @@ class _LanguageCardState extends State<_LanguageCard> with SingleTickerProviderS
                 color: isDark ? const Color(0xFF1E293B) : Colors.white,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
-                  color: color.withOpacity(_isPressed ? 0.6 : 0.25),
+                  color: color.withValues(alpha: _isPressed ? 0.6 : 0.25),
                   width: 1.5,
                 ),
                 boxShadow: _isPressed
                     ? []
                     : [
                         BoxShadow(
-                          color: color.withOpacity(isDark ? 0.25 : 0.22),
+                          color: color.withValues(alpha: isDark ? 0.25 : 0.22),
                           blurRadius: 14,
                           offset: const Offset(0, 6),
                         ),
                         BoxShadow(
-                          color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
+                          color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -490,7 +490,7 @@ class _LanguageCardState extends State<_LanguageCard> with SingleTickerProviderS
                         gradient: LinearGradient(
                           colors: [
                             color,
-                            color.withOpacity(0.5),
+                            color.withValues(alpha: 0.5),
                           ],
                         ),
                       ),
@@ -510,8 +510,8 @@ class _LanguageCardState extends State<_LanguageCard> with SingleTickerProviderS
                               decoration: BoxDecoration(
                                 gradient: RadialGradient(
                                   colors: [
-                                    color.withOpacity(0.22),
-                                    color.withOpacity(0.06),
+                                    color.withValues(alpha: 0.22),
+                                    color.withValues(alpha: 0.06),
                                   ],
                                 ),
                                 shape: BoxShape.circle,
@@ -579,8 +579,8 @@ class _LanguageCardState extends State<_LanguageCard> with SingleTickerProviderS
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
                                 color: isDark
-                                    ? Colors.white.withOpacity(0.07)
-                                    : color.withOpacity(0.08),
+                                    ? Colors.white.withValues(alpha: 0.07)
+                                    : color.withValues(alpha: 0.08),
                                 borderRadius: BorderRadius.circular(999),
                               ),
                               child: Text(

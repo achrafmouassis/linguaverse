@@ -3,7 +3,7 @@
 // Widgets d'affichage pour chacun des 5 types de questions.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+import '../../../../shared/services/tts_service.dart';
 import '../../../../shared/theme/app_colors.dart';
 import '../../models/question_model.dart';
 
@@ -123,6 +123,7 @@ class ListenAndChooseCard extends StatefulWidget {
   final String? selectedAnswer;
   final bool showFeedback;
   final void Function(String) onAnswer;
+  final TTSService ttsService;
 
   const ListenAndChooseCard({
     super.key,
@@ -130,6 +131,7 @@ class ListenAndChooseCard extends StatefulWidget {
     required this.selectedAnswer,
     required this.showFeedback,
     required this.onAnswer,
+    required this.ttsService,
   });
 
   @override
@@ -137,70 +139,20 @@ class ListenAndChooseCard extends StatefulWidget {
 }
 
 class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
-  late FlutterTts _tts;
   bool _isPlaying = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _initTts();
-  }
-
-  void _initTts() {
-    _tts = FlutterTts();
-
-    _tts.setStartHandler(() {
-      if (mounted) setState(() => _isPlaying = true);
-    });
-
-    _tts.setCompletionHandler(() {
-      if (mounted) setState(() => _isPlaying = false);
-    });
-
-    _tts.setErrorHandler((msg) {
-      if (mounted) setState(() => _isPlaying = false);
-      debugPrint("TTS Error: $msg");
-    });
-
-    // Optionnel mais recommandé pour le web
-    _tts.awaitSpeakCompletion(true);
-  }
-
-  @override
-  void dispose() {
-    _tts.stop();
-    super.dispose();
-  }
-
   Future<void> _speak() async {
+    if (_isPlaying) return;
+    setState(() => _isPlaying = true);
     try {
-      final code = _langCode();
-      final isAvailable = await _tts.isLanguageAvailable(code);
-      debugPrint("TTS Language $code available: $isAvailable");
-
-      await _tts.setLanguage(code);
-      await _tts.setSpeechRate(0.4);
-      await _tts.setVolume(1.0);
-      await _tts.setPitch(1.0);
-
-      await _tts.speak(widget.question.wordToSpeak);
+      await widget.ttsService.speak(
+        widget.question.wordToSpeak,
+        widget.question.languageId,
+      );
     } catch (e) {
       debugPrint("TTS Speak Error: $e");
-      if (mounted) setState(() => _isPlaying = false);
     }
-  }
-
-  String _langCode() {
-    const map = {
-      'ar': 'ar-SA',
-      'es': 'es-ES',
-      'de': 'de-DE',
-      'it': 'it-IT',
-      'en': 'en-US',
-      'fr': 'fr-FR',
-      'tr': 'tr-TR',
-    };
-    return map[widget.question.languageId] ?? 'en-US';
+    if (mounted) setState(() => _isPlaying = false);
   }
 
   @override
@@ -219,11 +171,13 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _isPlaying ? Colors.white : Colors.white.withOpacity(0.2),
+                    color: _isPlaying
+                        ? Colors.white
+                        : Colors.white.withValues(alpha: 0.2),
                     boxShadow: _isPlaying
                         ? [
                             BoxShadow(
-                              color: Colors.white.withOpacity(0.4),
+                              color: Colors.white.withValues(alpha: 0.4),
                               blurRadius: 20,
                               spreadRadius: 4,
                             )
@@ -231,7 +185,9 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
                         : [],
                   ),
                   child: Icon(
-                    _isPlaying ? Icons.volume_up_rounded : Icons.play_arrow_rounded,
+                    _isPlaying
+                        ? Icons.volume_up_rounded
+                        : Icons.play_arrow_rounded,
                     size: 48,
                     color: _isPlaying ? AppColors.primary : Colors.white,
                   ),
@@ -251,13 +207,18 @@ class _ListenAndChooseCardState extends State<ListenAndChooseCard> {
         ...widget.question.options.map((opt) => _OptionButton(
               label: opt,
               selected: widget.selectedAnswer == opt,
-              correct: widget.showFeedback ? opt == widget.question.correctAnswer : null,
-              onTap: widget.showFeedback ? null : () => widget.onAnswer(opt),
+              correct: widget.showFeedback
+                  ? opt == widget.question.correctAnswer
+                  : null,
+              onTap: widget.showFeedback
+                  ? null
+                  : () => widget.onAnswer(opt),
             )),
       ],
     );
   }
 }
+
 
 // ─────────────────────────────────────────────
 // 4. Compléter la phrase
@@ -491,7 +452,7 @@ class _QuestionPromptCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.25),
+            color: AppColors.primary.withValues(alpha: 0.25),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -502,7 +463,7 @@ class _QuestionPromptCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -571,7 +532,7 @@ class _OptionButton extends StatelessWidget {
           boxShadow: selected
               ? [
                   BoxShadow(
-                      color: _border().withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 2))
+                      color: _border().withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 2))
                 ]
               : [],
         ),
@@ -626,7 +587,7 @@ class _TFButton extends StatelessWidget {
       bg = const Color(0xFFFEF2F2);
       border = AppColors.wrongRed;
     } else if (selected) {
-      bg = color.withOpacity(0.1);
+      bg = color.withValues(alpha: 0.1);
       border = color;
     }
     return GestureDetector(
@@ -680,7 +641,7 @@ class _MatchChip extends StatelessWidget {
           color: isMatched
               ? Colors.grey.shade100
               : isSelected
-                  ? color.withOpacity(0.15)
+                  ? color.withValues(alpha: 0.15)
                   : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(

@@ -67,10 +67,10 @@ class _FeedbackOverlayState extends State<FeedbackOverlay> with SingleTickerProv
         decoration: BoxDecoration(
           color: bg,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.withOpacity(0.4), width: 1.5),
+          border: Border.all(color: color.withValues(alpha: 0.4), width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),
@@ -97,7 +97,7 @@ class _FeedbackOverlayState extends State<FeedbackOverlay> with SingleTickerProv
               const SizedBox(height: 10),
               Text(
                 widget.explanation!,
-                style: TextStyle(color: color.withOpacity(0.85), fontSize: 13, height: 1.5),
+                style: TextStyle(color: color.withValues(alpha: 0.85), fontSize: 13, height: 1.5),
               ),
             ],
           ],

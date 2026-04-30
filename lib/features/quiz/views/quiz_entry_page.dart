@@ -153,7 +153,7 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
                         const SizedBox(height: 4),
                         Text(
                           '5 types de questions · Timer 30s · XP & badges',
-                          style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+                          style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 12),
                         ),
                       ],
                     ),
@@ -278,7 +278,7 @@ class _QuizEntryPageState extends ConsumerState<QuizEntryPage> {
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   elevation: 4,
-                  shadowColor: AppColors.primary.withOpacity(0.4),
+                  shadowColor: AppColors.primary.withValues(alpha: 0.4),
                 ),
               ),
             ),

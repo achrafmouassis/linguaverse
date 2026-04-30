@@ -7,6 +7,7 @@ import '../viewmodels/quiz_state.dart';
 import '../viewmodels/quiz_viewmodel.dart';
 import 'widgets/feedback_overlay.dart';
 import 'widgets/question_cards.dart';
+import '../../../shared/providers/tts_provider.dart';
 
 class QuizPage extends ConsumerStatefulWidget {
   final String lessonId;
@@ -134,7 +135,7 @@ class _QuizPageState extends ConsumerState<QuizPage> with SingleTickerProviderSt
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.12),
+                        color: Colors.grey.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(Icons.close_rounded, size: 22),
@@ -152,7 +153,7 @@ class _QuizPageState extends ConsumerState<QuizPage> with SingleTickerProviderSt
                                 ? (state.currentIndex) / state.totalQuestions
                                 : 0.0,
                             minHeight: 8,
-                            backgroundColor: Colors.grey.withOpacity(0.15),
+                            backgroundColor: Colors.grey.withValues(alpha: 0.15),
                             valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
                           ),
                         ),
@@ -212,9 +213,9 @@ class _QuizPageState extends ConsumerState<QuizPage> with SingleTickerProviderSt
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.4)),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -337,6 +338,7 @@ class _QuizPageState extends ConsumerState<QuizPage> with SingleTickerProviderSt
         selectedAnswer: state.selectedAnswer,
         showFeedback: showFeedback,
         onAnswer: vm.submitAnswer,
+        ttsService: ref.read(ttsProvider),
       );
     }
     if (q is FillInBlankQuestion) {

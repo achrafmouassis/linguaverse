@@ -196,11 +196,11 @@ class _ScoreCircle extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
-              colors: [color.withOpacity(0.15), color.withOpacity(0.03)],
+              colors: [color.withValues(alpha: 0.15), color.withValues(alpha: 0.03)],
             ),
             border: Border.all(color: color, width: 3),
             boxShadow: [
-              BoxShadow(color: color.withOpacity(0.3), blurRadius: 32, spreadRadius: 4),
+              BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 32, spreadRadius: 4),
             ],
           ),
           child: Column(
@@ -284,9 +284,9 @@ class _StatCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
+          color: color.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withOpacity(0.2)),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
         ),
         child: Column(
           children: [
@@ -321,7 +321,7 @@ class _XpBanner extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-              color: AppColors.xpGold.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
+              color: AppColors.xpGold.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4)),
         ],
       ),
       child: Row(
@@ -367,7 +367,7 @@ class _BadgeSection extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.primaryLight,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+                      border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -414,9 +414,9 @@ class _ReviewWordsSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppColors.wrongRed.withOpacity(0.05),
+            color: AppColors.wrongRed.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.wrongRed.withOpacity(0.2)),
+            border: Border.all(color: AppColors.wrongRed.withValues(alpha: 0.2)),
           ),
           child: Wrap(
             spacing: 8,
@@ -425,8 +425,8 @@ class _ReviewWordsSection extends StatelessWidget {
                 .map((w) => Chip(
                       label: Text(w,
                           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-                      backgroundColor: AppColors.wrongRed.withOpacity(0.1),
-                      side: BorderSide(color: AppColors.wrongRed.withOpacity(0.3)),
+                      backgroundColor: AppColors.wrongRed.withValues(alpha: 0.1),
+                      side: BorderSide(color: AppColors.wrongRed.withValues(alpha: 0.3)),
                     ))
                 .toList(),
           ),

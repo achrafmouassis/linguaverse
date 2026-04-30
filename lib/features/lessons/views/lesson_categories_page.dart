@@ -139,7 +139,7 @@ class _CategoryNodeState extends State<_CategoryNode> {
                     boxShadow: [
                       if (!_isPressed && !isActualLocked)
                         BoxShadow(
-                          color: displayColor.withOpacity(isActualLocked ? 0 : 0.6),
+                          color: displayColor.withValues(alpha: isActualLocked ? 0 : 0.6),
                           offset: const Offset(0, 5),
                           blurRadius: 0,
                         ),

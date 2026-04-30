@@ -1599,8 +1599,9 @@ class LessonContentData {
     // Try to find by category type (nombres, salutations, etc.)
     for (final key in langContent.keys) {
       if (categoryId.contains('nombres') && key.contains('nombres')) return langContent[key]!;
-      if (categoryId.contains('salutations') && key.contains('salutations'))
+      if (categoryId.contains('salutations') && key.contains('salutations')) {
         return langContent[key]!;
+      }
       if (categoryId.contains('alphabet') && key.contains('alphabet')) return langContent[key]!;
       if (categoryId.contains('famille') && key.contains('famille')) return langContent[key]!;
       if (categoryId.contains('couleurs') && key.contains('couleurs')) return langContent[key]!;

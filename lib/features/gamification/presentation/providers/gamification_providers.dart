@@ -15,16 +15,15 @@ import '../../data/services/badge_service.dart';
 import '../../data/services/leaderboard_service.dart';
 import '../../data/services/milestone_service.dart';
 
-// ═══════════════════════════════════════════════════════════════
-// MIGRATION_TODO — À connecter quand M1 (Auth) sera terminé
-//
-// Actuellement : userId hardcodé à 'user_123' pour le dev
-// Quand M1 est prêt :
-//   1. Remplacer 'user_123' par ref.watch(authStateProvider).userId
-//   2. Appeler initUserProgression(userId) au premier login Firebase
-//   3. Prévoir une migration des données 'user_123' vers le vrai uid
-//      si des données de dev doivent être conservées
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// MIGRATION_TODO v1.3.0 : Auth (M1) & Progression (M2) → SQLite
+// ════════════════════════════════════════════════════════════════
+// 1. Remplacer 'user_123' par ref.watch(authStateProvider).uid
+// 2. Transférer user_progress_provider.dart (SharedPreferences)
+//    vers une structure UserProgressRepository / SQLite
+// 3. Fusionner linguaverse.db et linguaverse_quiz.db en une db unique
+// 4. Déplacer l'appel addXP() des modules au backend cloud.
+// ════════════════════════════════════════════════════════════════
 final currentUserIdProvider = Provider<String>((ref) {
   return 'user_123'; // ← REMPLACER par authStateProvider quand M1 prêt
 });

@@ -24,7 +24,7 @@ class CategoryLevelsPage extends ConsumerWidget {
       (c) => c.id == categoryId,
       orElse: () => categories.first,
     );
-    final progress = ref.watch(userProgressProvider);
+    ref.watch(userProgressProvider);
     final notifier = ref.read(userProgressProvider.notifier);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -151,7 +151,7 @@ class _LevelCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
           side: BorderSide(
-            color: isLevelUnlocked ? color.withOpacity(0.28) : Colors.transparent,
+            color: isLevelUnlocked ? color.withValues(alpha: 0.28) : Colors.transparent,
             width: 1.5,
           ),
         ),
@@ -259,10 +259,10 @@ class _LessonRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.04) : rowColor.withOpacity(0.06),
+          color: isDark ? Colors.white.withValues(alpha: 0.04) : rowColor.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: rowColor.withOpacity(accessible ? 0.3 : 0.12),
+            color: rowColor.withValues(alpha: accessible ? 0.3 : 0.12),
             width: 1.2,
           ),
         ),
@@ -419,7 +419,7 @@ class _FinalQuizCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFF59E0B).withOpacity(0.4),
+              color: const Color(0xFFF59E0B).withValues(alpha: 0.4),
               blurRadius: 16,
               offset: const Offset(0, 6),
             ),
@@ -460,7 +460,7 @@ class _FinalQuizCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF1A56DB).withOpacity(0.35),
+              color: const Color(0xFF1A56DB).withValues(alpha: 0.35),
               blurRadius: 18,
               offset: const Offset(0, 6),
             ),
@@ -509,7 +509,7 @@ class _FinalQuizCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 22),
@@ -548,7 +548,7 @@ class _FinalQuizCard extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.15),
+                    color: Colors.grey.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.lock_rounded, color: Colors.grey, size: 26),

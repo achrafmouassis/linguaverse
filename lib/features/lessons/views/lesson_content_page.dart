@@ -186,7 +186,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.12),
+                        color: Colors.grey.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(Icons.close_rounded, size: 22),
@@ -202,7 +202,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                           child: LinearProgressIndicator(
                             value: progress,
                             minHeight: 8,
-                            backgroundColor: Colors.grey.withOpacity(0.15),
+                            backgroundColor: Colors.grey.withValues(alpha: 0.15),
                             valueColor: AlwaysStoppedAnimation<Color>(widget.color),
                           ),
                         ),
@@ -235,8 +235,8 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                           color: active
                               ? widget.color
                               : done
-                                  ? widget.color.withOpacity(0.15)
-                                  : Colors.grey.withOpacity(0.08),
+                                  ? widget.color.withValues(alpha: 0.15)
+                                  : Colors.grey.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Icon(
@@ -276,7 +276,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                         child: Container(
                           height: 56,
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.12),
+                            color: Colors.grey.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: const Icon(Icons.arrow_back_rounded),
@@ -295,7 +295,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                                color: widget.color.withOpacity(0.35),
+                                color: widget.color.withValues(alpha: 0.35),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4)),
                           ],
@@ -351,7 +351,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [widget.color, widget.color.withOpacity(0.7)],
+                colors: [widget.color, widget.color.withValues(alpha: 0.7)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -460,7 +460,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF1E293B) : Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: widget.color.withOpacity(0.15)),
+                border: Border.all(color: widget.color.withValues(alpha: 0.15)),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -501,7 +501,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
-                                              color: widget.color.withOpacity(0.1),
+                                              color: widget.color.withValues(alpha: 0.1),
                                               borderRadius: BorderRadius.circular(6)),
                                           child: Text('[${item.pronunciation}]',
                                               style: TextStyle(
@@ -517,7 +517,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                                           child: Container(
                                             padding: const EdgeInsets.all(4),
                                             decoration: BoxDecoration(
-                                                color: widget.color.withOpacity(0.1),
+                                                color: widget.color.withValues(alpha: 0.1),
                                                 shape: BoxShape.circle),
                                             child: Icon(Icons.volume_up_rounded,
                                                 size: 16, color: widget.color),
@@ -535,10 +535,10 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                                   margin: const EdgeInsets.only(left: 12),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: widget.color.withOpacity(0.2)),
+                                    border: Border.all(color: widget.color.withValues(alpha: 0.2)),
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Colors.black.withOpacity(0.05),
+                                          color: Colors.black.withValues(alpha: 0.05),
                                           blurRadius: 8,
                                           offset: const Offset(0, 2)),
                                     ],
@@ -619,9 +619,9 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: widget.color.withOpacity(0.06),
+                          color: widget.color.withValues(alpha: 0.06),
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: widget.color.withOpacity(0.12)),
+                          border: Border.all(color: widget.color.withValues(alpha: 0.12)),
                         ),
                         child: Text(line,
                             style: TextStyle(
@@ -661,7 +661,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
                                       padding:
                                           const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                       decoration: BoxDecoration(
-                                          color: widget.color.withOpacity(0.1),
+                                          color: widget.color.withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(6)),
                                       child: Text('[${item.pronunciation}]',
                                           style: TextStyle(
@@ -709,7 +709,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF1E293B) : Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: widget.color.withOpacity(0.15)),
+                border: Border.all(color: widget.color.withValues(alpha: 0.15)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -839,7 +839,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: widget.color.withOpacity(0.12)),
+        border: Border.all(color: widget.color.withValues(alpha: 0.12)),
       ),
       child: child,
     );
@@ -861,9 +861,9 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
@@ -879,7 +879,7 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration:
-          BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+          BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

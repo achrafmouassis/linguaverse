@@ -219,7 +219,7 @@ Color _surfaceColor(BuildContext context) {
 
 Color _textColor(BuildContext context, {double opacity = 1.0}) {
   return (Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.textPrimary)
-      .withOpacity(opacity);
+      .withValues(alpha: opacity);
 }
 
 Color _scaffoldBgColor(BuildContext context) {
@@ -412,7 +412,7 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
               animation: _bgTintValue,
               builder: (context, child) {
                 return Container(
-                  color: _currentBgTint.withOpacity(0.15 * _bgTintValue.value),
+                  color: _currentBgTint.withValues(alpha: 0.15 * _bgTintValue.value),
                 );
               },
             ),
@@ -480,10 +480,10 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppSpacing.md, vertical: AppSpacing.sm),
                         decoration: BoxDecoration(
-                          color: AppColors.wrongRed.withOpacity(0.10),
+                          color: AppColors.wrongRed.withValues(alpha: 0.10),
                           borderRadius: BorderRadius.circular(AppRadius.sm),
                           border:
-                              Border.all(color: AppColors.wrongRed.withOpacity(0.25), width: 0.5),
+                              Border.all(color: AppColors.wrongRed.withValues(alpha: 0.25), width: 0.5),
                         ),
                         child: Row(
                           children: [
@@ -984,8 +984,8 @@ class _StreakPill extends ConsumerWidget {
     Widget pill = Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
       decoration: BoxDecoration(
-        color: AppColors.streakOrange.withOpacity(0.15),
-        border: Border.all(color: AppColors.streakOrange.withOpacity(0.40), width: 0.5),
+        color: AppColors.streakOrange.withValues(alpha: 0.15),
+        border: Border.all(color: AppColors.streakOrange.withValues(alpha: 0.40), width: 0.5),
         borderRadius: BorderRadius.circular(AppRadius.full),
       ),
       child: Row(
@@ -1100,14 +1100,14 @@ class _ShimmerCard extends StatelessWidget {
               end: Alignment(1.0 + 2 * shimmerController.value, 0),
               colors: Theme.of(context).brightness == Brightness.dark
                   ? [
-                      Colors.white.withOpacity(0.04),
-                      Colors.white.withOpacity(0.09),
-                      Colors.white.withOpacity(0.04),
+                      Colors.white.withValues(alpha: 0.04),
+                      Colors.white.withValues(alpha: 0.09),
+                      Colors.white.withValues(alpha: 0.04),
                     ]
                   : [
-                      Colors.black.withOpacity(0.04),
-                      Colors.black.withOpacity(0.08),
-                      Colors.black.withOpacity(0.04),
+                      Colors.black.withValues(alpha: 0.04),
+                      Colors.black.withValues(alpha: 0.08),
+                      Colors.black.withValues(alpha: 0.04),
                     ],
               stops: const [0.0, 0.5, 1.0],
             ),
@@ -1167,14 +1167,14 @@ class _ContinueLearningCardState extends State<_ContinueLearningCard> {
               color: isDark ? AppColors.bgLevel3 : AppColors.surface,
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primary.withOpacity(0.15),
+                  AppColors.primary.withValues(alpha: 0.15),
                   Colors.transparent,
                 ],
                 begin: Alignment.topLeft,
                 end: const Alignment(0.8, 0.8),
               ),
               borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: Border.all(color: AppColors.primary.withOpacity(0.35), width: 0.5),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.35), width: 0.5),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1184,7 +1184,7 @@ class _ContinueLearningCardState extends State<_ContinueLearningCard> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.20),
+                        color: AppColors.primary.withValues(alpha: 0.20),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: const Text('● EN COURS',
@@ -1614,12 +1614,12 @@ class _ModuleCardState extends State<_ModuleCard> {
             decoration: BoxDecoration(
               color: isDark ? AppColors.bgLevel2 : AppColors.surface,
               borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: Border.all(color: widget.module.color.withOpacity(0.3), width: 0.5),
+              border: Border.all(color: widget.module.color.withValues(alpha: 0.3), width: 0.5),
               boxShadow: isDark
                   ? []
                   : [
                       BoxShadow(
-                          color: widget.module.color.withOpacity(0.05),
+                          color: widget.module.color.withValues(alpha: 0.05),
                           blurRadius: 8,
                           offset: const Offset(0, 4))
                     ],
@@ -2018,7 +2018,7 @@ class _DailyChallengeCardState extends State<_DailyChallengeCard> {
                       Container(
                         padding: const EdgeInsets.all(AppSpacing.md),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.1),
+                          color: AppColors.primary.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(Icons.stars_rounded, color: AppColors.primary, size: 28),
@@ -2198,9 +2198,9 @@ class _ShimmerOverlay extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.white.withOpacity(0.0),
-                      Colors.white.withOpacity(0.4),
-                      Colors.white.withOpacity(0.0),
+                      Colors.white.withValues(alpha: 0.0),
+                      Colors.white.withValues(alpha: 0.4),
+                      Colors.white.withValues(alpha: 0.0),
                     ],
                   ),
                 ),
@@ -2238,7 +2238,7 @@ class _DevThemeToggle extends ConsumerWidget {
             color: isDark ? AppColors.glassBlue : AppColors.bgLevel3,
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: Border.all(
-              color: isDark ? Colors.black.withOpacity(0.08) : Colors.white.withOpacity(0.15),
+              color: isDark ? Colors.black.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.15),
               width: 0.5,
             ),
           ),
