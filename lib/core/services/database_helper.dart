@@ -10,7 +10,7 @@ class DatabaseHelper {
   DatabaseHelper.forTesting() : _testMode = true;
 
   Database? _database;
-  static const int _dbVersion = 3; // v3 : ajout des colonnes et tables duel M6
+  static const int _dbVersion = 5; // v5 : correction versioning et nettoyage
   bool _testMode = false;
 
   Future<Database> get database async {
@@ -46,9 +46,12 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    await _createUserTable(db);
     await _createGamificationTables(db);
+    await _addDuelColumnsToProgression(db);
     await _createDuelTables(db);
     await _seedBadges(db);
+    await _seedDuelBadges(db);
     await _seedDuelOpponents(db);
   }
 
@@ -58,26 +61,39 @@ class DatabaseHelper {
       await _seedBadges(db);
     }
     if (oldVersion < 3) {
-      // ── Colonnes duel dans user_progression ──────────────────────
-      // SOURCE RÉELLE : Statistiques calculées par DuelService après chaque partie
-      // POUR REMPLACER : Appel DuelService.finalizeSession() → incrementDuelStats()
-      await db.execute(
-          'ALTER TABLE user_progression ADD COLUMN duels_played    INTEGER NOT NULL DEFAULT 0');
-      await db.execute(
-          'ALTER TABLE user_progression ADD COLUMN duel_wins       INTEGER NOT NULL DEFAULT 0');
-      await db.execute(
-          'ALTER TABLE user_progression ADD COLUMN duel_losses     INTEGER NOT NULL DEFAULT 0');
-      await db.execute(
-          'ALTER TABLE user_progression ADD COLUMN duel_win_streak INTEGER NOT NULL DEFAULT 0');
-      await db.execute(
-          'ALTER TABLE user_progression ADD COLUMN duel_best_streak INTEGER NOT NULL DEFAULT 0');
-      await db.execute(
-          'ALTER TABLE user_progression ADD COLUMN duel_perfects   INTEGER NOT NULL DEFAULT 0');
-
+      await _addDuelColumnsToProgression(db);
       await _createDuelTables(db);
       await _seedDuelBadges(db);
       await _seedDuelOpponents(db);
     }
+    if (oldVersion < 4) {
+      await _createUserTable(db);
+    }
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // TABLE USERS (Anciennement dans LocalUserService)
+  // ════════════════════════════════════════════════════════════════
+  Future<void> _createUserTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        email TEXT NOT NULL UNIQUE,
+        displayName TEXT,
+        profileImageUrl TEXT,
+        languageLevel TEXT NOT NULL DEFAULT 'A1',
+        learningGoal TEXT NOT NULL DEFAULT 'CULTURE',
+        dailyLearningMinutes TEXT NOT NULL DEFAULT '15',
+        preferredTheme TEXT NOT NULL DEFAULT 'ARABIC',
+        xpTotal INTEGER NOT NULL DEFAULT 0,
+        streakDays INTEGER NOT NULL DEFAULT 0,
+        lessonsCompleted INTEGER NOT NULL DEFAULT 0,
+        lastActivityDate TEXT,
+        createdAt TEXT NOT NULL,
+        updatedAt TEXT NOT NULL,
+        isOnboarded INTEGER NOT NULL DEFAULT 0
+      )
+    ''');
   }
 
   // ════════════════════════════════════════════════════════════════
@@ -99,12 +115,6 @@ class DatabaseHelper {
         words_mastered    INTEGER NOT NULL DEFAULT 0,
         perfect_scores    INTEGER NOT NULL DEFAULT 0,
         total_study_minutes INTEGER NOT NULL DEFAULT 0,
-        duels_played     INTEGER NOT NULL DEFAULT 0,
-        duel_wins        INTEGER NOT NULL DEFAULT 0,
-        duel_losses      INTEGER NOT NULL DEFAULT 0,
-        duel_win_streak  INTEGER NOT NULL DEFAULT 0,
-        duel_best_streak INTEGER NOT NULL DEFAULT 0,
-        duel_perfects    INTEGER NOT NULL DEFAULT 0,
         created_at      TEXT NOT NULL DEFAULT (datetime('now')),
         updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
       );
@@ -184,6 +194,29 @@ class DatabaseHelper {
         created_at    TEXT NOT NULL DEFAULT (datetime('now'))
       );
     ''');
+  }
+
+  Future<void> _addDuelColumnsToProgression(Database db) async {
+    // Vérifier les colonnes existantes pour éviter les erreurs de duplication
+    final List<Map<String, dynamic>> columns =
+        await db.rawQuery('PRAGMA table_info(user_progression)');
+    final existingColumns = columns.map((c) => c['name'] as String).toSet();
+
+    const duelColumns = {
+      'duels_played': 'INTEGER NOT NULL DEFAULT 0',
+      'duel_wins': 'INTEGER NOT NULL DEFAULT 0',
+      'duel_losses': 'INTEGER NOT NULL DEFAULT 0',
+      'duel_win_streak': 'INTEGER NOT NULL DEFAULT 0',
+      'duel_best_streak': 'INTEGER NOT NULL DEFAULT 0',
+      'duel_perfects': 'INTEGER NOT NULL DEFAULT 0',
+    };
+
+    for (final entry in duelColumns.entries) {
+      if (!existingColumns.contains(entry.key)) {
+        await db.execute(
+            'ALTER TABLE user_progression ADD COLUMN ${entry.key} ${entry.value}');
+      }
+    }
   }
 
   // ════════════════════════════════════════════════════════════════

@@ -43,26 +43,26 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyAoMv9PB7gXQ-ZWFMIq-sG8_20YiWFVewk',
     appId: '1:42508636306:web:b0e3c3ac2133336765164b',
     messagingSenderId: '42508636306',
-    projectId: 'linguaverse-db-il',
-    authDomain: 'linguaverse-db-il.firebaseapp.com',
-    storageBucket: 'linguaverse-db-il.firebasestorage.app',
+    projectId: 'linguaverse-340f7',
+    authDomain: 'linguaverse-340f7.firebaseapp.com',
+    storageBucket: 'linguaverse-340f7.firebasestorage.app',
     measurementId: 'G-RCKN4C538L',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA7YJMJFsjLULSwUa-6RNtrikawj5ueEG8',
-    appId: '1:42508636306:android:217a077af7d3f23c65164b',
-    messagingSenderId: '42508636306',
-    projectId: 'linguaverse-db-il',
-    storageBucket: 'linguaverse-db-il.firebasestorage.app',
+    apiKey: 'AIzaSyDKEImkPxSmrin_Yjn1latIikElt5EmbBc',
+    appId: '1:757265211911:android:7c7394031942feb8ff80a2',
+    messagingSenderId: '757265211911',
+    projectId: 'linguaverse-340f7',
+    storageBucket: 'linguaverse-340f7.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAPd8KSsozCo7pVTK10hk3b2VUhgMLQcsw',
     appId: '1:42508636306:ios:922f54eb2612319465164b',
     messagingSenderId: '42508636306',
-    projectId: 'linguaverse-db-il',
-    storageBucket: 'linguaverse-db-il.firebasestorage.app',
+    projectId: 'linguaverse-340f7',
+    storageBucket: 'linguaverse-340f7.firebasestorage.app',
     iosBundleId: 'com.ensias.linguaverse',
   );
 
@@ -70,8 +70,8 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyAPd8KSsozCo7pVTK10hk3b2VUhgMLQcsw',
     appId: '1:42508636306:ios:922f54eb2612319465164b',
     messagingSenderId: '42508636306',
-    projectId: 'linguaverse-db-il',
-    storageBucket: 'linguaverse-db-il.firebasestorage.app',
+    projectId: 'linguaverse-340f7',
+    storageBucket: 'linguaverse-340f7.firebasestorage.app',
     iosBundleId: 'com.ensias.linguaverse',
   );
 
@@ -79,9 +79,9 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyAoMv9PB7gXQ-ZWFMIq-sG8_20YiWFVewk',
     appId: '1:42508636306:web:0bc6ed985299038065164b',
     messagingSenderId: '42508636306',
-    projectId: 'linguaverse-db-il',
-    authDomain: 'linguaverse-db-il.firebaseapp.com',
-    storageBucket: 'linguaverse-db-il.firebasestorage.app',
+    projectId: 'linguaverse-340f7',
+    authDomain: 'linguaverse-340f7.firebaseapp.com',
+    storageBucket: 'linguaverse-340f7.firebasestorage.app',
     measurementId: 'G-6VTM4NCWZD',
   );
 }

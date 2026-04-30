@@ -222,7 +222,8 @@ class AuthRepository {
       case 'user-not-found':
         return 'Utilisateur non trouvé.';
       case 'wrong-password':
-        return 'Le mot de passe est incorrect.';
+      case 'invalid-credential':
+        return 'Le mot de passe est incorrect ou l\'identifiant est invalide.';
       case 'operation-not-allowed':
         return 'Cette opération n\'est pas autorisée.';
       case 'too-many-requests':

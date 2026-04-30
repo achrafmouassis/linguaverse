@@ -60,16 +60,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text,
           );
-
-      if (!mounted) return;
-
-      // Vérifie si onboarding est requis
-      final authState = ref.read(authNotifierProvider);
-      if (authState.isOnboardingRequired) {
-        context.go('/onboarding');
-      } else {
-        context.go('/home');
-      }
+      debugPrint('🔑 Login successful, waiting for global redirect...');
     } catch (e) {
       if (mounted) _showErrorSnackbar(e.toString());
     }
@@ -78,16 +69,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _handleGoogleSignIn() async {
     try {
       await ref.read(authNotifierProvider.notifier).signInWithGoogle();
-
-      if (!mounted) return;
-
-      // Vérifie si onboarding est requis
-      final authState = ref.read(authNotifierProvider);
-      if (authState.isOnboardingRequired) {
-        context.go('/onboarding');
-      } else {
-        context.go('/home');
-      }
+      debugPrint('🔑 Google Sign-In successful, waiting for global redirect...');
     } catch (e) {
       if (mounted) _showErrorSnackbar(e.toString());
     }

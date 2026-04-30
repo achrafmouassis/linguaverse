@@ -73,9 +73,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text,
           );
-
-      if (!mounted) return;
-      context.go('/onboarding');
+      debugPrint('🔑 Signup successful, waiting for global redirect...');
     } catch (e) {
       if (mounted) _showErrorSnackbar(e.toString());
     }

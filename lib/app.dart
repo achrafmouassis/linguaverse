@@ -44,15 +44,11 @@ class _LinguaVerseAppState extends ConsumerState<LinguaVerseApp> {
           previous.isAuthenticated != next.isAuthenticated ||
           previous.isOnboardingRequired != next.isOnboardingRequired ||
           previous.isLoading != next.isLoading) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            authRouterNotifier.updateAuthState(
-              isAuthenticated: next.isAuthenticated,
-              isOnboardingRequired: next.isOnboardingRequired,
-              isLoading: next.isLoading,
-            );
-          }
-        });
+        authRouterNotifier.updateAuthState(
+          isAuthenticated: next.isAuthenticated,
+          isOnboardingRequired: next.isOnboardingRequired,
+          isLoading: next.isLoading,
+        );
       }
     });
 
