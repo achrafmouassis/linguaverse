@@ -1,0 +1,72 @@
+================================================================================
+GUIDE DE LANCEMENT - LINGUAVERSE (v1.2.0-STABLE)
+================================================================================
+
+Ce guide explique comment lancer l'application LinguaVerse après l'avoir récupérée 
+depuis GitHub. Notez que certains fichiers de configuration critiques (secrets, 
+clés API) sont exclus par .gitignore et doivent être rajoutés manuellement.
+
+--------------------------------------------------------------------------------
+ÉTAPE 1 : RÉCUPÉRATION DU CODE
+--------------------------------------------------------------------------------
+Si ce n'est pas déjà fait, clonez le dépôt et placez-vous dedans :
+> git clone https://github.com/votre-equipe/linguaverse.git
+> cd linguaverse
+
+--------------------------------------------------------------------------------
+ÉTAPE 2 : FUSION DES FONCTIONNALITÉS (Optionnel)
+--------------------------------------------------------------------------------
+Si vous voulez travailler avec la branche AI Quiz ou une autre branche spécifique,
+assurez-vous de fusionner le code :
+> git checkout develop
+> git merge feature/ai-quiz
+
+--------------------------------------------------------------------------------
+ÉTAPE 3 : INSTALLATION DES DÉPENDANCES
+--------------------------------------------------------------------------------
+Téléchargez tous les packages nécessaires définis dans pubspec.yaml :
+> flutter pub get
+
+--------------------------------------------------------------------------------
+ÉTAPE 4 : CONFIGURATION DES FICHIERS MANQUANTS (.gitignore)
+--------------------------------------------------------------------------------
+L'application ne fonctionnera pas sans ces fichiers prioritaires :
+
+1. CONFIGURATION FIREBASE (Android) :
+   - Récupérez le fichier 'google-services.json' auprès de votre équipe.
+   - Placez-le dans : android/app/google-services.json
+
+2. CONFIGURATION FIREBASE (iOS) :
+   - Récupérez le fichier 'GoogleService-Info.plist' auprès de votre équipe.
+   - Placez-le dans : ios/Runner/GoogleService-Info.plist
+
+3. VARIABLES D'ENVIRONNEMENT (Clés API) :
+   - Copiez le fichier d'exemple :
+     > cp .env.example .env
+   - Ouvrez le fichier '.env' et remplacez les valeurs par vos clés réelles :
+     CLAUDE_API_KEY=votre_cle_claude_ici
+     FIREBASE_PROJECT_ID=votre_id_projet_ici
+
+--------------------------------------------------------------------------------
+ÉTAPE 5 : VÉRIFICATION DE L'ENVIRONNEMENT
+--------------------------------------------------------------------------------
+Assurez-vous que votre simulateur/émulateur ou appareil physique est connecté :
+> flutter devices
+
+--------------------------------------------------------------------------------
+ÉTAPE 6 : LANCEMENT DE L'APPLICATION
+--------------------------------------------------------------------------------
+Exécutez la commande suivante :
+> flutter run
+
+--------------------------------------------------------------------------------
+NOTES IMPORTANTES :
+--------------------------------------------------------------------------------
+- L'authentification est actuellement simulée ('user_123').
+- Le module AR nécessite un appareil physique compatible (ARCore/ARKit) ou un 
+  émulateur supportant la caméra.
+- En cas de problème de build iOS, n'oubliez pas : cd ios && pod install && cd ..
+
+================================================================================
+LinguaVerse - ENSIAS Taroudant - 2026
+================================================================================

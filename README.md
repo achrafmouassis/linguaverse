@@ -24,43 +24,39 @@ git clone https://github.com/EQUIPE/linguaverse.git
 cd linguaverse
 ```
 
-### 2. Installer les dépendances
+### 2. Fusionner les fonctionnalités (Si nécessaire)
+Si vous devez intégrer le travail d'une branche spécifique (ex: AI Quiz) :
+```bash
+git checkout develop
+git merge feature/ai-quiz
+```
+
+### 3. Installer les dépendances
 ```bash
 flutter pub get
-cd ios && pod install && cd ..
+# Pour iOS uniquement :
+# cd ios && pod install && cd ..
 ```
 
-### 3. Configurer Firebase
+### 4. Configurer Firebase
 
-Pour que les services Firebase fonctionnent correctement (Auth, base de données), chaque développeur doit configurer les clés sur son environnement local :
+Le projet nécessite les fichiers de configuration Firebase (exclus via `.gitignore`) :
 
 **Pour Android :**
-1. Télécharger ou récupérer le fichier `google-services.json` du projet.
-2. Le placer directement dans le dossier `android/app/` :
-```bash
-cp chemin/vers/google-services.json android/app/
-```
+Placer `google-services.json` dans `android/app/`.
 
 **Pour iOS :**
-1. Télécharger ou récupérer le fichier `GoogleService-Info.plist`.
-2. Le placer dans le dossier `ios/Runner/` :
-```bash
-cp chemin/vers/GoogleService-Info.plist ios/Runner/
-```
+Placer `GoogleService-Info.plist` dans `ios/Runner/`.
 
-> **⚠️ ATTENTION :** Ces fichiers contiennent les clés privées du projet. Ils ne doivent **absolument jamais** être inclus dans les commits (ils sont déjà stipulés dans le `.gitignore`).
-
-### 4. Configurer les clés API
+### 5. Configurer les clés API
 ```bash
 cp .env.example .env
-# Éditer .env et remplir CLAUDE_API_KEY
+# Éditer .env et remplir CLAUDE_API_KEY et FIREBASE_PROJECT_ID
 ```
 
-### 5. Lancer l'application
+### 6. Lancer l'application
 ```bash
 flutter run
-flutter run -d 'iPhone 15 Pro'
-flutter run -d chrome
 ```
 
 ---
@@ -78,19 +74,21 @@ lib/
 │   ├── srs_service.dart
 │   └── claude_api_service.dart
 ├── features/
-│   ├── auth/
+│   ├── auth/ (Stubs)
 │   ├── lessons/
 │   ├── quiz/
-│   ├── gamification/
-│   ├── ai_quiz/
-│   └── ar/
+│   ├── gamification/ (Central)
+│   ├── ai_quiz/ (v1.2.0)
+│   ├── ar/
+│   ├── duel/
+│   └── home/
 └── shared/
     ├── widgets/
     ├── theme/
     └── utils/
 ```
 
-**Pattern :** MVVM + Clean Architecture
+**Pattern :** MVVM + Clean Architecture + Riverpod
 
 ---
 
@@ -98,7 +96,7 @@ lib/
 
 ```
 main
-  └── develop
+  └── develop (Dernière version stable v1.2.0)
         ├── feature/auth-onboarding
         ├── feature/ai-quiz
         ├── feature/lessons-srs
@@ -111,43 +109,22 @@ main
 
 ---
 
-## 📋 Commandes quotidiennes
-
-```bash
-flutter analyze
-flutter test
-dart format lib/
-flutter pub get
-```
-
----
-
-## ⚠️ Règles importantes
-
-1. Ne jamais committer `.env`, `google-services.json`, `GoogleService-Info.plist`
-2. sqflite uniquement pour la DB locale
-3. Travailler uniquement dans `lib/features/<ton_module>/`
-4. Toujours rebase sur develop avant PR
-5. Conventional commits obligatoires : `feat|fix|chore|test|docs(scope): message`
-
----
-
-## 📦 Stack technique
+## 📦 Stack technique (v1.2.0)
 
 | Catégorie | Technologie | Version |
 |---|---|---|
-| Framework | Flutter / Dart | 3.22+ |
-| State | flutter_riverpod | 2.5+ |
-| Navigation | go_router | 14+ |
-| DB locale | sqflite | 2.3+ |
-| Auth | firebase_auth | Latest |
-| TTS | flutter_tts | 4.2+ |
-| STT | speech_to_text | 7.0+ |
-| AR | ar_flutter_plugin | 0.7.3+ |
-| ML | google_mlkit_object_detection | 0.12+ |
-| IA | Claude API (claude-3-haiku) | — |
-| Charts | fl_chart | 0.69+ |
+| Framework | Flutter / Dart | 3.4+ |
+| State | flutter_riverpod | 2.5.1 |
+| Navigation | go_router | 14.2.0 |
+| DB locale | sqflite | 2.3.3 |
+| Auth | Firebase Auth (Stubbed) | — |
+| TTS | flutter_tts | 4.2.0 |
+| STT | speech_to_text | 7.0.0 |
+| AR | ar_flutter_plugin | 0.7.3 |
+| ML | google_mlkit (Object, Text) | 0.12+ |
+| IA | Claude API (via Dio) | — |
 
 ---
 
 *LinguaVerse — ENSIAS Taroudant · Pr. Latifa RASSAM · 2025–2026*
+*Version : 1.2.0-STABLE*

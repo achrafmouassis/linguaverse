@@ -1,5 +1,17 @@
 # Changelog - LinguaVerse
 
+## [v1.2.0] - 2026-04-30
+Cette version stabilise le MVP en consolidant l'intégration inter-modules, en unifiant les services audio/TTS et en introduisant le module AI Quiz.
+
+### Ajouté
+- **Module M8 (AI Quiz)** : Génération de quiz intelligents via Claude API avec fallback local.
+- **Service TTS Unifié** : Centralisation du `TTSService` utilisé par les Leçons, Quiz et AI Quiz.
+- **Tests de validation** : Ajout de tests pour `ai_quiz`, `quiz_flow` et `lesson_progress`.
+
+### Corrigé
+- **Migration UI** : Passage à `withValues()` pour la compatibilité avec les dernières versions de Flutter.
+- **Stabilité** : Correction des fuites de mémoire et optimisation des performances de la base de données.
+
 ## [v1.1.0] - 2024-04
 Cette version finalise les modules de Réalité Augmentée (M4), de Duel d'Arène (M6) et de centralisation de Gamification (M7).
 
