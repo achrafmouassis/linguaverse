@@ -53,7 +53,7 @@ cp chemin/vers/GoogleService-Info.plist ios/Runner/
 ### 4. Configurer les clés API
 ```bash
 cp .env.example .env
-# Éditer .env et remplir CLAUDE_API_KEY
+# Éditer .env et remplir GOOGLE_API_KEY (pour Gemini)
 ```
 
 ### 5. Lancer l'application
@@ -62,6 +62,16 @@ flutter run
 flutter run -d 'iPhone 15 Pro'
 flutter run -d chrome
 ```
+
+---
+
+## 🌟 Dernières Mises à Jour (Réalisées)
+
+*   **Migration IA :** Passage de Claude 3 à **Google Gemini 1.5 Flash** pour la génération gratuite et rapide des quiz.
+*   **Moteur de Jeu "AI Quiz" :** Création d'une interface de jeu interactive indépendante avec feedback immédiat, animations, et timer dynamique (30 secondes par question).
+*   **Gamification & XP :** Calcul automatique de l'XP à la fin des quiz (+10 XP/bonne réponse, bonus parfait de +50 XP) avec synchronisation locale (SQLite) et distante (Firestore).
+*   **Sécurité et Auth :** Intégration complète de la fonctionnalité **"Mot de passe oublié"** (envoi d'e-mails via Firebase) et ajout d'un **Bouton de Déconnexion** fluide sur l'écran d'accueil.
+*   **Robustesse :** Gestion de l'erreur 503 (serveurs Gemini surchargés) avec message convivial, et renforcement extrême du parsing JSON via des prompts explicites d'échappement des guillemets.
 
 ---
 
@@ -145,7 +155,7 @@ flutter pub get
 | STT | speech_to_text | 7.0+ |
 | AR | ar_flutter_plugin | 0.7.3+ |
 | ML | google_mlkit_object_detection | 0.12+ |
-| IA | Claude API (claude-3-haiku) | — |
+| IA | Google Gemini API (gemini-1.5-flash) | — |
 | Charts | fl_chart | 0.69+ |
 
 ---

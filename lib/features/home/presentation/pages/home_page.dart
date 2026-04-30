@@ -1,4 +1,4 @@
-import 'dart:async';
+ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +8,10 @@ import 'package:linguaverse/shared/theme/app_colors.dart';
 import 'package:linguaverse/shared/utils/constants.dart';
 import 'package:linguaverse/shared/utils/dev_theme_provider.dart';
 import 'package:linguaverse/features/gamification/gamification_exports.dart';
+import 'package:linguaverse/features/auth/viewmodels/auth_provider.dart';
+import 'package:linguaverse/features/auth/repositories/local_user_service.dart';
+import 'package:linguaverse/features/ai_quiz/viewmodels/ai_quiz_notifier.dart';
+import 'package:linguaverse/router.dart';
 
 // ════════════════════════════════════════════════════════════════════
 // 1. MODÈLES DE DONNÉES
@@ -128,39 +132,145 @@ class HomeState {
 // ════════════════════════════════════════════════════════════════════
 // 3. NOTIFIER
 // ════════════════════════════════════════════════════════════════════
+
+/// Helper function pour générer les initiales à partir du nom
+String _generateInitials(String? name) {
+  if (name == null || name.isEmpty) return 'U';
+  final parts = name.trim().split(' ');
+  if (parts.length >= 2) {
+    return '${parts.first[0].toUpperCase()}${parts.last[0].toUpperCase()}';
+  }
+  return name[0].toUpperCase();
+}
+
+/// Helper function pour obtenir le niveau basé sur XP
+int _calculateLevel(int xp) {
+  // Chaque niveau nécessite 1500 XP supplémentaires
+  return (xp / 1500).floor() + 1;
+}
+
+/// Helper function pour obtenir l'XP restant pour le prochain niveau
+int _calculateNextLevelXP(int xp) {
+  int level = _calculateLevel(xp);
+  return level * 1500;
+}
+
+/// Helper function pour calculer le pourcentage de progression XP
+double _calculateXPProgress(int currentXP, int nextLevelXP) {
+  if (nextLevelXP <= 0) return 0.0;
+  int prevLevelXP = (nextLevelXP - 1500).clamp(0, nextLevelXP);
+  int xpInCurrentLevel = currentXP - prevLevelXP;
+  int xpNeededForLevel = nextLevelXP - prevLevelXP;
+  return (xpInCurrentLevel / xpNeededForLevel).clamp(0.0, 1.0);
+}
+
 class HomeNotifier extends StateNotifier<HomeState> {
-  HomeNotifier() : super(_initialMockState) {
+  final LocalUserService _localUserService;
+  final Ref _ref;
+
+  HomeNotifier(this._localUserService, this._ref)
+      : super(const HomeState(
+          userName: 'Chargement...',
+          userInitials: '?',
+          userLevel: 1,
+          currentXP: 0,
+          nextLevelXP: 1500,
+          xpProgress: 0.0,
+          streakDays: 0,
+          currentLanguage: 'Arabe',
+          lastLessonTitle: 'Pas de cours',
+          lastLessonProgress: 0.0,
+          lastLessonModuleIndex: 0,
+          topPlayers: [],
+          dailyChallengeTitle: 'Chargement...',
+          dailyChallengeTimerSeconds: 0,
+          isLoading: true,
+        )) {
     _init();
   }
 
   Timer? _challengeTimer;
 
-  static const HomeState _initialMockState = HomeState(
-    userName: 'Hiba EL OUAFI',
-    userInitials: 'HE',
-    userLevel: 7,
-    currentXP: 3400,
-    nextLevelXP: 5000,
-    xpProgress: 0.68,
-    streakDays: 14,
-    currentLanguage: 'Arabe',
-    lastLessonTitle: 'Les salutations en arabe',
-    lastLessonProgress: 0.42,
-    lastLessonModuleIndex: 0,
-    topPlayers: [
-      LeaderboardEntry(name: 'Amina', initials: 'A', xp: 4230, baseColor: AppColors.tertiary),
-      LeaderboardEntry(name: 'Hassan', initials: 'H', xp: 3890, baseColor: AppColors.secondary),
-      LeaderboardEntry(name: 'Youssef', initials: 'Y', xp: 3510, baseColor: AppColors.primary),
-      LeaderboardEntry(name: 'Hiba', initials: 'HE', xp: 3400, baseColor: AppColors.streakOrange),
-      LeaderboardEntry(name: 'Karim', initials: 'K', xp: 3120, baseColor: AppColors.correctGreen),
-    ],
-    dailyChallengeTitle: 'Maîtriser 10 mots arabes essentiels',
-    dailyChallengeTimerSeconds: 287,
-    isLoading: false,
-  );
+  // Données fictives pour le leaderboard (hardcodées pour l'instant)
+  static const List<LeaderboardEntry> _mockTopPlayers = [
+    LeaderboardEntry(name: 'Amina', initials: 'A', xp: 4230, baseColor: AppColors.tertiary),
+    LeaderboardEntry(name: 'Hassan', initials: 'H', xp: 3890, baseColor: AppColors.secondary),
+    LeaderboardEntry(name: 'Youssef', initials: 'Y', xp: 3510, baseColor: AppColors.primary),
+    LeaderboardEntry(name: 'Karim', initials: 'K', xp: 3120, baseColor: AppColors.correctGreen),
+  ];
 
   Future<void> _init() async {
-    _startChallengeTimer();
+    try {
+      // Récupère l'utilisateur depuis authProvider
+      final authState = _ref.read(authNotifierProvider);
+
+      if (authState.user == null) {
+        // Aucun utilisateur connecté, show error
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Aucun utilisateur connecté',
+        );
+        _startChallengeTimer();
+        return;
+      }
+
+      final user = authState.user!;
+
+      // Récupère l'utilisateur depuis SQLite (pour avoir les stats complètes)
+      final localUser = await _localUserService.getUser(user.id);
+
+      if (localUser == null) {
+        // L'utilisateur n'est pas dans la BD locale, utilise les données Firebase
+        state = state.copyWith(
+          userName: user.displayName ?? user.email,
+          userInitials: _generateInitials(user.displayName),
+          userLevel: _calculateLevel(0),
+          currentXP: 0,
+          nextLevelXP: 1500,
+          xpProgress: 0.0,
+          streakDays: 0,
+          currentLanguage: user.preferredTheme,
+          lastLessonTitle: 'Commencez votre premier cours',
+          lastLessonProgress: 0.0,
+          lastLessonModuleIndex: 0,
+          topPlayers: _mockTopPlayers,
+          dailyChallengeTitle: 'Compléter un cours pour débloquer',
+          dailyChallengeTimerSeconds: 0,
+          isLoading: false,
+        );
+      } else {
+        // Utilise les données de la BD locale
+        final level = _calculateLevel(localUser.xpTotal);
+        final nextLevelXP = _calculateNextLevelXP(localUser.xpTotal);
+        final xpProgress = _calculateXPProgress(localUser.xpTotal, nextLevelXP);
+
+        state = state.copyWith(
+          userName: localUser.displayName ?? localUser.email,
+          userInitials: _generateInitials(localUser.displayName),
+          userLevel: level,
+          currentXP: localUser.xpTotal,
+          nextLevelXP: nextLevelXP,
+          xpProgress: xpProgress,
+          streakDays: localUser.streakDays,
+          currentLanguage: localUser.preferredTheme,
+          lastLessonTitle: 'Continue ton apprentissage',
+          lastLessonProgress: (localUser.lessonsCompleted / 10).clamp(0.0, 1.0),
+          lastLessonModuleIndex: 0,
+          topPlayers: _mockTopPlayers,
+          dailyChallengeTitle: 'Maîtriser 10 mots essentiels',
+          dailyChallengeTimerSeconds: 287,
+          isLoading: false,
+        );
+      }
+
+      _startChallengeTimer();
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Erreur: ${e.toString()}',
+      );
+      _startChallengeTimer();
+    }
   }
 
   void setLanguage(String lang) {
@@ -173,13 +283,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   Future<void> refresh() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
-    // Simulation d'un appel réseau
-    await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
-    state = state.copyWith(
-      isLoading: false,
-      currentXP: state.currentXP + 10, // Example of update
-    );
+    await _init();
   }
 
   void _startChallengeTimer() {
@@ -209,7 +313,10 @@ class HomeNotifier extends StateNotifier<HomeState> {
 }
 
 final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
-  (ref) => HomeNotifier(),
+  (ref) {
+    final localUserService = LocalUserService();
+    return HomeNotifier(localUserService, ref);
+  },
 );
 
 // Helpers Thèmes Constants pour le mode clair et sombre
@@ -806,7 +913,7 @@ class _UserAvatar extends StatelessWidget {
   }
 }
 
-class _TopBar extends StatelessWidget {
+class _TopBar extends ConsumerWidget {
   final HomeState state;
   final AnimationController streakController;
 
@@ -816,9 +923,9 @@ class _TopBar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           child: Column(
@@ -843,6 +950,15 @@ class _TopBar extends StatelessWidget {
         ),
         const SizedBox(width: AppSpacing.lg),
         _UserAvatar(state: state),
+        const SizedBox(width: AppSpacing.sm),
+        IconButton(
+          icon: Icon(Icons.logout, color: _textColor(context, opacity: 0.7)),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            ref.read(authNotifierProvider.notifier).signOut();
+          },
+          tooltip: 'Se déconnecter',
+        ),
       ],
     );
   }
@@ -1087,33 +1203,42 @@ class _ShimmerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: shimmerController,
-      builder: (context, child) {
-        return Container(
-          height: height,
-          width: width ?? double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            gradient: LinearGradient(
-              begin: Alignment(-1.0 + 2 * shimmerController.value, 0),
-              end: Alignment(1.0 + 2 * shimmerController.value, 0),
-              colors: Theme.of(context).brightness == Brightness.dark
-                  ? [
-                      Colors.white.withValues(alpha: 0.04),
-                      Colors.white.withValues(alpha: 0.09),
-                      Colors.white.withValues(alpha: 0.04),
-                    ]
-                  : [
-                      Colors.black.withValues(alpha: 0.04),
-                      Colors.black.withValues(alpha: 0.08),
-                      Colors.black.withValues(alpha: 0.04),
-                    ],
-              stops: const [0.0, 0.5, 1.0],
-            ),
-          ),
-        );
-      },
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Les couleurs sont calculées UNE FOIS ici, pas à chaque frame du builder
+    final shimmerColors = isDark
+        ? [
+            Colors.white.withValues(alpha: 0.04),
+            Colors.white.withValues(alpha: 0.09),
+            Colors.white.withValues(alpha: 0.04),
+          ]
+        : [
+            Colors.black.withValues(alpha: 0.04),
+            Colors.black.withValues(alpha: 0.08),
+            Colors.black.withValues(alpha: 0.04),
+          ];
+
+    return SizedBox(
+      height: height,
+      width: width ?? double.infinity,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: AnimatedBuilder(
+          animation: shimmerController,
+          builder: (context, child) {
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment(-1.0 + 2 * shimmerController.value, 0),
+                  end: Alignment(1.0 + 2 * shimmerController.value, 0),
+                  colors: shimmerColors,
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+              ),
+              child: const SizedBox.expand(),
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -1427,13 +1552,13 @@ class _ModuleMasonryGrid extends StatelessWidget {
       icon: Icons.mic_rounded,
     );
     const aiQuizModule = ModuleInfo(
-      id: 'ai-chat',
+      id: 'ai-quiz',
       title: 'Quiz IA',
-      subtitle: 'Chatbot oral',
+      subtitle: 'Généré par l\'IA',
       badgeText: 'Bêta',
-      color: Colors.indigo,
-      route: '/ai-quiz',
-      icon: Icons.smart_toy_rounded,
+      color: AppColors.tertiary,
+      route: AppRoutes.aiQuiz,
+      icon: Icons.auto_awesome_rounded,
     );
     const gamificationModule = ModuleInfo(
       id: 'gamification',
@@ -1509,7 +1634,15 @@ class _ModuleMasonryGrid extends StatelessWidget {
                 child: _AnimatedGridItem(
                   index: 5,
                   controller: cardsController,
+<<<<<<< HEAD
                   child: _ModuleCard(module: gamificationModule, height: 110, onTap: onModuleTap),
+=======
+                  child: _AiQuizModuleCard(
+                    module: aiQuizModule,
+                    height: 90,
+                    onTap: onModuleTap,
+                  ),
+>>>>>>> origin/feature/ai-quiz
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -1534,7 +1667,7 @@ class _ModuleMasonryGrid extends StatelessWidget {
   }
 }
 
-class _AnimatedGridItem extends StatelessWidget {
+class _AnimatedGridItem extends StatefulWidget {
   final int index;
   final AnimationController controller;
   final Widget child;
@@ -1546,24 +1679,43 @@ class _AnimatedGridItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final start = (index * 0.1).clamp(0.0, 0.5);
-    final end = (start + 0.5).clamp(0.0, 1.0);
+  State<_AnimatedGridItem> createState() => _AnimatedGridItemState();
+}
 
+class _AnimatedGridItemState extends State<_AnimatedGridItem> {
+  late final CurvedAnimation _curve;
+
+  @override
+  void initState() {
+    super.initState();
+    final start = (widget.index * 0.1).clamp(0.0, 0.5);
+    final end = (start + 0.5).clamp(0.0, 1.0);
+    _curve = CurvedAnimation(
+      parent: widget.controller,
+      curve: Interval(start, end, curve: Curves.easeOutBack),
+    );
+  }
+
+  @override
+  void dispose() {
+    _curve.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: controller,
+      animation: _curve,
       builder: (context, child) {
-        final curve = CurvedAnimation(
-            parent: controller, curve: Interval(start, end, curve: Curves.easeOutBack));
         return Transform.scale(
-          scale: 0.8 + (0.2 * curve.value),
+          scale: 0.8 + (0.2 * _curve.value),
           child: Opacity(
-            opacity: curve.value.clamp(0.0, 1.0),
+            opacity: _curve.value.clamp(0.0, 1.0),
             child: child,
           ),
         );
       },
-      child: child,
+      child: widget.child,
     );
   }
 }
@@ -1697,6 +1849,231 @@ class _ModuleCardState extends State<_ModuleCard> {
                       ),
                     ),
                   ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Carte spéciale "Premium" pour le module AI Quiz.
+/// Utilise un dégradé, un badge "Bêta", et affiche le quota restant.
+class _AiQuizModuleCard extends ConsumerStatefulWidget {
+  final ModuleInfo module;
+  final double height;
+  final Function(Color, String?) onTap;
+
+  const _AiQuizModuleCard({
+    required this.module,
+    required this.height,
+    required this.onTap,
+  });
+
+  @override
+  ConsumerState<_AiQuizModuleCard> createState() => _AiQuizModuleCardState();
+}
+
+class _AiQuizModuleCardState extends ConsumerState<_AiQuizModuleCard>
+    with SingleTickerProviderStateMixin {
+  bool _pressed = false;
+  late final AnimationController _shimmerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _shimmerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final quizState = ref.watch(aiQuizNotifierProvider);
+    final remaining = quizState.remainingQuota;
+
+    return Semantics(
+      button: true,
+      label: '${widget.module.title}, Généré par l\'IA, $remaining générations restantes',
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _pressed = true),
+        onTapUp: (_) => setState(() => _pressed = false),
+        onTapCancel: () => setState(() => _pressed = false),
+        onTap: () {
+          HapticFeedback.mediumImpact();
+          context.push(AppRoutes.aiQuiz);
+        },
+        child: AnimatedScale(
+          scale: _pressed ? 0.95 : 1.0,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+          child: Container(
+            height: widget.height,
+            padding: const EdgeInsets.all(AppSpacing.sm),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isDark
+                    ? [
+                        AppColors.tertiary.withValues(alpha: 0.25),
+                        AppColors.primary.withValues(alpha: 0.15),
+                      ]
+                    : [
+                        AppColors.tertiary.withValues(alpha: 0.12),
+                        AppColors.primary.withValues(alpha: 0.08),
+                      ],
+              ),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              border: Border.all(
+                color: AppColors.tertiary.withValues(alpha: 0.4),
+                width: 1,
+              ),
+              boxShadow: isDark
+                  ? [
+                      BoxShadow(
+                        color: AppColors.tertiary.withValues(alpha: 0.15),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                  : [
+                      BoxShadow(
+                        color: AppColors.tertiary.withValues(alpha: 0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+            ),
+            child: Stack(
+              children: [
+                // Background icon watermark
+                Positioned(
+                  right: -15,
+                  bottom: -15,
+                  child: AnimatedBuilder(
+                    animation: _shimmerController,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: 0.04 + (0.04 * _shimmerController.value),
+                        child: child,
+                      );
+                    },
+                    child: Icon(Icons.auto_awesome_rounded,
+                        size: 70, color: AppColors.tertiary),
+                  ),
+                ),
+
+                // Content
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Icon with glow
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.tertiary.withValues(alpha: 0.25),
+                            AppColors.primary.withValues(alpha: 0.2),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Icon(Icons.auto_awesome_rounded,
+                          size: 16, color: Colors.white),
+                    ),
+                    const Spacer(),
+                    // Title
+                    Text(
+                      widget.module.title,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: _textColor(context),
+                        letterSpacing: -0.3,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    // Subtitle with quota
+                    Row(
+                      children: [
+                        Text(
+                          '$remaining/5',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: remaining > 0
+                                ? AppColors.tertiary
+                                : AppColors.wrongRed,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            remaining > 0 ? 'restantes' : 'épuisé',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: _textColor(context, opacity: 0.5),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                // "Bêta" badge with gradient
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 5, vertical: 2),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [AppColors.tertiary, AppColors.primary],
+                      ),
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.tertiary.withValues(alpha: 0.3),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.auto_awesome_rounded,
+                            size: 8, color: Colors.white),
+                        SizedBox(width: 2),
+                        Text(
+                          'FREE AI',
+                          style: TextStyle(
+                            fontSize: 7,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            letterSpacing: 0.8,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -1941,7 +2318,198 @@ class _LeaderboardRow extends StatelessWidget {
           },
         ),
       );
+<<<<<<< HEAD
     });
+=======
+    }
+
+    if (state.topPlayers.isEmpty) {
+      return Container(
+        height: 90,
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.leaderboard_outlined, size: 28, color: _textColor(context, opacity: 0.4)),
+            const SizedBox(height: 6),
+            Text(
+              'Pas encore de classement cette semaine',
+              style: TextStyle(fontSize: 11, color: _textColor(context, opacity: 0.5)),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 90,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: state.topPlayers.length,
+        itemBuilder: (context, index) {
+          return _LeaderboardItem(
+            key: ValueKey(state.topPlayers[index].name),
+            player: state.topPlayers[index],
+            index: index,
+            cardsController: cardsController,
+          );
+        },
+      ),
+    );
+>>>>>>> origin/feature/ai-quiz
+  }
+}
+
+// Widget dédié pour chaque item du leaderboard — gère le cycle de vie de la CurvedAnimation.
+class _LeaderboardItem extends StatefulWidget {
+  final LeaderboardEntry player;
+  final int index;
+  final AnimationController cardsController;
+
+  const _LeaderboardItem({
+    super.key,
+    required this.player,
+    required this.index,
+    required this.cardsController,
+  });
+
+  @override
+  State<_LeaderboardItem> createState() => _LeaderboardItemState();
+}
+
+class _LeaderboardItemState extends State<_LeaderboardItem> {
+  late final CurvedAnimation _curve;
+
+  @override
+  void initState() {
+    super.initState();
+    final start = (widget.index * 0.1).clamp(0.0, 0.8);
+    final end = (start + 0.2).clamp(0.0, 1.0);
+    _curve = CurvedAnimation(
+      parent: widget.cardsController,
+      curve: Interval(start, end, curve: Curves.easeOutBack),
+    );
+  }
+
+  @override
+  void dispose() {
+    _curve.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final player = widget.player;
+    final index = widget.index;
+    final isCurrentUser = player.name == 'Hiba';
+    final isTop3 = index < 3;
+    final String rankIcon;
+    if (index == 0) {
+      rankIcon = '🥇';
+    } else if (index == 1) {
+      rankIcon = '🥈';
+    } else if (index == 2) {
+      rankIcon = '🥉';
+    } else {
+      rankIcon = '#${index + 1}';
+    }
+
+    return AnimatedBuilder(
+      animation: _curve,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(20 * (1 - _curve.value), 0),
+          child: Opacity(
+            opacity: _curve.value.clamp(0.0, 1.0),
+            child: child,
+          ),
+        );
+      },
+      child: Semantics(
+        button: true,
+        label: 'Joueur ${player.name}, position ${index + 1}, ${player.xp} XP',
+        child: InkWell(
+          onTap: () => HapticFeedback.selectionClick(),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          splashColor: AppColors.primary.withValues(alpha: 0.08),
+          child: Container(
+            width: 80,
+            margin: const EdgeInsets.only(right: AppSpacing.md),
+            decoration: BoxDecoration(
+              color: isCurrentUser
+                  ? AppColors.streakOrange.withValues(alpha: 0.1)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              border: isCurrentUser
+                  ? Border.all(color: AppColors.streakOrange.withValues(alpha: 0.3), width: 1)
+                  : null,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [player.baseColor, player.baseColor.withValues(alpha: 0.6)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        border: Border.all(color: _surfaceColor(context), width: 2),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        player.initials,
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                    Positioned(
+                      top: -6,
+                      right: -6,
+                      child: isTop3
+                          ? Text(rankIcon, style: const TextStyle(fontSize: 16))
+                          : Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: _surfaceColor(context),
+                                shape: BoxShape.circle,
+                                border: Border.all(color: _textColor(context, opacity: 0.1)),
+                              ),
+                              child: Text(
+                                rankIcon,
+                                style: TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.bold,
+                                    color: _textColor(context, opacity: 0.7)),
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  player.name,
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: isCurrentUser ? FontWeight.w700 : FontWeight.w500,
+                      color: isCurrentUser ? AppColors.streakOrange : _textColor(context)),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -2053,8 +2621,7 @@ class _DailyChallengeCardState extends State<_DailyChallengeCard> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          _CountdownTimer(
-                              seconds: widget.state.dailyChallengeTimerSeconds, context: context),
+                          _CountdownTimer(seconds: widget.state.dailyChallengeTimerSeconds),
                           const SizedBox(height: AppSpacing.sm),
                           Container(
                             padding:
@@ -2085,16 +2652,19 @@ class _DailyChallengeCardState extends State<_DailyChallengeCard> {
 
 class _CountdownTimer extends StatelessWidget {
   final int seconds;
-  final BuildContext context;
+  // Supprimé: 'final BuildContext context' — anti-pattern dangereux (context stocké comme champ).
+  // On utilise directement le context fourni par build() à la place.
 
-  const _CountdownTimer({required this.seconds, required this.context});
+  const _CountdownTimer({required this.seconds});
 
   @override
   Widget build(BuildContext context) {
     if (seconds <= 0) {
-      return Text('Terminé',
-          style: TextStyle(
-              fontSize: 12, fontWeight: FontWeight.bold, color: _textColor(context, opacity: 0.5)));
+      return Text(
+        'Terminé',
+        style: TextStyle(
+            fontSize: 12, fontWeight: FontWeight.bold, color: _textColor(context, opacity: 0.5)),
+      );
     }
     final m = (seconds / 60).floor();
     final s = seconds % 60;

@@ -2,6 +2,7 @@ class AppConstants {
   static const String claudeApiUrl = 'https://api.anthropic.com/v1/messages';
   static const String claudeModel = 'claude-3-haiku-20240307';
   static const int claudeMaxTokens = 1000;
+  static const String geminiModel = 'gemini-2.5-flash';
   static const int aiQuotaPerDay = 5;
 
   static const double srsDefaultEF = 2.5;

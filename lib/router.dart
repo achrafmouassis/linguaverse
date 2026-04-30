@@ -22,29 +22,150 @@ import 'features/lessons/views/lesson_categories_page.dart';
 import 'features/lessons/views/category_levels_page.dart';
 import 'features/lessons/views/lesson_content_page.dart';
 import 'features/quiz/models/quiz_result_model.dart';
+import 'features/auth/views/login_screen.dart';
+import 'features/auth/views/signup_screen.dart';
+import 'features/auth/views/onboarding_screen.dart';
 import 'features/ai_quiz/views/ai_quiz_entry_page.dart';
 import 'features/ai_quiz/views/ai_quiz_page.dart';
 import 'features/ai_quiz/views/ai_quiz_result_page.dart';
+import 'features/ai_quiz/views/ai_setup_page.dart';
+import 'features/ai_quiz/views/ai_quiz_game_page.dart';
+import 'features/ai_quiz/views/ai_result_page.dart';
 
 class AppRoutes {
-  static const String home = '/';
+  static const String login = '/login';
+  static const String signup = '/signup';
+  static const String onboarding = '/onboarding';
+  static const String home = '/home';
   static const String lessons = '/lessons';
   static const String quiz = '/quiz';
   static const String duel = '/duel';
   static const String pronunciation = '/pronunciation';
   static const String ar = '/ar';
   static const String aiQuiz = '/ai-quiz';
+  static const String aiQuizGame = '/ai-quiz/game';
+  static const String aiQuizResult = '/ai-quiz/result';
 
+  static const List<String> authRoutes = [login, signup, onboarding];
   static const List<String> availableRoutes = [
     home,
     lessons,
     quiz,
+    duel,
+    pronunciation,
+    ar,
+    aiQuiz,
+    aiQuizGame,
+    aiQuizResult,
   ];
 }
 
-final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.home,
+/// Notifier pour déclencher la redirection du router
+class AuthRouterNotifier extends ChangeNotifier {
+  bool? _isAuthenticated;
+  bool? _isOnboardingRequired;
+  bool? _isLoading;
+
+  void updateAuthState({
+    required bool isAuthenticated,
+    required bool isOnboardingRequired,
+    required bool isLoading,
+  }) {
+    if (_isAuthenticated != isAuthenticated ||
+        _isOnboardingRequired != isOnboardingRequired ||
+        _isLoading != isLoading) {
+      _isAuthenticated = isAuthenticated;
+      _isOnboardingRequired = isOnboardingRequired;
+      _isLoading = isLoading;
+      notifyListeners();
+    }
+  }
+
+  bool get isAuthenticated => _isAuthenticated ?? false;
+  bool get isOnboardingRequired => _isOnboardingRequired ?? false;
+  bool get isLoading => _isLoading ?? false;
+}
+
+final authRouterNotifier = AuthRouterNotifier();
+
+/// GoRouter statique que l'on réutilise
+final appRouter = GoRouter(
+  initialLocation: AppRoutes.login,
+  refreshListenable: authRouterNotifier,
+  redirect: (context, state) {
+    final isAuthenticated = authRouterNotifier.isAuthenticated;
+    final isLoading = authRouterNotifier.isLoading;
+    final isOnboardingRequired = authRouterNotifier.isOnboardingRequired;
+    final currentLocation = state.matchedLocation;
+
+    // Si l'authentification est en cours de chargement, ne pas rediriger
+    if (isLoading) {
+      return null;
+    }
+
+    // Si l'utilisateur est authentifié
+    if (isAuthenticated) {
+      // Si l'utilisateur est sur une page d'auth, le rediriger vers home ou onboarding
+      if (AppRoutes.authRoutes.contains(currentLocation)) {
+        return isOnboardingRequired ? AppRoutes.onboarding : AppRoutes.home;
+      }
+      // Sinon, laisser passer
+      return null;
+    }
+
+    // Si l'utilisateur n'est pas authentifié
+    else {
+      // Si l'utilisateur essaie d'accéder à une page protégée, le rediriger vers login
+      if (AppRoutes.availableRoutes.contains(currentLocation)) {
+        return AppRoutes.login;
+      }
+      // Sinon, laisser passer (pages d'auth)
+      return null;
+    }
+  },
   routes: [
+    // ============== Auth Routes ==============
+    GoRoute(
+      path: AppRoutes.login,
+      name: 'login',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const LoginScreen(),
+        transitionsBuilder: (context, animation, _, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.signup,
+      name: 'signup',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const SignupScreen(),
+        transitionsBuilder: (context, animation, _, child) => SlideTransition(
+          position: animation.drive(
+            Tween(begin: const Offset(1, 0), end: Offset.zero)
+                .chain(CurveTween(curve: Curves.easeInOut)),
+          ),
+          child: child,
+        ),
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.onboarding,
+      name: 'onboarding',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const OnboardingScreen(),
+        transitionsBuilder: (context, animation, _, child) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    ),
+
+    // ============== Main Routes ==============
     GoRoute(
       path: AppRoutes.home,
       name: 'home',
@@ -271,7 +392,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.pronunciation,
       name: 'pronunciation',
-      builder: (context, state) => const _PlaceholderPage(title: 'Prononciation'),
+      builder: (context, state) =>
+          const _PlaceholderPage(title: 'Prononciation'),
     ),
     GoRoute(
       path: AppRoutes.ar,
@@ -286,6 +408,24 @@ final GoRouter appRouter = GoRouter(
       name: 'aiQuizEntry',
       pageBuilder: (context, state) => const CustomTransitionPage(
         child: AIQuizEntryPage(),
+        transitionsBuilder: _fadeSlideTransition,
+        transitionDuration: Duration(milliseconds: 300),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.aiQuizGame,
+      name: 'ai-quiz-game',
+      pageBuilder: (context, state) => const CustomTransitionPage(
+        child: AIQuizPage(), // Using local AIQuizPage for consistency if stable
+        transitionsBuilder: _fadeSlideTransition,
+        transitionDuration: Duration(milliseconds: 300),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.aiQuizResult,
+      name: 'ai-quiz-result',
+      pageBuilder: (context, state) => const CustomTransitionPage(
+        child: AIQuizResultPage(),
         transitionsBuilder: _fadeSlideTransition,
         transitionDuration: Duration(milliseconds: 300),
       ),
