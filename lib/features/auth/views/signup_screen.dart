@@ -77,11 +77,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       if (!mounted) return;
       context.go('/onboarding');
     } catch (e) {
-      _showErrorSnackbar(e.toString());
+      if (mounted) _showErrorSnackbar(e.toString());
     }
   }
 
   void _showErrorSnackbar(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -98,7 +99,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
     ref.listen<AuthState>(authNotifierProvider, (previous, next) {
       if (next.errorMessage != null && next.errorMessage!.isNotEmpty) {
-        _showErrorSnackbar(next.errorMessage!);
+        if (mounted) _showErrorSnackbar(next.errorMessage!);
       }
     });
 
@@ -112,33 +113,33 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           onPressed: () => context.go('/login'),
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Titre
-                  Column(
-                    children: [
-                      Text(
-                        'Créer un compte',
-                        style:
-                            Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Rejoignez LinguaVerse et commencez votre voyage linguistique',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Titre
+                    Column(
+                      children: [
+                        Text(
+                          'Créer un compte',
+                          style:
+                              Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Rejoignez LinguaVerse et commencez votre voyage linguistique',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
 
                   const SizedBox(height: 48),
 
@@ -212,11 +213,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   ),
 
                   const SizedBox(height: 48),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

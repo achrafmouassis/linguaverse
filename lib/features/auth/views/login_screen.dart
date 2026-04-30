@@ -71,7 +71,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context.go('/home');
       }
     } catch (e) {
-      _showErrorSnackbar(e.toString());
+      if (mounted) _showErrorSnackbar(e.toString());
     }
   }
 
@@ -89,11 +89,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context.go('/home');
       }
     } catch (e) {
-      _showErrorSnackbar(e.toString());
+      if (mounted) _showErrorSnackbar(e.toString());
     }
   }
 
   void _showErrorSnackbar(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -187,15 +188,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.deepSpaceBlue : AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                   // Logo et titre
                   Column(
                     children: [
@@ -319,11 +320,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
 
                   const SizedBox(height: 48),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
