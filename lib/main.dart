@@ -17,18 +17,22 @@ void main() async {
 
   // Initialiser Firebase — DOIT être terminé AVANT runApp
   // pour que les providers Riverpod puissent accéder à Firebase dès le montage.
-  if (Firebase.apps.isEmpty) {
-    try {
+  try {
+    if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
       debugPrint('Firebase initialized successfully');
-    } catch (e) {
+    } else {
+      debugPrint('Firebase already initialized (skipped startup init)');
+    }
+  } catch (e) {
+    if (e.toString().contains('duplicate-app')) {
+      debugPrint('Firebase already initialized (duplicate-app trapped)');
+    } else {
       debugPrint('Firebase initialization failed: $e');
       debugPrint('Continuing without Firebase for UI testing purposes.');
     }
-  } else {
-    debugPrint('Firebase already initialized');
   }
 
   // Lancer l'application — ProviderScope est le conteneur Riverpod racine.
